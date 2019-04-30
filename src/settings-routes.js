@@ -11,7 +11,7 @@ export default [
         path: "/settings/users/profile",
         name: "settingsUsersProfile",
         component: () => import(/* webpackChunkName: "users-profile" */ "./components/users/profile")
-    }
+    },
     {
         path: "/settings/users/notifications",
         name: "settingsUsersNotifications",
