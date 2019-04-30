@@ -17,11 +17,12 @@
 <script>
 import { mapState } from "vuex";
 import isURL from "is-url";
+import DashboardUploader from "./dashboard-file-uploader";
 
 export default {
     name: "ProfileUploader",
     components: {
-        DashboardUploader: () => import(/* webpackChunkName: "dashboard-uploader" */ "./dashboard-file-uploader")
+        DashboardUploader
     },
     props: {
         defaultAvatar: {

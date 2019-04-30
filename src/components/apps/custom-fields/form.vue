@@ -51,13 +51,18 @@
 </template>
 
 <script>
+import ContainerTemplate from "../../../container";
+import FieldsSelect from "./fields/select";
+import FieldsText from "./fields/text";
+import TabsMenu from "../tabs";
+
 export default {
     name: "Form",
     components: {
-        ContainerTemplate: () => import(/* webpackChunkName: "settings-container" */ "../../../container"),
-        FieldsSelect: () => import(/* webpackChunkName: "settings-apps-custom-fields-select" */ "./fields/select"),
-        FieldsText: () => import(/* webpackChunkName: "settings-apps-custom-fields-text" */ "./fields/text"),
-        TabsMenu: () => import(/* webpackChunkName: "settings-apps-tabs" */ "../tabs")
+        ContainerTemplate,
+        FieldsSelect,
+        FieldsText,
+        TabsMenu
     },
     data() {
         return {

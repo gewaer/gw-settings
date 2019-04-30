@@ -37,10 +37,12 @@
 </template>
 
 <script>
+import FrecuencyItem from "./frequency-item";
+
 export default {
     name: "Frecuencies",
     components: {
-        FrecuencyItem: () => import(/* webpackChunkName: "settings-companies-subscriptions-frequency-item" */ "./frequency-item")
+        FrecuencyItem
     },
     props: {
         plan: {

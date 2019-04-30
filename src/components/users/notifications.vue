@@ -60,12 +60,14 @@
 
 <script>
 import vuexMixins from "../../mixins/vuexMixins";
+import ContainerTemplate from "../../container";
+import TabsMenu from "./tabs";
 
 export default {
     name: "Notifications",
     components: {
-        ContainerTemplate: () => import(/* webpackChunkName: "settings-container" */ "../../container"),
-        TabsMenu: () => import(/* webpackChunkName: "settings-users-tabs" */ "./tabs")
+        ContainerTemplate,
+        TabsMenu
     },
     mixins: [
         vuexMixins

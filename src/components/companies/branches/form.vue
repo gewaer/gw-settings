@@ -73,12 +73,14 @@
 
 <script>
 import vueRouterMixins from "../../../mixins/vueRouterMixins";
+import ContainerTemplate from "../../../container";
+import TabsMenu from "../tabs";
 
 export default {
     name: "Form",
     components: {
-        ContainerTemplate: () => import(/* webpackChunkName: "settings-container" */ "../../../container"),
-        TabsMenu: () => import(/* webpackChunkName: "settings-apps-tabs" */ "../tabs")
+        ContainerTemplate,
+        TabsMenu
     },
     mixins: [
         vueRouterMixins

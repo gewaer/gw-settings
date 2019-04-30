@@ -1,10 +1,12 @@
 {
   "name": "@gewaer/gw-settings",
-  "version": "0.1.1",
+  "version": "0.1.4",
   "description": "Base settings component for the Gewaer platform.",
   "main": "./dist/gw-settings.umd.min.js",
   "files": [
-    "dist/*"
+    "dist/gw-settings.umd.min.js",
+    "dist/gw-settings.css",
+    "src/assets"
   ],
   "scripts": {
     "serve": "vue-cli-service serve",

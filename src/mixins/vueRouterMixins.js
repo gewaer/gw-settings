@@ -1,6 +1,7 @@
 import isEmpty from "lodash/isEmpty";
 import some from "lodash/some";
 import pickBy from "lodash/pickBy";
+import ModalsUnsavedChanges from "../components/modals/unsaved-changes";
 
 export default {
     computed: {
@@ -12,7 +13,7 @@ export default {
         const formFields = pickBy(this.vvFields, field => field.changed);
 
         if (!isEmpty(formFields)) {
-            this.$modal.show(() => import(/* webpackChunkName: "components-modals-unsaved-changes" */ "../components/modals/unsaved-changes"), {
+            this.$modal.show(ModalsUnsavedChanges, {
                 buttons: [{
                     title: "Discard",
                     handler: () => {

@@ -45,12 +45,14 @@
 import { mapState } from "vuex";
 import vuexMixins from "../../../mixins/vuexMixins";
 import listMixins from "../../../mixins/listMixins";
+import ContainerTemplate from "../../../container";
+import TabsMenu from "../tabs";
 
 export default {
     name: "List",
     components: {
-        ContainerTemplate: () => import(/* webpackChunkName: "settings-container" */ "../../../container"),
-        TabsMenu: () => import(/* webpackChunkName: "settings-apps-tabs" */ "../tabs")
+        ContainerTemplate,
+        TabsMenu
     },
     mixins: [
         vuexMixins,

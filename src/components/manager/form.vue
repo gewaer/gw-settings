@@ -92,11 +92,12 @@
 <script>
 import {mapState} from "vuex";
 import crudMixins from "../../mixins/crudMixins";
+import ContainerTemplate from "../../container";
 
 export default {
     name: "CompanyCrud",
     components: {
-        ContainerTemplate: () => import(/* webpackChunkName: "settings-container" */ "../../container")
+        ContainerTemplate
     },
     mixins: [
         crudMixins

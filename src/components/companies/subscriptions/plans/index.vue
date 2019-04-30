@@ -14,10 +14,12 @@
 </template>
 
 <script>
+import Plan from "./plan";
+
 export default {
     name: "Plans",
     components:{
-        Plan: () => import(/* webpackChunkName: "subscriptions-plans" */ "./plan")
+        Plan
     },
     props: {
         plans: {

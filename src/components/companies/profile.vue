@@ -153,13 +153,16 @@ import { mapState } from "vuex";
 import vuexMixins from "../../mixins/vuexMixins";
 import vueRouterMixins from "../../mixins/vueRouterMixins";
 import clone from "lodash/clone";
+import ContainerTemplate from "../../container";
+import TabsMenu from "./tabs";
+import ProfileUploader from "../uploaders/profile-uploader";
 
 export default {
     name: "CompanyProfile",
     components: {
-        ProfileUploader: () => import(/* webpackChunkName: "profile-upload" */ "../uploaders/profile-uploader"),
-        ContainerTemplate: () => import(/* webpackChunkName: "settings-container" */ "../../container"),
-        TabsMenu: () => import(/* webpackChunkName: "settings-apps-tabs" */ "./tabs")
+        ProfileUploader,
+        ContainerTemplate,
+        TabsMenu
     },
     mixins: [
         vueRouterMixins,

@@ -36,13 +36,16 @@ import { mapState } from "vuex";
 import vuexMixins from "../../mixins/vuexMixins";
 import vueRouterMixins from "../../mixins/vueRouterMixins";
 import isEmpty from "lodash/isEmpty";
+import ContainerTemplate from "../../container";
+import TabsMenu from "./tabs";
+import ProfileUploader from "../uploaders/profile-uploader";
 
 export default {
     name: "Profile",
     components: {
-        ProfileUploader: () => import(/* webpackChunkName: "profile-uploader" */ "../uploaders/profile-uploader"),
-        ContainerTemplate: () => import(/* webpackChunkName: "container" */ "../../container"),
-        TabsMenu: () => import(/* webpackChunkName: "users-tabs" */ "./tabs")
+        ProfileUploader,
+        ContainerTemplate,
+        TabsMenu
     },
     mixins: [
         vueRouterMixins,

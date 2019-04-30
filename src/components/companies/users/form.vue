@@ -111,12 +111,14 @@
 <script>
 import { mapState } from "vuex";
 import crudMixins from "../../../mixins/crudMixins";
+import ContainerTemplate from "../../../container";
+import TabsMenu from "../tabs";
 
 export default {
     name: "Form",
     components: {
-        ContainerTemplate: () => import(/* webpackChunkName: "settings-container" */ "../../../container"),
-        TabsMenu: () => import(/* webpackChunkName: "settings-apps-tabs" */ "../tabs")
+        ContainerTemplate,
+        TabsMenu
     },
     mixins: [
         crudMixins

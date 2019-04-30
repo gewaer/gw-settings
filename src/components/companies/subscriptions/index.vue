@@ -255,16 +255,22 @@
 import { mapState, mapGetters } from "vuex";
 import vueRouterMixins from "../../../mixins/vueRouterMixins";
 import vuexMixins from "../../../mixins/vuexMixins";
+import ContainerTemplate from "../../../container";
+import TabsMenu from "../tabs";
+import CreditCard from "./credit-card";
+import OrderDetails from "./order-details";
+import Plans from "./plans";
+import PlansFrecuencies from "./plans/frecuencies";
 
 export default {
     name: "Subscriptions",
     components: {
-        ContainerTemplate: () => import(/* webpackChunkName: "settings-container" */ "../../../container"),
-        TabsMenu: () => import(/* webpackChunkName: "settings-apps-tabs" */ "../tabs"),
-        CreditCard: () => import(/* webpackChunkName: "settings-companies-subscriptions-credit-card" */ "./credit-card"),
-        OrderDetails: () => import(/* webpackChunkName: "settings-companies-subscriptions-order-details" */ "./order-details"),
-        Plans: () => import(/* webpackChunkName: "plans-component" */ "./plans"),
-        PlanFrecuencies: () => import(/* webpackChunkName: "plans-frecuencies-component" */ "./plans/frecuencies")
+        ContainerTemplate,
+        TabsMenu,
+        CreditCard,
+        OrderDetails,
+        Plans,
+        PlansFrecuencies
     },
     filters: {
         getPrice(value){

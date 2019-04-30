@@ -1,5 +1,3 @@
-import routes from "./settings-routes";
-import Container from "./container";
+import GwSettingsRoutes from "./settings-routes";
 
-export const GwSettingsRoutes = routes;
-export const GwSettingsContainer = Container;
+export default GwSettingsRoutes;

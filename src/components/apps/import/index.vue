@@ -51,16 +51,24 @@
 </template>
 
 <script>
+import ContainerTemplate from "../../../container";
+import TabsMenu from "../tabs";
+import FieldsMapping from "./fields-mapping";
+import VueDropzone from "vue2-dropzone";
+import WizardForm from "vue-form-wizard";
+import WizardTabContent from "vue-form-wizard";
+import WizardButton from "vue-form-wizard";
+
 export default {
     name: "ImportWizard",
     components: {
-        ContainerTemplate: () => import(/* webpackChunkName: "settings-container" */ "../../../container"),
-        FieldsMapping: () => import(/* webpackChunkName: "settings-apps-import-fields-mapping" */ "./fields-mapping"),
-        TabsMenu: () => import(/* webpackChunkName: "settings-apps-tabs" */ "../tabs"),
-        VueDropzone: () => import(/* webpackChunkName: "vue-dropzone" */ "vue2-dropzone"),
-        WizardForm: () => import(/* webpackChunkName: "form-wizard-form" */ "vue-form-wizard").then(({ FormWizard }) => FormWizard),
-        WizardTabContent: () => import(/* webpackChunkName: "form-wizard-tab-content" */ "vue-form-wizard").then(({ TabContent }) => TabContent),
-        WizardButton: () => import(/* webpackChunkName: "form-wizard-wizard-button" */ "vue-form-wizard").then(({ WizardButton }) => WizardButton)
+        ContainerTemplate,
+        FieldsMapping,
+        TabsMenu,
+        VueDropzone,
+        WizardForm,
+        WizardTabContent,
+        WizardButton
     },
     data() {
         return {

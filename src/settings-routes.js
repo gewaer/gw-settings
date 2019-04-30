@@ -1,3 +1,27 @@
+
+import UsersProfile from "./components/users/profile";
+import UsersNotifications from "./components/users/notifications";
+import UsersSecurity from "./components/users/security";
+import UsersDevices from "./components/users/devices";
+import AppsCustomFieldsList from "./components/apps/custom-fields/list";
+import AppsCustomFieldsForm from "./components/apps/custom-fields/form";
+import AppsEmailTemplatesList from "./components/apps/email-templates/list";
+import AppsEmailTemplatesForm from "./components/apps/email-templates/form";
+import AppsWebhooksList from "./components/apps/webhooks/list";
+import AppsWebhooksForm from "./components/apps/webhooks/form";
+import AppsImportList from "./components/apps/import/";
+import AppsThemes from "./components/apps/themes";
+import CompaniesProfile from "./components/companies/profile";
+import CompaniesBranchesList from "./components/companies/branches/list";
+import CompaniesBranchesForm from "./components/companies/branches/form";
+import CompaniesUsersList from "./components/companies/users/list";
+import CompaniesUsersForm from "./components/companies/users/form";
+import CompaniesRolesList from "./components/companies/roles/list";
+import CompaniesRolesForm from "./components/companies/roles/form";
+import CompaniesSubscriptions from "./components/companies/subscriptions";
+import ManagerList from "./components/manager/list";
+import ManagerForm from "./components/manager/form";
+
 export default [
     // ===== Settings Users Routes =====
     {
@@ -10,12 +34,12 @@ export default [
     {
         path: "/settings/users/profile",
         name: "settingsUsersProfile",
-        component: () => import(/* webpackChunkName: "users-profile" */ "./components/users/profile")
+        component: UsersProfile
     },
     {
         path: "/settings/users/notifications",
         name: "settingsUsersNotifications",
-        component: () => import(/* webpackChunkName: "settings-users-notifications" */ "./components/users/notifications")
+        component: UsersNotifications
     },
     // {
     //     path: "/settings/users/social",
@@ -28,12 +52,12 @@ export default [
     {
         path: "/settings/users/security",
         name: "settingsUsersSecurity",
-        component: () => import(/* webpackChunkName: "settings-users-security" */ "./components/users/security")
+        component: UsersSecurity
     },
     {
         path: "/settings/users/devices",
         name: "settingsUsersDevices",
-        component: () => import(/* webpackChunkName: "settings-users-devices" */ "./components/users/devices")
+        component: UsersDevices
     },
     // ===== Settings Apps Routes =====
     {
@@ -46,7 +70,7 @@ export default [
     {
         path: "/settings/apps/custom-fields",
         name: "settingsAppsCustomFieldsList",
-        component: () => import(/* webpackChunkName: "settings-apps-customFields-list" */ "./components/apps/custom-fields/list"),
+        component: AppsCustomFieldsList,
         meta: {
             group: "settingsAppsCustomFields"
         }
@@ -54,7 +78,7 @@ export default [
     {
         path: "/settings/apps/custom-fields/add",
         name: "settingsAppsCustomFieldsForm",
-        component: () => import(/* webpackChunkName: "settings-apps-customFields-form" */ "./components/apps/custom-fields/form"),
+        component: AppsCustomFieldsForm,
         meta: {
             group: "settingsAppsCustomFields"
         }
@@ -62,7 +86,7 @@ export default [
     {
         path: "/settings/apps/custom-fields/edit/:id",
         name: "settingsAppsCustomFieldsFormEdit",
-        component: () => import(/* webpackChunkName: "settings-apps-customFields-form" */ "./components/apps/custom-fields/form"),
+        component: AppsCustomFieldsForm,
         meta: {
             group: "settingsAppsCustomFields"
         }
@@ -70,7 +94,7 @@ export default [
     {
         path: "/settings/apps/email-templates",
         name: "settingsAppsEmailTemplatesList",
-        component: () => import(/* webpackChunkName: "settings-apps-emailTemplates-list" */ "./components/apps/email-templates/list"),
+        component: AppsEmailTemplatesList,
         meta: {
             group: "settingsAppsEmailTemplates"
         }
@@ -78,7 +102,7 @@ export default [
     {
         path: "/settings/apps/email-templates/add",
         name: "settingsAppsEmailTemplatesForm",
-        component: () => import(/* webpackChunkName: "settings-apps-emailTemplates-form" */ "./components/apps/email-templates/form"),
+        component: AppsEmailTemplatesForm,
         meta: {
             group: "settingsAppsEmailTemplates"
         }
@@ -86,7 +110,7 @@ export default [
     {
         path: "/settings/apps/email-templates/edit/:id",
         name: "settingsAppsEmailTemplatesFormEdit",
-        component: () => import(/* webpackChunkName: "settings-apps-emailTemplates-form" */ "./components/apps/email-templates/form"),
+        component: AppsEmailTemplatesForm,
         meta: {
             group: "settingsAppsEmailTemplates"
         }
@@ -94,7 +118,7 @@ export default [
     {
         path: "/settings/apps/webhooks",
         name: "settingsAppsWebhooksList",
-        component: () => import(/* webpackChunkName: "settings-apps-webhooks-list" */ "./components/apps/webhooks/list"),
+        component: AppsWebhooksList,
         meta: {
             group: "settingsAppsWebhooks"
         }
@@ -102,7 +126,7 @@ export default [
     {
         path: "/settings/apps/webhooks/add",
         name: "settingsAppsWebhooksForm",
-        component: () => import(/* webpackChunkName: "settings-apps-webhooks-form" */ "./components/apps/webhooks/form"),
+        component: AppsWebhooksForm,
         meta: {
             group: "settingsAppsWebhooks"
         }
@@ -110,7 +134,7 @@ export default [
     {
         path: "/settings/apps/webhooks/edit/:id",
         name: "settingsAppsWebhooksFormEdit",
-        component: () => import(/* webpackChunkName: "settings-apps-webhooks-form" */ "./components/apps/webhooks/form"),
+        component: AppsWebhooksForm,
         meta: {
             group: "settingsAppsWebhooks"
         }
@@ -118,7 +142,7 @@ export default [
     {
         path: "/settings/apps/import",
         name: "settingsAppsImportList",
-        component: () => import(/* webpackChunkName: "settings-apps-customFields-list" */ "./components/apps/import/"),
+        component: AppsImportList,
         meta: {
             group: "settingsAppsImport"
         }
@@ -126,7 +150,7 @@ export default [
     {
         path: "/settings/apps/themes",
         name: "settingsAppsThemesList",
-        component: () => import(/* webpackChunkName: "settings-apps-customFields-list" */ "./components/apps/themes"),
+        component: AppsThemes,
         meta: {
             group: "settingsAppsThemes"
         }
@@ -142,7 +166,7 @@ export default [
     {
         path: "/settings/companies/profile",
         name: "settingsCompaniesProfile",
-        component: () => import(/* webpackChunkName: "settings-companies-profile" */ "./components/companies/profile"),
+        component: CompaniesProfile,
         meta: {
             group: "settingsCompaniesProfile"
         }
@@ -150,7 +174,7 @@ export default [
     {
         path: "/settings/companies/branches/list",
         name: "settingsCompaniesBranchesList",
-        component: () => import(/* webpackChunkName: "settings-companies-branches-list" */ "./components/companies/branches/list"),
+        component: CompaniesBranchesList,
         meta: {
             group: "settingsCompaniesBranches"
         }
@@ -158,7 +182,7 @@ export default [
     {
         path: "/settings/companies/branches/add",
         name: "settingsCompaniesBranchesForm",
-        component: () => import(/* webpackChunkName: "settings-companies-branches-form" */ "./components/companies/branches/form"),
+        component: CompaniesBranchesForm,
         meta: {
             group: "settingsCompaniesBranches"
         }
@@ -166,7 +190,7 @@ export default [
     {
         path: "/settings/companies/branches/edit/:id",
         name: "settingsCompaniesBranchesFormEdit",
-        component: () => import(/* webpackChunkName: "settings-companies-branches-form" */ "./components/companies/branches/form"),
+        component: CompaniesBranchesForm,
         meta: {
             group: "settingsCompaniesBranches"
         }
@@ -174,7 +198,7 @@ export default [
     {
         path: "/settings/companies/users/list",
         name: "settingsCompaniesUsersList",
-        component: () => import(/* webpackChunkName: "settings-companies-users-list" */ "./components/companies/users/list"),
+        component: CompaniesUsersList,
         meta: {
             group: "settingsCompaniesUsers"
         }
@@ -182,7 +206,7 @@ export default [
     {
         path: "/settings/companies/users/add",
         name: "settingsCompaniesUsersForm",
-        component: () => import(/* webpackChunkName: "settings-companies-users-form" */ "./components/companies/users/form"),
+        component: CompaniesUsersForm,
         meta: {
             group: "settingsCompaniesUsers"
         }
@@ -190,24 +214,22 @@ export default [
     {
         path: "/settings/companies/users/edit/:id",
         name: "settingsCompaniesUsersFormEdit",
-        component: () => import(/* webpackChunkName: "settings-companies-users-form" */ "./components/companies/users/form"),
+        component: CompaniesUsersForm,
         meta: {
             group: "settingsCompaniesUsers"
         }
     },
-    // TODO: This is temp, remove later
     {
         path: "/settings/companies/roles",
         name: "settingsCompaniesRoles",
-        component: () => import(/* webpackChunkName: "settings-companies-roles-list" */ "./components/companies/roles/list"),
-        meta: {
-            group: "settingsCompaniesRoles"
+        redirect: {
+            name: "settingsCompaniesRolesList"
         }
     },
     {
         path: "/settings/companies/roles/list",
         name: "settingsCompaniesRolesList",
-        component: () => import(/* webpackChunkName: "settings-companies-roles-list" */ "./components/companies/roles/list"),
+        component: CompaniesRolesList,
         meta: {
             group: "settingsCompaniesRoles"
         }
@@ -215,7 +237,7 @@ export default [
     {
         path: "/settings/companies/roles/add",
         name: "settingsCompaniesRolesForm",
-        component: () => import(/* webpackChunkName: "settings-companies-roles-form" */ "./components/companies/roles/form"),
+        component: CompaniesRolesForm,
         meta: {
             group: "settingsCompaniesRoles"
         }
@@ -223,7 +245,7 @@ export default [
     {
         path: "/settings/companies/roles/edit/:id",
         name: "settingsCompaniesRolesFormEdit",
-        component: () => import(/* webpackChunkName: "settings-companies-roles-form" */ "./components/companies/roles/form"),
+        component: CompaniesRolesForm,
         meta: {
             group: "settingsCompaniesRoles"
         }
@@ -231,7 +253,7 @@ export default [
     {
         path: "/settings/companies/subscriptions",
         name: "settingsCompaniesSubscriptions",
-        component: () => import(/* webpackChunkName: "settings-companies-subscriptions" */ "./components/companies/subscriptions"),
+        component: CompaniesSubscriptions,
         meta: {
             group: "settingsCompaniesSubscriptions"
         }
@@ -240,7 +262,7 @@ export default [
     {
         path: "/settings/manager/list",
         name: "settingsManagerList",
-        component: () => import(/* webpackChunkName: "settings-manager-list" */ "./components/manager/list"),
+        component: ManagerList,
         meta: {
             group: "settingsManager"
         }
@@ -248,7 +270,7 @@ export default [
     {
         path: "/settings/manager/add",
         name: "settingsManagerForm",
-        component: () => import(/* webpackChunkName: "settings-companies-roles-form" */ "./components/manager/form"),
+        component: ManagerForm,
         meta: {
             group: "settingsManager"
         }
@@ -256,7 +278,7 @@ export default [
     {
         path: "/settings/manager/edit/:id",
         name: "settingsManagerFormEdit",
-        component: () => import(/* webpackChunkName: "settings-companies-roles-form" */ "./components/manager/form"),
+        component: ManagerForm,
         meta: {
             group: "settingsManager"
         }

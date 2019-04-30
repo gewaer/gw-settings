@@ -53,11 +53,12 @@
 import { mapState } from "vuex";
 import vuexMixins from "../../mixins/vuexMixins";
 import listMixins from "../../mixins/listMixins";
+import ContainerTemplate from "../../container";
 
 export default {
     name: "CompaniesManager",
     components: {
-        ContainerTemplate: () => import(/* webpackChunkName: "settings-container" */ "../../container")
+        ContainerTemplate
     },
     mixins: [
         vuexMixins,
