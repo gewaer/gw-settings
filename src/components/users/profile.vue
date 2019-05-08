@@ -219,6 +219,9 @@ export default {
                                 "form-group": true,
                                 required: true
                             }
+                        },
+                        validations: {
+                            required: true
                         }
                     }
                 ],
@@ -298,7 +301,7 @@ export default {
         },
         formSubmitted(data) {
             data.values.language = data.values.language.id;
-            data.values.locale = data.values.locale.id;
+            data.values.country_id = data.values.locale.id;
 
             Object.keys(data.values).forEach((field) => {
                 this.userData[field] = data.values[field];
