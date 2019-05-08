@@ -33,6 +33,7 @@
     "@uppy/dashboard": "^1.0.0",
     "@uppy/xhr-upload": "^1.0.0",
     "is-url": "^1.2.4",
+    "lodash": "^4.17.11",
     "vue": "^2.6.8",
     "vue-form-wizard": "^0.8.4",
     "vue-stripe-elements-plus": "^0.2.9",

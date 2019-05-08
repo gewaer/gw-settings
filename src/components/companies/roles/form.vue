@@ -108,6 +108,8 @@
 <script>
 import ContainerTemplate from "../../../container";
 import TabsMenu from "../tabs";
+import UnsavedChangesModal from "../../../components/modals/unsaved-changes";
+
 
 import some from "lodash/some";
 import pickBy from "lodash/pickBy";
@@ -150,7 +152,7 @@ export default {
         uniq(this.groupHasChanged).forEach(item => formFields[item] = item);
 
         if (!isEmpty(formFields)) {
-            this.$modal.show(() => import(/* webpackChunkName: "components-modals-unsaved-changes" */ "@/components/modals/unsaved-changes"), {
+            this.$modal.show(UnsavedChangesModal, {
                 buttons: [{
                     title: "Discard",
                     handler: () => {
