@@ -26,7 +26,7 @@
                     <div v-if="showBilligInfo" class="row mt-4">
                         <div class="col">
                             <div class="payment-details m-t-20">
-                                <plan-frecuencies
+                                <plans-frecuencies
                                     :plan="selectedPlan"
                                     :selected-frecuency="selectedFrecuency.type"
                                     show-redeem
