@@ -86,7 +86,7 @@ export default {
     },
     computed: {
         ...mapState({
-            branch: state => state.data.Company.branch
+            branch: state => state.Company.data.branch
         })
     },
     methods: {
