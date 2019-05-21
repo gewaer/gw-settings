@@ -12,6 +12,8 @@
 import uppy from "@uppy/core";
 import XHRUpload from "@uppy/xhr-upload";
 import Dashboard from "@uppy/dashboard";
+import GoogleDrive from "@uppy/google-drive";
+import Url from "@uppy/url";
 import uuidv4 from "uuid/v4";
 
 export default {
@@ -44,6 +46,18 @@ export default {
                 return {
                     restrictions: {}
                 }
+            }
+        },
+        urlPlugginConfig: {
+            type: Object,
+            default() {
+                return {};
+            }
+        },
+        googleDrivePluginConfig: {
+            type: Object,
+            default() {
+                return {};
             }
         }
     },
@@ -87,7 +101,7 @@ export default {
 
         if (this.modalButton) {
             uppyInstance.use(Dashboard, {
-                showProgressDetails:true,
+                // showProgressDetails:true,
                 ...this.dashboardConfig,
                 id: this.dashboardInstanceId,
                 trigger: `#${this.buttonInstanceId}`
@@ -96,10 +110,24 @@ export default {
             uppyInstance.use(Dashboard, {
                 inline: true,
                 replaceTargetContent: true,
-                showProgressDetails:true,
+                // showProgressDetails:true,
                 ...this.dashboardConfig,
                 id: this.dashboardInstanceId,
                 target: `.${this.dashboardInstanceId}`
+            });
+        }
+
+        if ( Object.keys(this.urlPlugginConfig).some(item => item == "companionUrl") ) {
+            uppyInstance.use(Url, {
+                target: Dashboard,
+                ...this.urlPlugginConfig
+            });
+        }
+
+        if ( Object.keys(this.googleDrivePluginConfig).some(item => item == "companionUrl") ) {
+            uppyInstance.use(GoogleDrive, {
+                target: Dashboard,
+                ...this.googleDrivePluginConfig
             });
         }
 
