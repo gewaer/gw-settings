@@ -8,8 +8,9 @@
                 ref="fileUploader"
                 :xhr-config="uppyXhrConfig"
                 :uppy-config="uppyConfig"
+                modal-button
                 @uploaded="uploaded"
-                @error="onError" />
+                @uploaderror="onError" />
         </div>
     </div>
 </template>

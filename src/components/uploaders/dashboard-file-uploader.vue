@@ -1,8 +1,10 @@
 <template>
-    <div :id="uppyId">
-        <div :class="['uppy-container', dashboardInstanceId]">
-            <button :id="buttonInstanceId" type="button" class="btn btn-primary" >Select File{{ collection ? 's' : '' }}</button>
-        </div>
+    <div :id="uppyId" >
+        <button
+            :id="buttonInstanceId"
+            :class="['uppy-container', dashboardInstanceId, {'btn btn-primary': modalButton}]"
+            type="button"
+            class="" >Select File{{ multipleFiles ? 's' : '' }}</button>
     </div>
 </template>
 
@@ -14,7 +16,7 @@ import uuidv4 from "uuid/v4";
 
 export default {
     props: {
-        collection: {
+        modalButton: {
             type: Boolean,
             default: false
         },
@@ -51,11 +53,11 @@ export default {
             uppyInstance: null,
             uppyId: `uppy-${uuidv4()}`,
             dashboardInstanceId: `uppy-dashboard-${uuidv4()}`,
-            buttonInstanceId: `uppy-dashboard-button-${uuidv4()}`
+            buttonInstanceId: `uppy-dashboard-button-${uuidv4()}`,
+            multipleFiles: false
         }
     },
     mounted() {
-        const collectionType = this.collection ? "collection" : "thumbnail";
         const hasDescriptions = Object.keys(this.uppyConfig).some(item => item == "restrictions");
         const customRestrictions = hasDescriptions ? this.uppyConfig.restrictions : {};
         const restrictions = {
@@ -66,11 +68,13 @@ export default {
             ...customRestrictions
         };
 
+        this.multipleFiles = restrictions.maxNumberOfFiles > 1;
+
         const defaultUppyConfig = {
             autoProceed: false,
             debug: false,
             meta: {
-                collection: collectionType
+                atributes:{ "key": "value"}
             },
             ...this.uppyConfig,
             restrictions
@@ -81,25 +85,21 @@ export default {
             ...defaultUppyConfig
         });
 
-        if (this.collection) {
-            const defaultDashboardConfig = {
-                pretty: true,
-                inline: true,
-                replaceTargetContent: true,
-                ...this.dashboardConfig
-            };
+        if (this.modalButton) {
             uppyInstance.use(Dashboard, {
+                showProgressDetails:true,
+                ...this.dashboardConfig,
                 id: this.dashboardInstanceId,
-                target: `.${this.dashboardInstanceId}`,
-                ...defaultDashboardConfig
+                trigger: `#${this.buttonInstanceId}`
             });
         } else {
             uppyInstance.use(Dashboard, {
+                inline: true,
+                replaceTargetContent: true,
+                showProgressDetails:true,
+                ...this.dashboardConfig,
                 id: this.dashboardInstanceId,
-                trigger: `#${this.buttonInstanceId}`,
-                allowMultipleUploads: false,
-                replaceTargetContent: false,
-                ...this.dashboardConfig
+                target: `.${this.dashboardInstanceId}`
             });
         }
 
@@ -112,6 +112,10 @@ export default {
             if (restrictions.maxNumberOfFiles == 1) {
                 this.resetDashboard();
             }
+        });
+
+        uppyInstance.on("upload-error", (file, error, response) => {
+            this.$emit("uploaderror", file, error, response);
         });
 
         uppyInstance.on("complete", result => {
