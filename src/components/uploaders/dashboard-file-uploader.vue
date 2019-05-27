@@ -4,7 +4,10 @@
             :id="buttonInstanceId"
             :class="['uppy-container', dashboardInstanceId, {'btn btn-primary': modalButton}]"
             type="button"
-            class="" >Select File{{ multipleFiles ? 's' : '' }}</button>
+            class=""
+        >
+            Select File{{ multipleFiles ? 's' : '' }}
+        </button>
     </div>
 </template>
 

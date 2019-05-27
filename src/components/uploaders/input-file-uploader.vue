@@ -4,7 +4,9 @@
             :id="buttonInstanceId"
             :class="['uppy-container','btn btn-primary']"
             type="button"
-            class="" >Select File{{ multipleFiles ? 's' : '' }}
+            class=""
+        >
+            Select File{{ multipleFiles ? 's' : '' }}
         </button>
     </div>
 </template>
