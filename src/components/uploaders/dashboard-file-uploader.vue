@@ -88,7 +88,7 @@ export default {
             autoProceed: false,
             debug: false,
             meta: {
-                atributes:{ "key": "value"}
+                atributes: JSON.stringify({ "key": "value"})
             },
             ...this.uppyConfig,
             restrictions
