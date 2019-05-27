@@ -196,7 +196,8 @@ export default {
             selectedCurrency: null,
             uppyConfig: {
                 debug: process.env.NODE_ENV !== "production",
-                restrictions: {                    maxNumberOfFiles: 2,
+                restrictions: {
+                    maxNumberOfFiles: 2,
                     allowedFileTypes: ["image/*", ".docx", ".doc", ".pdf", "audio/*"]
                 },
                 meta: {
