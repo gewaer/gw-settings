@@ -139,6 +139,18 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-12">
+                    <div class="d-flex justify-content-center">
+                        <dashboard-uploader
+                            :xhr-config="uppyXhrConfig"
+                            :uppy-config="uppyConfig"
+                            :dashboard-config="dashboardConfig"
+                            collection
+                            @uploaded="atachFile"
+                            @upload-error="onFileUploadError"
+                        />
+                    </div>
+                </div>
             </div>
             <div class="d-flex justify-content-end mt-2">
                 <button :disabled="isLoading || !hasChanged" class="btn btn-primary" @click="update()">
@@ -155,6 +167,7 @@ import vuexMixins from "../../mixins/vuexMixins";
 import vueRouterMixins from "../../mixins/vueRouterMixins";
 import clone from "lodash/clone";
 import ContainerTemplate from "../../container";
+import DashboardUploader from "../uploaders/dashboard-file-uploader";
 import TabsMenu from "./tabs";
 import ProfileUploader from "../uploaders/profile-uploader";
 
@@ -163,6 +176,7 @@ export default {
     components: {
         ProfileUploader,
         ContainerTemplate,
+        DashboardUploader,
         TabsMenu
     },
     mixins: [
@@ -173,12 +187,28 @@ export default {
         return {
             isLoading: false,
             companyData: {
-                language: null
+                language: null,
+                filesystem_files: []
             },
             avatarUrl: "",
             defaultAvatar: "http://logok.org/wp-content/uploads/2014/11/NZXT-Logo-880x660.png",
             selectedLanguage: null,
-            selectedCurrency: null
+            selectedCurrency: null,
+            uppyConfig: {
+                debug: process.env.NODE_ENV !== "production",
+                restrictions: {
+                    maxNumberOfFiles: 2,
+                    allowedFileTypes: ["image/*", ".docx", ".doc", ".pdf", "audio/*"]
+                },
+                meta: {
+                    atributes: JSON.stringify({
+                        type: "profile"
+                    })
+                }
+            },
+            dashboardConfig: {
+                height: 300
+            }
         }
     },
     computed:{
@@ -186,8 +216,19 @@ export default {
             company: state => state.Company.data,
             languages: state => state.Application.languages,
             timezones: state => state.Application.timezones,
-            currencies: state => state.Application.currencies
-        })
+            currencies: state => state.Application.currencies,
+            userToken: state => state.User.token
+        }),
+        uppyXhrConfig() {
+            return {
+                formData: true,
+                fieldName: "file",
+                endpoint: `${axios.defaults.baseURL}/filesystem`,
+                headers: {
+                    Authorization: this.userToken
+                }
+            };
+        }
     },
     watch: {
         company(company) {
@@ -246,7 +287,6 @@ export default {
                     this.isLoading = false;
                 })
         },
-
         onError(error) {
             this.$notify({
                 title: "Error",
@@ -254,7 +294,13 @@ export default {
                 type: "error"
             });
         },
-
+        onFileUploadError(file, error) {
+            this.$notify({
+                title: "Error",
+                text: error.response.data.errors.message,
+                type: "error"
+            });
+        },
         onSuccess({data}) {
             this.$store.dispatch("Company/updateData", data.id);
             this.$notify({
@@ -268,6 +314,12 @@ export default {
             if (this.companyData.filesystem && this.companyData.filesystem.length) {
                 this.avatarUrl = this.companyData.filesystem[0].url
             }
+        },
+        atachFile(profile) {
+            const formData = {
+                filesystem_files: profile.map(profile => profile.id)
+            };
+            this.update(formData);
         }
     }
 };

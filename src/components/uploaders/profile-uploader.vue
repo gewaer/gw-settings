@@ -8,8 +8,9 @@
                 ref="fileUploader"
                 :xhr-config="uppyXhrConfig"
                 :uppy-config="uppyConfig"
+                modal-button
                 @uploaded="uploaded"
-                @error="onError" />
+                @upload-error="onError" />
         </div>
     </div>
 </template>
@@ -45,7 +46,12 @@ export default {
                 debug: process.env.NODE_ENV !== "production",
                 restrictions: {
                     maxNumberOfFiles: 1,
-                    allowedFileTypes: ["image/*"]
+                    allowedFileTypes: ["image/*"],
+                    meta: {
+                        atributes: JSON.stringify({
+                            type: "profile"
+                        })
+                    }
                 }
             }
         }
