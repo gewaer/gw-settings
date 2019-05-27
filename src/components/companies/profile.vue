@@ -147,7 +147,7 @@
                             :dashboard-config="dashboardConfig"
                             collection
                             @uploaded="atachFile"
-                            @uploaderror="onError"
+                            @upload-error="onFileUploadError"
                         />
                     </div>
                 </div>
@@ -287,7 +287,6 @@ export default {
                     this.isLoading = false;
                 })
         },
-
         onError(error) {
             this.$notify({
                 title: "Error",
@@ -295,7 +294,13 @@ export default {
                 type: "error"
             });
         },
-
+        onFileUploadError(file, error) {
+            this.$notify({
+                title: "Error",
+                text: error.response.data.errors.message,
+                type: "error"
+            });
+        },
         onSuccess({data}) {
             this.$store.dispatch("Company/updateData", data.id);
             this.$notify({
