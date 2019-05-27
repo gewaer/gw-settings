@@ -48,9 +48,9 @@ export default {
                     maxNumberOfFiles: 1,
                     allowedFileTypes: ["image/*"],
                     meta: {
-                        atributes: {
+                        atributes: JSON.stringify({
                             type: "profile"
-                        }
+                        })
                     }
                 }
             }

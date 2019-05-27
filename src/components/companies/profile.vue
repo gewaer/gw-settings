@@ -200,9 +200,9 @@ export default {
                     allowedFileTypes: ["image/*", ".docx", ".doc", ".pdf", "audio/*"]
                 },
                 meta: {
-                    atributes: {
-                        key: "value"
-                    }
+                    atributes: JSON.stringify({
+                        type: "profile"
+                    })
                 }
             },
             dashboardConfig: {
@@ -222,8 +222,7 @@ export default {
             return {
                 formData: true,
                 fieldName: "file",
-                // endpoint: `${axios.defaults.baseURL}/filesystem`,
-                endpoint: `https://954aa3ff.ngrok.io/uploads/files`,
+                endpoint: `${axios.defaults.baseURL}/filesystem`,
                 headers: {
                     Authorization: this.userToken
                 }
