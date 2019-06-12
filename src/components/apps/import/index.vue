@@ -55,9 +55,10 @@ import ContainerTemplate from "../../../container";
 import TabsMenu from "../tabs";
 import FieldsMapping from "./fields-mapping";
 import VueDropzone from "vue2-dropzone";
-import WizardForm from "vue-form-wizard";
-import WizardTabContent from "vue-form-wizard";
-import WizardButton from "vue-form-wizard";
+
+import { FormWizard as WizardForm,
+    TabContent  as WizardTabContent,
+    WizardButton } from "vue-form-wizard";
 
 export default {
     name: "ImportWizard",
