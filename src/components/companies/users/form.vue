@@ -35,7 +35,7 @@
                                 <label>Cell phone</label>
                                 <input
                                     v-validate="'min:2|numeric'"
-                                    v-model="userData.phone"
+                                    v-model="userData.cell_phone_number"
                                     data-vv-as="Cell phone"
                                     data-vv-name="Cell phone"
                                     class="form-control"
@@ -179,11 +179,18 @@ export default {
     },
     created() {
         this.$store.dispatch("Application/getSettingsLists");
-        this.setUser();
+        this.getUserData();
     },
     methods: {
-        setUser() {
-            this.userData = _.clone(this.user);
+        getUserData() {
+            axios({
+                url: `/users/${this.$route.params.id}`
+            }).then(({ data }) => {
+                this. setUser(data);
+            });
+        },
+        setUser(user = {}) {
+            this.userData = _.clone(user);
         },
         setLanguage(value) {
             this.userData.language = value.id;
