@@ -157,9 +157,13 @@ export default {
         isCurrentUser(userId) {
             return this.currentUser.id == userId;
         },
-        editUser(userId, isEditable = true) {
-            this.isEditable = isEditable
-            this.$emit("getUser", userId);
+        editUser(userId) {
+            this.$router.push({
+                name: "settingsCompaniesUsersFormEdit",
+                params:{
+                    id: userId
+                }
+            });
         },
         getTableData(apiUrl, options) {
             return axios({
