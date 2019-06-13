@@ -1,4 +1,4 @@
-<template lang="html">
+<template>
     <div class="apps-settings">
         <h4 class="section-title p-l-10">Settings</h4>
         <div class="card card-transparent">
