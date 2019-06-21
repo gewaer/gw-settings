@@ -288,7 +288,10 @@ export default {
         },
         updateProfile(profile) {
             const formData = {
-                filesystem_files: profile.map(profile => profile.id)
+                files: [{
+                    id: profile[0].id,
+                    field_name: "avatar"
+                }]
             };
 
             this.avatarUrl = profile[0].url;

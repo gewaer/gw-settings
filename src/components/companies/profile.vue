@@ -259,8 +259,12 @@ export default {
 
         updateProfile(profile) {
             const formData = {
-                filesystem_files: profile.map(profile => profile.id)
+                files: [{
+                    id: profile[0].id,
+                    field_name: "logo"
+                }]
             };
+
             this.avatarUrl = profile[0].url;
 
             this.update(formData);
@@ -317,8 +321,12 @@ export default {
         },
         atachFile(profile) {
             const formData = {
-                filesystem_files: profile.map(profile => profile.id)
+                files: [{
+                    id: profile[0].id,
+                    field_name: "logo"
+                }]
             };
+
             this.update(formData);
         }
     }
