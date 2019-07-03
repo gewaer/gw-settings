@@ -97,7 +97,7 @@
                 <div class="row">
                     <div class="col-12 col-xl d-flex justify-content-end mt-2">
                         <button class="btn btn-danger m-r-10" @click="rolesList()">Cancel</button>
-                        <button :disabled="!hasChanged" class="btn btn-primary" @click="verifyFields">Save</button>
+                        <button :disabled="!hasChanged" class="btn btn-primary" @click="verifyFields()">Save</button>
                     </div>
                 </div>
             </div>
@@ -296,15 +296,21 @@ export default {
         // form related
         verifyFields() {
             let dialogProps = {
-                title:`Create ${this.roleData.name} Role!`,
-                message:`Did you want to Create this Role?` };
+                title: `Create ${this.roleData.name} Role!`,
+                message: `Did you want to Create this Role?`
+            };
+
             if (!this.isNewRole) {
-                dialogProps = { title:`Edit ${this.roleData.name} Role!`,
-                    message:`Did you want to Edit this Role?` };
+                dialogProps = {
+                    title:`Edit ${this.roleData.name} Role!`,
+                    message:`Did you want to Edit this Role?`
+                };
             }
+
             if (this.errors.items.length) {
                 let verificationMessage = this.errors.items[0].msg;
                 let verificationTitle = `Please verify the ${this.errors.items[0].field}`;
+
                 this.$notify({
                     title: verificationTitle,
                     text: verificationMessage,
@@ -372,7 +378,7 @@ export default {
                     });
             }
         },
-        onSuccess(method) {
+        async onSuccess(method) {
             const message = method == "POST" ? "created" : "updated";
             this.groupHasChanged = [];
             this.$notify({
@@ -382,6 +388,7 @@ export default {
                 type: "success"
             });
 
+            await this.$validator.reset();
             this.rolesList();
         },
         onError(error) {
@@ -425,10 +432,6 @@ export default {
                 });
             })
         }
-
-        // setFormFields(formFields) {
-        //     this.crudFormFields = formFields;
-        // },
     }
 }
 </script>

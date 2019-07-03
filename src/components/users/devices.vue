@@ -50,6 +50,7 @@ export default {
         return {
             branchesFields: [{
                 name: "source_username",
+                title: "Device",
                 sortField: "source_username",
                 width: "30%"
             }, {

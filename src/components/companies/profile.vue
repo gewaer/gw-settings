@@ -10,7 +10,6 @@
                             <div class="profile-image-container">
                                 <profile-uploader
                                     :avatar-url="avatarUrl"
-                                    :default-avatar="defaultAvatar"
                                     endpoint="/filesystem"
                                     @uploaded="updateProfile"
                                 />
@@ -86,6 +85,7 @@
                                 <label>Language</label>
                                 <multiselect
                                     v-validate="'required'"
+                                    v-if="initializeComplete"
                                     v-model="selectedLanguage"
                                     :allow-empty="false"
                                     :options="languages"
@@ -103,6 +103,7 @@
                                 <label>Timezone</label>
                                 <multiselect
                                     v-validate="'required'"
+                                    v-if="initializeComplete"
                                     v-model="companyData.timezone"
                                     :max-height="175"
                                     :options="timezones"
@@ -117,6 +118,7 @@
                                 <label>Currency</label>
                                 <multiselect
                                     v-validate="'required'"
+                                    v-if="initializeComplete"
                                     v-model="selectedCurrency"
                                     :allow-empty="false"
                                     :max-height="175"
@@ -137,18 +139,6 @@
                                 </multiselect>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div class="col-12">
-                    <div class="d-flex justify-content-center">
-                        <dashboard-uploader
-                            :xhr-config="uppyXhrConfig"
-                            :uppy-config="uppyConfig"
-                            :dashboard-config="dashboardConfig"
-                            collection
-                            @uploaded="atachFile"
-                            @upload-error="onFileUploadError"
-                        />
                     </div>
                 </div>
             </div>
@@ -185,6 +175,7 @@ export default {
     ],
     data() {
         return {
+            initializeComplete: false,
             isLoading: false,
             companyData: {
                 language: null,
@@ -242,8 +233,9 @@ export default {
         async initialize() {
             await this.$store.dispatch("Application/getSettingsLists");
             this.companyData = clone(this.company);
-            this.setInitialSelects()
+            await this.setInitialSelects();
             this.setAvatarUrl();
+            this.initializeComplete = true;
         },
         setSelectValue(value, formField, idName = "id") {
             this.companyData[formField] = value[idName];
@@ -315,9 +307,7 @@ export default {
         },
 
         setAvatarUrl() {
-            if (this.companyData.filesystem && this.companyData.filesystem.length) {
-                this.avatarUrl = this.companyData.filesystem[0].url
-            }
+            this.avatarUrl = this.companyData.logo;
         },
         atachFile(profile) {
             const formData = {

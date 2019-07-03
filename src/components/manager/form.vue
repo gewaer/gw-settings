@@ -202,7 +202,7 @@ export default {
                     text: "The company information has been changed",
                     type: "success"
                 });
-                this.$emit("changeView", "companiesList");
+                this.$router.push({ name: "companiesList" });
             }).catch((error) => {
                 this.$notify({
                     group: null,
@@ -216,7 +216,7 @@ export default {
         },
 
         cancel() {
-            this.$router.push({ name: "settingsCompaniesBranchesList" });
+            this.$router.push({ name: "settingsManagerList" });
         }
     }
 };

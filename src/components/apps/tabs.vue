@@ -8,22 +8,22 @@
                 Custom Fields
             </router-link>
         </li>
-        <li class="nav-item">
+        <!-- <li class="nav-item">
             <router-link
                 :to="{ name: 'settingsAppsImportList' }"
                 :class="{ active: $route.meta.group == 'settingsAppsImport' }"
             >
                 Import
             </router-link>
-        </li>
-        <li class="nav-item">
+        </li> -->
+        <!-- <li class="nav-item">
             <router-link
                 :to="{ name: 'settingsAppsWebhooksList' }"
                 :class="{ active: $route.meta.group == 'settingsAppsWebhooks' }"
             >
                 Webhooks
             </router-link>
-        </li>
+        </li> -->
         <li class="nav-item">
             <router-link
                 :to="{ name: 'settingsAppsEmailTemplatesList' }"
@@ -32,14 +32,14 @@
                 Email Templates
             </router-link>
         </li>
-        <li class="nav-item">
+        <!-- <li class="nav-item">
             <router-link
                 :to="{ name: 'settingsAppsThemesList' }"
                 :class="{ active: $route.meta.group == 'settingsAppsThemes' }"
             >
                 Themes
             </router-link>
-        </li>
+        </li> -->
     </ul>
 </template>
 

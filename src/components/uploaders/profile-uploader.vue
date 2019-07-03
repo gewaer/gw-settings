@@ -1,7 +1,18 @@
 <template>
     <div class="profile-upload">
         <div class="profile-image">
-            <img id="logo" :src="imgUrl" class="img-fluid">
+            <img
+                v-if="imgUrl"
+                id="logo"
+                :src="imgUrl"
+                class="gw-img-fluid"
+            >
+            <img
+                v-else
+                id="logo"
+                src="../../assets/default-avatar.png"
+                class="gw-img-fluid"
+            >
         </div>
         <div class="upload-profile-image">
             <dashboard-uploader
@@ -28,7 +39,7 @@ export default {
     props: {
         defaultAvatar: {
             type: String,
-            default: "http://img2.thejournal.ie/inline/2470754/original?width=428&version=2470754"
+            default: ""
         },
         avatarUrl: {
             type: String,
@@ -97,3 +108,10 @@ export default {
     }
 }
 </script>
+
+<style lang="scss" scoped>
+.gw-img-fluid {
+    max-height: 100%;
+    max-width: 100%;
+}
+</style>

@@ -38,7 +38,7 @@
                                 name="zipcode">
                             <span class="text-danger"> {{ errors.first('zipcode') }}</span>
                         </div>
-                        <div class="form-group form-group-default">
+                        <div class="form-group form-group-default required">
                             <label>Email</label>
                             <input
                                 v-validate="'required|email'"
@@ -65,7 +65,7 @@
             </div>
             <div class="col-12 col-xl d-flex justify-content-end mt-2">
                 <button :disabled="isLoading" class="btn btn-danger m-r-10" @click="cancel()">Cancel</button>
-                <button :disabled="isLoading || !hasChanged" class="btn btn-primary" @click="save()"> Save </button>
+                <button :disabled="isLoading || !hasChanged" class="btn btn-primary" @click="save()">Save</button>
             </div>
         </div>
     </container-template>
@@ -92,8 +92,11 @@ export default {
         }
     },
     computed:{
+        isEditing() {
+            return !!this.$route.params.id;
+        },
         title() {
-            return !this.$route.params.id ? "Add branch" : "Edit branch";
+            return this.isEditing ? "Edit branch" : "Add branch";
         }
     },
     created() {
@@ -101,30 +104,22 @@ export default {
     },
     methods: {
         getBranchData() {
-            axios({
+            this.isEditing && axios({
                 url: `/companies-branches/${this.$route.params.id}`
             }).then(({ data }) => {
                 this.branchData = data;
             });
         },
-        save() {
-            let url;
-            let method;
+        async save() {
+            const isValid = await this.$validator.validateAll();
 
-            if (!this.branchData.id) {
-                url = "/companies-branches";
-                method = "POST";
-            } else {
-                url = `/companies-branches/${this.branchData.id}`;
-                method = "PUT";
+
+            if (isValid) {
+                const method = this.isEditing ? "PUT" : "POST";
+                const url = "/companies-branches" + (this.isEditing ? `/${this.branchData.id}` : "");
+
+                this.sendRequest(url, method);
             }
-
-            this.$validator.validate().then(result => {
-                if (result) {
-                    this.sendRequest(url, method);
-                }
-            })
-
         },
         sendRequest(url, method) {
             if (this.isLoading) {
@@ -144,7 +139,8 @@ export default {
                     text: "The Branch information has been changed",
                     type: "success"
                 });
-                this.$emit("changeView", "branchesList");
+
+                this.$router.push({ name: "branchesList" });
             }).catch((error) => {
                 this.$notify({
                     group: null,

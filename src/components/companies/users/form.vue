@@ -7,42 +7,44 @@
                 <div class="col-12 m-b-20">
                     <div class="row">
                         <div class="col-6 col-md">
-                            <div v-if="isEditUser" class="form-group form-group-default required">
-                                <label>First name</label>
-                                <input
-                                    v-validate="'required:true|min:2|alpha_spaces'"
-                                    v-model="userData.firstname"
-                                    class="form-control"
-                                    type="text"
-                                    name="firstname"
-                                    data-vv-as="First Name"
-                                    data-vv-name="First Name">
-                                <span class="text-danger">{{ errors.first("First Name") }}</span>
-                            </div>
-                            <div v-if="isEditUser" class="form-group form-group-default required">
-                                <label>Last name</label>
-                                <input
-                                    v-validate="'required:true|min:2|alpha_spaces'"
-                                    v-model="userData.lastname"
-                                    data-vv-as="Last Name"
-                                    data-vv-name="Last Name"
-                                    name="lastname"
-                                    class="form-control"
-                                    type="text">
-                                <span class="text-danger">{{ errors.first("Last Name") }}</span>
-                            </div>
-                            <div v-if="isEditUser" class="form-group form-group-default">
-                                <label>Cell phone</label>
-                                <input
-                                    v-validate="'min:2|numeric'"
-                                    v-model="userData.cell_phone_number"
-                                    data-vv-as="Cell phone"
-                                    data-vv-name="Cell phone"
-                                    class="form-control"
-                                    name="phone"
-                                    type="text">
-                                <span class="text-danger">{{ errors.first("Cell phone") }}</span>
-                            </div>
+                            <template v-if="isEditing">
+                                <div class="form-group form-group-default required">
+                                    <label>First name</label>
+                                    <input
+                                        v-validate="'required:true|min:2|alpha_spaces'"
+                                        v-model="userData.firstname"
+                                        class="form-control"
+                                        type="text"
+                                        name="firstname"
+                                        data-vv-as="First Name"
+                                        data-vv-name="First Name">
+                                    <span class="text-danger">{{ errors.first("First Name") }}</span>
+                                </div>
+                                <div class="form-group form-group-default required">
+                                    <label>Last name</label>
+                                    <input
+                                        v-validate="'required:true|min:2|alpha_spaces'"
+                                        v-model="userData.lastname"
+                                        data-vv-as="Last Name"
+                                        data-vv-name="Last Name"
+                                        name="lastname"
+                                        class="form-control"
+                                        type="text">
+                                    <span class="text-danger">{{ errors.first("Last Name") }}</span>
+                                </div>
+                                <div class="form-group form-group-default">
+                                    <label>Cell phone</label>
+                                    <input
+                                        v-validate="'min:2|numeric'"
+                                        v-model="userData.cell_phone_number"
+                                        data-vv-as="Cell phone"
+                                        data-vv-name="Cell phone"
+                                        class="form-control"
+                                        name="phone"
+                                        type="text">
+                                    <span class="text-danger">{{ errors.first("Cell phone") }}</span>
+                                </div>
+                            </template>
                             <div class="form-group form-group-default required">
                                 <label>Email</label>
                                 <input
@@ -59,24 +61,26 @@
 
                         <div class="col-6 m-b-20">
                             <div class="col-12 col-md">
-                                <div v-if="isEditUser" class="form-group">
-                                    <label>Language</label>
-                                    <multiselect
-                                        v-model="selectedLanguage"
-                                        :options="languages"
-                                        label="name"
-                                        track-by="id"
-                                        @input="setLanguage"
-                                    />
-                                </div>
-                                <div v-if="isEditUser" class="form-group">
-                                    <label>Timezone</label>
-                                    <multiselect
-                                        v-model="userData.timezone"
-                                        :max-height="175"
-                                        :options="timezones"
-                                    />
-                                </div>
+                                <template v-if="isEditing">
+                                    <div class="form-group">
+                                        <label>Language</label>
+                                        <multiselect
+                                            v-model="selectedLanguage"
+                                            :options="languages"
+                                            label="name"
+                                            track-by="id"
+                                            @input="setLanguage"
+                                        />
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Timezone</label>
+                                        <multiselect
+                                            v-model="userData.timezone"
+                                            :max-height="175"
+                                            :options="timezones"
+                                        />
+                                    </div>
+                                </template>
                                 <div class="form-group">
                                     <label>Role
                                         <span class="multiseletc-required">*</span>
@@ -101,7 +105,7 @@
 
                 <div class="col-12 col-xl d-flex justify-content-end mt-2">
                     <button :disabled="isLoading" class="btn btn-danger m-r-10" @click="triggerCancel()">Cancel</button>
-                    <button :disabled="isLoading" class="btn btn-primary" @click="verifyFields">Save</button>
+                    <button :disabled="isLoading" class="btn btn-primary" @click="verifyFields()">Save</button>
                 </div>
             </div>
         </div>
@@ -123,20 +127,14 @@ export default {
     mixins: [
         crudMixins
     ],
-    props: {
-        user: {
-            type: Object,
-            default() {
-                return {};
-            }
-        }
-    },
     data() {
         return {
             isLoading: false,
             selectedLanguage: null,
             selectedRole: null,
-            userData:null
+            userData: {
+                email: ""
+            }
         }
     },
     computed: {
@@ -146,51 +144,28 @@ export default {
             roles: state => state.Application.roles
         }),
         title() {
-            let title = "New User"
-            if (this.isEditUser) {
-                title= "Edit User";
-            }
-            return title;
+            return this.isEditing && "Edit User" || "New User";
         },
-        isEditUser(){
-            let value = true;
-            if (!this.$route.params.id){
-                value = false;
-            }
-            return value;
+        isEditing(){
+            return !!this.$route.params.id;
         }
     },
-    watch: {
-        languages() {
+    async created() {
+        await this.$store.dispatch("Application/getSettingsLists");
+
+        if (this.isEditing) {
+            await this.getUserData();
             this.selectedLanguage = this.languages.find(language => language.id == this.userData.language);
-        },
-        user() {
-            this.setUser();
-        },
-        roles(){
-            this.selectedRole = this.roles.find(role => role.id == this.userData.roles_id);
-        },
-        "userData.language"() {
-            this.selectedLanguage = this.languages.find(language => language.id == this.userData.language);
-        },
-        "userData.roles_id"() {
             this.selectedRole = this.roles.find(role => role.id == this.userData.roles_id);
         }
-    },
-    created() {
-        this.$store.dispatch("Application/getSettingsLists");
-        this.getUserData();
     },
     methods: {
-        getUserData() {
-            axios({
+        async getUserData() {
+            await axios({
                 url: `/users/${this.$route.params.id}`
             }).then(({ data }) => {
-                this. setUser(data);
+                this.userData = data;
             });
-        },
-        setUser(user = {}) {
-            this.userData = _.clone(user);
         },
         setLanguage(value) {
             this.userData.language = value.id;
@@ -201,15 +176,20 @@ export default {
         verifyFields(){
             let dialogProps = {
                 title:"Invite User!",
-                message:`Did you want to invite a new user to your company?`};
+                message: "Did you want to invite a new user to your company?"
+            };
 
-            if (this.userData.id) {
-                dialogProps = { title:"Edit User!",
-                    message:`Did you want to Edit this user?`};
+            if (this.isEditing) {
+                dialogProps = {
+                    title: "Edit User!",
+                    message: "Did you want to Edit this user?"
+                };
             }
-            if(this.errors.items.length){
+
+            if (this.errors.items.length) {
                 let verificationMessage = this.errors.items[0].msg;
                 let verificationTitle = `Please verify the ${this.errors.items[0].field}`;
+
                 this.$notify({
                     title: verificationTitle,
                     text: verificationMessage,
@@ -219,44 +199,40 @@ export default {
                 this.validateFields(dialogProps);
             }
         },
-        validateFields(modalProps){
-            this.$validator.validate().then(result => {
-                if (result) {
-                    this.$modal.show("basic-modal", {
-                        ...modalProps,
-                        buttons: [{
-                            title: "Accept",
-                            class: "btn-primary",
-                            handler: () => {
-                                this.$modal.hide("basic-modal");
-                                this.save();
-                            }
-                        }, {
-                            title: "Cancel",
-                            class: "btn-danger",
-                            handler: () => {
-                                this.$modal.hide("basic-modal");
-                            }
-                        }]
-                    });
-                }
-            });
+        async validateFields(modalProps){
+            const isValid = await this.$validator.validateAll();
+
+            if (isValid) {
+                this.$modal.show("basic-modal", {
+                    ...modalProps,
+                    buttons: [{
+                        title: "Accept",
+                        class: "btn-primary",
+                        handler: () => {
+                            this.$modal.hide("basic-modal");
+                            this.save();
+                        }
+                    }, {
+                        title: "Cancel",
+                        class: "btn-danger",
+                        handler: () => {
+                            this.$modal.hide("basic-modal");
+                        }
+                    }]
+                });
+            }
         },
         save() {
-            let url;
-            let method;
+            const url = this.isEditing ? `/users/${this.userData.id}` : "/users/invite";
+            const method = this.isEditing ? "PUT" : "POST";
             let data;
+
             if (!this.userData.id) {
-                url = "/users/invite";
-                method = "POST";
-                let form = new FormData();
-                form.append("email", this.userData.email);
-                form.append("role_id", this.selectedRole.id);
-                data = form;
+                data = new FormData();
+                data.append("email", this.userData.email);
+                data.append("role_id", this.selectedRole.id);
             } else {
-                url = `/users/${this.userData.id}`;
-                method = "PUT";
-                data =  this.userData;
+                data = this.userData;
             }
 
             if (!this.isLoading) {
@@ -264,8 +240,6 @@ export default {
             }
         },
         sendRequest(url, method, data) {
-
-
             this.isLoading = true;
 
             axios({
@@ -291,7 +265,6 @@ export default {
                 this.isLoading = false;
             });
         },
-
         cancel() {
             this.$router.push({ name: "settingsCompaniesUsersList" });
         }

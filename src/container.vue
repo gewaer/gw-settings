@@ -31,5 +31,9 @@ export default {
     .card.flex-md-row {
         min-height: 400px;
     }
+
+    /deep/ .disable-element {
+        pointer-events: none;
+    }
 }
 </style>

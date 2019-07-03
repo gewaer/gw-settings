@@ -8,12 +8,10 @@
                     New User Invite
                 </router-link>
             </h5>
-            <ul id="myTab" class="nav nav-tabs nav-tabs-simple" role="tablist">
+            <ul class="nav nav-tabs nav-tabs-simple">
                 <li class="nav-item">
                     <a
                         :class="{ active: listToShow == 'usersList' }"
-                        data-toggle="tab"
-                        role="tab"
                         @click.prevent="listToShow = 'usersList'"
                     >
                         Users
@@ -21,9 +19,7 @@
                 </li>
                 <li class="nav-item">
                     <a
-                        :class="{ active: listToShow== 'newUsersList' }"
-                        data-toggle="tab"
-                        role="tab"
+                        :class="{ active: listToShow == 'newUsersList' }"
                         @click.prevent="listToShow = 'newUsersList'"
                     >
                         Invites
@@ -33,24 +29,26 @@
             <div v-if="listToShow == 'usersList'" class="table-responsive">
                 <vuetable
                     ref="Vuetable"
-                    :append-params="{format: 'true', relationships:'roles'}"
+                    :append-params="appendParams.users"
                     :fields="usersFields"
                     :http-fetch="getTableData"
                     api-url="/users"
                     class="table table-hover table-condensed"
-                    pagination-path="">
-
-                    <template slot="name" slot-scope="props">
-                        <span> {{ props.rowData.firstname }} {{ props.rowData.lastname }} </span>
+                    pagination-path=""
+                >
+                    <template slot="fullname" slot-scope="props">
+                        <span>{{ props.rowData.firstname }} {{ props.rowData.lastname }}</span>
                     </template>
 
                     <template slot="actions" slot-scope="props">
-                        <button class="btn btn-primary m-l-5" @click="editUser(props.rowData.id, false)"><i class="fa fa-eye" aria-hidden="true"/></button>
-                        <button class="btn btn-complete m-l-5" @click="editUser(props.rowData.id)"><i class="fa fa-edit" aria-hidden="true"/></button>
+                        <button class="btn btn-complete m-l-5" @click="editUser(props.rowData.id)">
+                            <i class="fa fa-edit" aria-hidden="true"/>
+                        </button>
                         <button
                             :disabled="isCurrentUser(props.rowData.id)"
                             class="btn btn-danger m-l-5"
-                            @click="deleteUser(props.rowData.id)">
+                            @click="deleteUser(props.rowData.id)"
+                        >
                             <i class="fa fa-trash" aria-hidden="true" />
                         </button>
                     </template>
@@ -59,22 +57,19 @@
             <div v-else class="table-responsive">
                 <vuetable
                     ref="Vuetable"
-                    :append-params="{format: 'true', relationships:'companies,roles',q:'(is_deleted:0)'}"
+                    :append-params="appendParams.invites"
                     :fields="usersInviteFields"
                     :http-fetch="getTableData"
                     api-url="/users-invite"
                     class="table table-hover table-condensed"
-                    pagination-path="">
-
-                    <template slot="name" slot-scope="props">
-                        <span> {{ props.rowData.firstname }} {{ props.rowData.lastname }} </span>
-                    </template>
-
+                    pagination-path=""
+                >
                     <template slot="actions" slot-scope="props">
                         <button
                             class="btn btn-danger m-l-5"
-                            @click="deleteUser(props.rowData.id)">
-                            <i class="fa fa-trash" aria-hidden="true" />
+                            @click="deleteUser(props.rowData.id)"
+                        >
+                            <i class="fa fa-trash" aria-hidden="true"/>
                         </button>
                     </template>
                 </vuetable>
@@ -109,8 +104,20 @@ export default {
     },
     data() {
         return {
+            appendParams: {
+                invites: {
+                    format: "true",
+                    relationships: "companies,roles",
+                    q: "(is_deleted:0)"
+                },
+                users: {
+                    format: "true",
+                    relationships: "roles"
+                }
+            },
             usersFields: [{
-                name: "name",
+                name: "fullname",
+                sortField: "firstname",
                 title: "Name"
             }, {
                 name: "roles.0.name",
@@ -137,10 +144,11 @@ export default {
             usersInviteFields:[
                 {
                     name: "email",
+                    sortField: "email",
                     title: "Email"
                 }, {
                     name: "roles.0.name",
-                    title:"Rol",
+                    title:"Role",
                     sortField: "roles_id",
                     width: "30%"
                 }, {
@@ -172,7 +180,7 @@ export default {
             });
         },
         deleteUser(id) {
-            if (this.isCurrentUser) {
+            if (this.isCurrentUser(id)) {
                 return
             }
 
@@ -200,3 +208,9 @@ export default {
     }
 };
 </script>
+
+<style lang="scss" scoped>
+.nav-item {
+    cursor: pointer;
+}
+</style>

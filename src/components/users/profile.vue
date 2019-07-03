@@ -9,8 +9,8 @@
                         <div class="col-12 col-md-auto">
                             <div class="profile-image-container">
                                 <profile-uploader
-                                    :avatar-url="avatarUrl"
-                                    :default-avatar="defaultAvatar"
+                                    v-if="userData.id"
+                                    :avatar-url="userData.avatar"
                                     endpoint="/filesystem"
                                     @uploaded="updateProfile"
                                 />
@@ -53,7 +53,6 @@ export default {
     ],
     data() {
         return {
-            defaultAvatar : "http://img2.thejournal.ie/inline/2470754/original?width=428&version=2470754",
             avatarUrl:"",
             isLoading: false,
             selectedLanguage: null,
@@ -83,7 +82,8 @@ export default {
         ...mapState({
             timezones: state => state.Application.timezones,
             languages: state => state.Application.languages,
-            locales: state => state.Application.locales
+            locales: state => state.Application.locales,
+            userDataState: state => state.User.data
         })
     },
     created() {
@@ -92,10 +92,9 @@ export default {
     methods: {
         async initialize() {
             await this.$store.dispatch("Application/getSettingsLists");
-            this.userData = _.clone(this.$store.state.User.data);
+            this.userData = _.clone(this.userDataState);
             this.setInitialSelects();
             this.generateFieldsSchema();
-            this.setAvatarUrl();
         },
         generateFieldsSchema() {
             this.fieldsSchema = [
@@ -296,11 +295,6 @@ export default {
 
             this.avatarUrl = profile[0].url;
             this.update(formData);
-        },
-        setAvatarUrl() {
-            if (!isEmpty(this.userData.logo)) {
-                this.avatarUrl = this.userData.logo.url;
-            }
         },
         formSubmitted(data) {
             data.values.language = data.values.language.id;

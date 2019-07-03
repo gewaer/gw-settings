@@ -21,7 +21,7 @@
                         <img
                             slot="profile_image"
                             slot-scope="props"
-                            :src="props.rowData.profile_image || defaultImage"
+                            :src="props.rowData.logo"
                             height="25px"
                         >
                         <template slot="actions" slot-scope="props">
@@ -82,7 +82,7 @@ export default {
             }],
             appendParams:{
                 format: "true",
-                relationships: "hasActivities",
+                relationships: "hasActivities,logo",
                 q: "(is_deleted:0)"
             },
             defaultImage: "https://mctekk.com/images/logo-o.svg",
