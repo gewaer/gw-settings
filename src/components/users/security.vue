@@ -1,57 +1,54 @@
 <template>
     <container-template>
         <tabs-menu slot="tab-menu"/>
-        <div slot="tab-content" class="row user-general-information">
-            <div class="col-12 col-xl m-b-20">
-                <h5>Security</h5>
-                <div class="row">
-                    <div class="col-12 col-md">
-                        <div class="form-group form-group-default required">
-                            <label>Current password</label>
-                            <input
-                                v-validate="'required'"
-                                v-model="currentPassword"
-                                autocomplete="off"
-                                class="form-control"
-                                type="password"
-                                data-vv-as="password"
-                                name="password"
-                            >
-                            <span class="text-danger">{{ errors.first("password") }}</span>
-                        </div>
-                        <div class="form-group form-group-default required">
-                            <label>New password</label>
-                            <input
-                                v-validate="'required'"
-                                v-model="newPassword"
-                                autocomplete="off"
-                                class="form-control"
-                                type="password"
-                                data-vv-as="new password"
-                                name="new-password"
-                            >
-                            <span class="text-danger">{{ errors.first("new-password") }}</span>
-                        </div>
-                        <div class="form-group form-group-default required">
-                            <label>Confirm new password</label>
-                            <input
-                                v-validate="'required'"
-                                v-model="confirmNewPassword"
-                                autocomplete="off"
-                                class="form-control"
-                                type="password"
-                                data-vv-as="confirm new password"
-                                name="confirm-new-password"
-                            >
-                            <span class="text-danger">{{ errors.first("confirm-new-password") }}</span>
-                        </div>
+        <div slot="tab-content">
+            <h5>Security</h5>
+            <div class="row user-general-information">
+                <div class="col-12 col-md-6">
+                    <div class="form-group form-group-default required">
+                        <label>Current password</label>
+                        <input
+                            v-validate="'required'"
+                            v-model="currentPassword"
+                            autocomplete="off"
+                            class="form-control"
+                            type="password"
+                            data-vv-as="password"
+                            name="password"
+                        >
+                        <span class="text-danger">{{ errors.first("password") }}</span>
+                    </div>
+                    <div class="form-group form-group-default required">
+                        <label>New password</label>
+                        <input
+                            v-validate="'required'"
+                            v-model="newPassword"
+                            autocomplete="off"
+                            class="form-control"
+                            type="password"
+                            data-vv-as="new password"
+                            name="new-password"
+                        >
+                        <span class="text-danger">{{ errors.first("new-password") }}</span>
+                    </div>
+                    <div class="form-group form-group-default required">
+                        <label>Confirm new password</label>
+                        <input
+                            v-validate="'required'"
+                            v-model="confirmNewPassword"
+                            autocomplete="off"
+                            class="form-control"
+                            type="password"
+                            data-vv-as="confirm new password"
+                            name="confirm-new-password"
+                        >
+                        <span class="text-danger">{{ errors.first("confirm-new-password") }}</span>
                     </div>
                 </div>
-                <div class="d-flex justify-content-end mt-2">
-                    <button :disabled="isLoading" class="btn btn-primary" @click="update()">Change</button>
-                </div>
             </div>
-            <div class="col-12 col-xl m-b-20"/>
+            <div class="d-flex justify-content-end mt-2">
+                <button :disabled="isLoading" class="btn btn-primary" @click="update()">Change</button>
+            </div>
         </div>
     </container-template>
 </template>

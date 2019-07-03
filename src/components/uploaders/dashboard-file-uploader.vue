@@ -2,7 +2,7 @@
     <div :id="uppyId" >
         <button
             :id="buttonInstanceId"
-            :class="['uppy-container', dashboardInstanceId, {'btn btn-primary': modalButton}]"
+            :class="['uppy-container', dashboardInstanceId, {'btn btn-primary btn-block': modalButton}]"
             type="button"
             class=""
         >
