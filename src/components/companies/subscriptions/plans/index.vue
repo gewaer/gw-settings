@@ -1,5 +1,5 @@
 <template>
-    <div class="row" >
+    <div class="row">
         <div
             v-for="plan in plans"
             :key="plan.stripe_plan"
@@ -8,6 +8,7 @@
                 :plan="plan"
                 :selected-frecuency="selectedFrecuency"
                 :is-selected="selectedPlan == plan.stripe_plan"
+                :class="{ 'is-not-selected' : (selectedPlan != '') && (selectedPlan != plan.stripe_plan) }"
                 @changeplan="changePlan"/>
         </div>
     </div>

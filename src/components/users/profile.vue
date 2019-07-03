@@ -35,7 +35,6 @@
 import { mapState } from "vuex";
 import vuexMixins from "../../mixins/vuexMixins";
 import vueRouterMixins from "../../mixins/vueRouterMixins";
-import isEmpty from "lodash/isEmpty";
 import ContainerTemplate from "../../container";
 import TabsMenu from "./tabs";
 import ProfileUploader from "../uploaders/profile-uploader";
