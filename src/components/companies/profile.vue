@@ -89,6 +89,7 @@
                                     v-model="selectedLanguage"
                                     :allow-empty="false"
                                     :options="languages"
+                                    :show-labels="false"
                                     data-vv-as="language"
                                     name="language"
                                     label="name"
@@ -107,6 +108,7 @@
                                     v-model="companyData.timezone"
                                     :max-height="175"
                                     :options="timezones"
+                                    :show-labels="false"
                                     data-vv-as="timezone"
                                     name="timezone"
                                 >
@@ -124,6 +126,7 @@
                                     :max-height="175"
                                     :custom-label="currencyLabel"
                                     :options="currencies"
+                                    :show-labels="false"
                                     label="currency"
                                     track-by="code"
                                     deselect-label=""
@@ -182,7 +185,6 @@ export default {
                 filesystem_files: []
             },
             avatarUrl: "",
-            defaultAvatar: "http://logok.org/wp-content/uploads/2014/11/NZXT-Logo-880x660.png",
             selectedLanguage: null,
             selectedCurrency: null,
             uppyConfig: {
@@ -234,7 +236,7 @@ export default {
             await this.$store.dispatch("Application/getSettingsLists");
             this.companyData = clone(this.company);
             await this.setInitialSelects();
-            this.setAvatarUrl();
+            this.avatarUrl = this.companyData.logo && this.companyData.logo.url || "";
             this.initializeComplete = true;
         },
         setSelectValue(value, formField, idName = "id") {
@@ -243,27 +245,25 @@ export default {
         currencyLabel({ currency, code }) {
             return `${currency} (${code})`
         },
-
         setInitialSelects() {
             this.selectedLanguage = this.languages.find(language => language.id == this.companyData.language);
             this.selectedCurrency = this.currencies.find(currency => currency.id == this.companyData.currency_id);
         },
-
         updateProfile(profile) {
             const formData = {
                 files: [{
-                    id: profile[0].id,
+                    id: this.companyData.logo && this.companyData.logo.id || null,
+                    filesystem_id: profile[0].id,
                     field_name: "logo"
                 }]
             };
 
             this.avatarUrl = profile[0].url;
-
             this.update(formData);
         },
-
         async processUpdate() {
             await this.$validator.validateAll();
+
             if (!this.isLoading && !this.errors.any()) {
                 this.isLoading = true;
                 this.update();
@@ -276,48 +276,22 @@ export default {
                 url: `/companies/${this.companyData.id}`,
                 method: "PUT",
                 data: formData
+            }).then(({data}) => {
+                this.$store.dispatch("Company/updateData", data.id);
+                this.$notify({
+                    title: "Confirmation",
+                    text: "Company information has been updated successfully!",
+                    type: "success"
+                });
+            }).catch((error) => {
+                this.$notify({
+                    title: "Error",
+                    text: error.response.data.errors.message,
+                    type: "error"
+                });
+            }).finally(() => {
+                this.isLoading = false;
             })
-                .then(this.onSuccess)
-                .catch(this.onError)
-                .finally(() => {
-                    this.isLoading = false;
-                })
-        },
-        onError(error) {
-            this.$notify({
-                title: "Error",
-                text: error.response.data.errors.message,
-                type: "error"
-            });
-        },
-        onFileUploadError(file, error) {
-            this.$notify({
-                title: "Error",
-                text: error.response.data.errors.message,
-                type: "error"
-            });
-        },
-        onSuccess({data}) {
-            this.$store.dispatch("Company/updateData", data.id);
-            this.$notify({
-                title: "Confirmation",
-                text: "Company information has been updated successfully!",
-                type: "success"
-            });
-        },
-
-        setAvatarUrl() {
-            this.avatarUrl = this.companyData.logo;
-        },
-        atachFile(profile) {
-            const formData = {
-                files: [{
-                    id: profile[0].id,
-                    field_name: "logo"
-                }]
-            };
-
-            this.update(formData);
         }
     }
 };

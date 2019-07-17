@@ -14,6 +14,7 @@
                             class="form-control"
                             type="password"
                             data-vv-as="password"
+                            data-vv-ignore-unsaved="true"
                             name="password"
                         >
                         <span class="text-danger">{{ errors.first("password") }}</span>
@@ -54,6 +55,7 @@
 </template>
 
 <script>
+import vueRouterMixins from "../../mixins/vueRouterMixins";
 import ContainerTemplate from "../../container";
 import TabsMenu from "./tabs";
 
@@ -63,6 +65,9 @@ export default {
         ContainerTemplate,
         TabsMenu
     },
+    mixins: [
+        vueRouterMixins
+    ],
     data() {
         return {
             confirmNewPassword: "",

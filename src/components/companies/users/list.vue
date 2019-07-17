@@ -45,9 +45,10 @@
                             <i class="fa fa-edit" aria-hidden="true"/>
                         </button>
                         <button
+                            :class="{ 'disable-element': isCurrentUser(props.rowData.id) }"
                             :disabled="isCurrentUser(props.rowData.id)"
                             class="btn btn-danger m-l-5"
-                            @click="deleteUser(props.rowData.id)"
+                            @click="deleteConfirm(props.rowData.id)"
                         >
                             <i class="fa fa-trash" aria-hidden="true" />
                         </button>
@@ -67,7 +68,7 @@
                     <template slot="actions" slot-scope="props">
                         <button
                             class="btn btn-danger m-l-5"
-                            @click="deleteUser(props.rowData.id)"
+                            @click="deleteConfirm(props.rowData.id)"
                         >
                             <i class="fa fa-trash" aria-hidden="true"/>
                         </button>
@@ -79,6 +80,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 import vuexMixins from "../../../mixins/vuexMixins";
 import listMixins from "../../../mixins/listMixins";
 import ContainerTemplate from "../../../container";
@@ -94,14 +96,6 @@ export default {
         vuexMixins,
         listMixins
     ],
-    props: {
-        currentUser: {
-            type: Object,
-            default() {
-                return {}
-            }
-        }
-    },
     data() {
         return {
             appendParams: {
@@ -121,11 +115,12 @@ export default {
                 title: "Name"
             }, {
                 name: "roles.0.name",
-                title:"Rol",
+                title:"Role",
                 sortField: "roles_id",
                 width: "30%"
             }, {
                 name: "lastvisit",
+                title: "Last Visit",
                 sortField: "lastvisit",
                 width: "30%"
             }, {
@@ -161,22 +156,18 @@ export default {
             listToShow:"usersList"
         }
     },
+    computed: {
+        ...mapState({
+            userData: state => state.User.data
+        })
+    },
     methods: {
-        isCurrentUser(userId) {
-            return this.currentUser.id == userId;
-        },
-        editUser(userId) {
-            this.$router.push({
-                name: "settingsCompaniesUsersFormEdit",
-                params:{
-                    id: userId
-                }
-            });
-        },
-        getTableData(apiUrl, options) {
-            return axios({
-                url: apiUrl,
-                params: options.params
+        deleteConfirm(usersId) {
+            this.deleteModal({
+                title: "Delete User",
+                message: "Are you sure you want to delete this user?",
+                handler: this.deleteUser,
+                params: usersId
             });
         },
         deleteUser(id) {
@@ -204,6 +195,23 @@ export default {
             }).finally(() => {
 
             })
+        },
+        editUser(userId) {
+            this.$router.push({
+                name: "settingsCompaniesUsersFormEdit",
+                params:{
+                    id: userId
+                }
+            });
+        },
+        getTableData(apiUrl, options) {
+            return axios({
+                url: apiUrl,
+                params: options.params
+            });
+        },
+        isCurrentUser(userId) {
+            return userId == this.userData.id;
         }
     }
 };

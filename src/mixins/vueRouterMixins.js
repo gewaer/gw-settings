@@ -10,7 +10,8 @@ export default {
         }
     },
     beforeRouteLeave(to, from, next) {
-        const formFields = pickBy(this.vvFields, field => field.changed);
+        const vvFields = this.removeIgnoreUnsavedFields();
+        const formFields = pickBy(vvFields, field => field.changed);
 
         if (!isEmpty(formFields)) {
             this.$modal.show(ModalsUnsavedChanges, {
@@ -38,6 +39,21 @@ export default {
             });
         } else {
             next();
+        }
+    },
+    methods: {
+        removeIgnoreUnsavedFields() {
+            const vvFields = {};
+
+            Object.keys(this.vvFields).forEach(field => {
+                const $el = document.querySelector(`input[name="${field}"]`);
+
+                if (!$el.hasAttribute("data-vv-ignore-unsaved")) {
+                    vvFields[field] = this.vvFields[field];
+                }
+            });
+
+            return vvFields;
         }
     }
 }
