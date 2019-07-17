@@ -67,6 +67,7 @@
                                         <multiselect
                                             v-model="selectedLanguage"
                                             :options="languages"
+                                            :show-labels="false"
                                             label="name"
                                             track-by="id"
                                             @input="setLanguage"
@@ -76,6 +77,7 @@
                                         <label>Timezone</label>
                                         <multiselect
                                             v-model="userData.timezone"
+                                            :show-labels="false"
                                             :max-height="175"
                                             :options="timezones"
                                         />
@@ -90,6 +92,7 @@
                                         v-model="selectedRole"
                                         :max-height="175"
                                         :options="roles"
+                                        :show-labels="false"
                                         data-vv-as="role"
                                         data-vv-name="role"
                                         label="name"

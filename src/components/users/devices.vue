@@ -12,9 +12,12 @@
                         :append-params="appendParams"
                         :fields="branchesFields"
                         :http-fetch="getTableData"
+                        :transform="transformData"
+                        track-by="id"
                         api-url="/devices"
                         class="table table-hover table-condensed"
-                        pagination-path="">
+                        pagination-path=""
+                    >
                         <template slot="actions" slot-scope="props">
                             <button
                                 class="btn btn-danger m-l-5"
@@ -70,28 +73,33 @@ export default {
     },
     computed: {
         ...mapState({
-            user: state => state.User.data,
-            currentAppId: state => state.Company.data.apps.apps_id
+            userData: state => state.User.data,
+            appsId: state => state.Company.data.apps.apps_id
         })
 
     },
     methods: {
         confirmDelete(device) {
-            // change for swal or any other
-            if (confirm("Are you sure you want to unlink this device?")) {
-                this.detachDevice(device)
-            }
+            this.deleteModal({
+                title: "Detach Device",
+                message: "Do you want to detach this device?",
+                handler: this.detachDevice,
+                params: device
+            });
         },
         detachDevice(device) {
-            if (this.isLoading ) {
-                return
+            if (this.isLoading) {
+                return;
             }
-            let data = {...device, app: this.currentAppId}
+
             this.isLoading = true;
-            axios.delete(
-                `users/${this.user.id}/devices/${device.source_users_id_text}/detach`,
-                { data: data}
-            ).then(() => {
+            let data = { ...device, app: this.appsId };
+
+            axios({
+                url: `users/${this.userData.id}/devices/${device.source_users_id_text}/detach`,
+                method: "DELETE",
+                data
+            }).then(() => {
                 this.$notify({
                     title: "Deleted",
                     text: "The Device has been deleted",
@@ -107,6 +115,13 @@ export default {
             }).finally(() => {
                 this.isLoading = false;
             })
+        },
+        transformData(data) {
+            data.data.forEach(item => {
+                item.id = `${item.users_id}-${item.source_id}`;
+            });
+
+            return data;
         }
     }
 };

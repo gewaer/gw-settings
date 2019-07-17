@@ -10,7 +10,7 @@
                             <div class="profile-image-container">
                                 <profile-uploader
                                     v-if="userData.id"
-                                    :avatar-url="userData.avatar"
+                                    :avatar-url="avatarUrl"
                                     endpoint="/filesystem"
                                     @uploaded="updateProfile"
                                 />
@@ -92,6 +92,7 @@ export default {
         async initialize() {
             await this.$store.dispatch("Application/getSettingsLists");
             this.userData = _.clone(this.userDataState);
+            this.avatarUrl = this.userData.photo && this.userData.photo.url || "";
             this.setInitialSelects();
             this.generateFieldsSchema();
         },
@@ -287,8 +288,9 @@ export default {
         updateProfile(profile) {
             const formData = {
                 files: [{
-                    id: profile[0].id,
-                    field_name: "avatar"
+                    id: this.userData.photo && this.userData.photo.id || null,
+                    filesystem_id: profile[0].id,
+                    field_name: "photo"
                 }]
             };
 

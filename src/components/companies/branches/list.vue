@@ -20,7 +20,9 @@
                         pagination-path=""
                     >
                         <template slot="actions" slot-scope="props">
-                            <button class="btn btn-complete m-l-5" @click="editBranch(props.rowData.id)"><i class="fa fa-edit" aria-hidden="true"/></button>
+                            <button class="btn btn-complete m-l-5" @click="editBranch(props.rowData.id)">
+                                <i class="fa fa-edit" aria-hidden="true"/>
+                            </button>
                             <button
                                 :class="{ 'disable-element': isCurrentBranch(props.rowData.id) }"
                                 :disabled="isCurrentBranch(props.rowData.id)"
@@ -69,7 +71,6 @@ export default {
                 format: "true",
                 q: "(is_deleted:0)"
             },
-            isEditable: true,
             isLoading: false,
             selectedBranch: null
         }
@@ -81,14 +82,16 @@ export default {
     },
     methods: {
         confirmDelete(roleId) {
-            // change for swal or any other
-            if (confirm("are you sure?")) {
-                this.delete(roleId)
-            }
+            this.deleteModal({
+                title: "Delete Branch",
+                message: "Are you sure you want to delete this branch?",
+                handler: this.delete,
+                params: roleId
+            });
         },
         delete(id) {
             if (this.isLoading || this.branch.id == id) {
-                return
+                return;
             }
 
             this.isLoading = true;
@@ -99,7 +102,7 @@ export default {
             }).then(() => {
                 this.$notify({
                     title: "Deleted",
-                    text: "The branch has been deleted",
+                    text: "The branch has been deleted.",
                     type: "success"
                 });
                 this.$refs.Vuetable.reload();
@@ -113,7 +116,6 @@ export default {
                 this.isLoading = false;
             })
         },
-
         editBranch(branchId) {
             this.$router.push({
                 name: "settingsCompaniesBranchesFormEdit",
@@ -122,9 +124,8 @@ export default {
                 }
             });
         },
-
         isCurrentBranch(branchId) {
-            return this.branch.id == branchId;
+            return branchId == this.branch.id;
         }
     }
 };

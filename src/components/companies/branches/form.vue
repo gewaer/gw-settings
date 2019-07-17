@@ -13,8 +13,11 @@
                                 v-model="branchData.name"
                                 class="form-control"
                                 type="text"
-                                name="name">
-                            <span class="text-danger"> {{ errors.first('name') }}</span>
+                                name="name"
+                            >
+                            <span class="text-danger">
+                                {{ errors.first('name') }}
+                            </span>
                         </div>
                         <div class="form-group form-group-default required">
                             <label>Address</label>
@@ -24,8 +27,11 @@
                                 class="form-control"
                                 type="text"
                                 data-vv-as="branch address"
-                                name="branch-address">
-                            <span class="text-danger"> {{ errors.first('branch-address') }}</span>
+                                name="branch-address"
+                            >
+                            <span class="text-danger">
+                                {{ errors.first('branch-address') }}
+                            </span>
                         </div>
                         <div class="form-group form-group-default required">
                             <label>Zip Code</label>
@@ -35,8 +41,11 @@
                                 class="form-control"
                                 type="text"
                                 data-vv-as="zip code"
-                                name="zipcode">
-                            <span class="text-danger"> {{ errors.first('zipcode') }}</span>
+                                name="zipcode"
+                            >
+                            <span class="text-danger">
+                                {{ errors.first('zipcode') }}
+                            </span>
                         </div>
                         <div class="form-group form-group-default required">
                             <label>Email</label>
@@ -45,8 +54,11 @@
                                 v-model="branchData.email"
                                 class="form-control"
                                 name="email"
-                                type="email">
-                            <span class="text-danger"> {{ errors.first('email') }}</span>
+                                type="email"
+                            >
+                            <span class="text-danger">
+                                {{ errors.first('email') }}
+                            </span>
                         </div>
                         <div class="form-group form-group-default required">
                             <label>Phone</label>
@@ -56,8 +68,11 @@
                                 class="form-control"
                                 data-vv-as="phone number"
                                 name="phone"
-                                type="tel">
-                            <span class="text-danger"> {{ errors.first('phone') }}</span>
+                                type="tel"
+                            >
+                            <span class="text-danger">
+                                {{ errors.first('phone') }}
+                            </span>
                         </div>
                     </div>
                     <div class="col-6 m-b-20"/>
@@ -96,13 +111,16 @@ export default {
             return !!this.$route.params.id;
         },
         title() {
-            return this.isEditing ? "Edit branch" : "Add branch";
+            return this.isEditing ? `Editing branch (${this.branchData.name})` : "Add branch";
         }
     },
     created() {
         this.getBranchData();
     },
     methods: {
+        cancel() {
+            this.$router.push({ name: "settingsCompaniesBranchesList" });
+        },
         getBranchData() {
             this.isEditing && axios({
                 url: `/companies-branches/${this.$route.params.id}`
@@ -113,7 +131,6 @@ export default {
         async save() {
             const isValid = await this.$validator.validateAll();
 
-
             if (isValid) {
                 const method = this.isEditing ? "PUT" : "POST";
                 const url = "/companies-branches" + (this.isEditing ? `/${this.branchData.id}` : "");
@@ -121,7 +138,7 @@ export default {
                 this.sendRequest(url, method);
             }
         },
-        sendRequest(url, method) {
+        async sendRequest(url, method) {
             if (this.isLoading) {
                 return;
             }
@@ -132,7 +149,7 @@ export default {
                 url,
                 method,
                 data: this.branchData
-            }).then(() => {
+            }).then(async() => {
                 this.$notify({
                     group: null,
                     title: "Confirmation",
@@ -140,7 +157,8 @@ export default {
                     type: "success"
                 });
 
-                this.$router.push({ name: "branchesList" });
+                await this.$validator.reset();
+                this.$router.push({ name: "settingsCompaniesBranchesList" });
             }).catch((error) => {
                 this.$notify({
                     group: null,
@@ -151,9 +169,6 @@ export default {
             }).finally(() => {
                 this.isLoading = false;
             });
-        },
-        cancel() {
-            this.$router.push({ name: "settingsCompaniesBranchesList" });
         }
     }
 };
