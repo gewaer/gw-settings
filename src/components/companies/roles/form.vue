@@ -181,11 +181,10 @@ export default {
     },
     methods: {
         checkGroup(group, groupName) {
-            const checked = document.querySelector(`#group-${groupName}`).checked;
             group.isGroupSelected = !group.isGroupSelected;
 
             for (const access in group.permissions) {
-                group.permissions[access].allowed = checked;
+                group.permissions[access].allowed = group.isGroupSelected;
             }
 
             if (!this.groupHasChanged.includes(`${groupName} role section.`)) {
