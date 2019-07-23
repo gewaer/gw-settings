@@ -25,7 +25,7 @@
                                     type="text"
                                     class="form-control"
                                 >
-                                <span class="text-danger">{{ errors.first('name') }}</span>
+                                <span class="text-danger">{{ errors.first("name") }}</span>
                             </div>
                             <div class="form-group form-group-default required">
                                 <label>Address</label>
@@ -37,7 +37,7 @@
                                     type="text"
                                     class="form-control"
                                 >
-                                <span class="text-danger">{{ errors.first('company-address') }}</span>
+                                <span class="text-danger">{{ errors.first("company-address") }}</span>
                             </div>
                             <div class="form-group form-group-default required">
                                 <label>Zip Code</label>
@@ -49,7 +49,7 @@
                                     data-vv-as="zip code"
                                     name="zipcode"
                                 >
-                                <span class="text-danger">{{ errors.first('zipcode') }}</span>
+                                <span class="text-danger">{{ errors.first("zipcode") }}</span>
                             </div>
                             <div class="form-group form-group-default">
                                 <label>Email</label>
@@ -60,7 +60,7 @@
                                     name="email"
                                     type="email"
                                 >
-                                <span class="text-danger">{{ errors.first('email') }}</span>
+                                <span class="text-danger">{{ errors.first("email") }}</span>
                             </div>
                             <div class="form-group form-group-default required">
                                 <label>Phone</label>
@@ -72,7 +72,7 @@
                                     type="phone"
                                     class="form-control"
                                 >
-                                <span class="text-danger">{{ errors.first('phone') }}</span>
+                                <span class="text-danger">{{ errors.first("phone") }}</span>
                             </div>
                         </div>
                     </div>
@@ -90,14 +90,12 @@
                                     :allow-empty="false"
                                     :options="languages"
                                     :show-labels="false"
-                                    data-vv-as="language"
                                     name="language"
                                     label="name"
                                     track-by="id"
                                     @input="setSelectValue($event, 'language')"
-                                >
-                                    <span class="text-danger">{{ errors.first("language") }}</span>
-                                </multiselect>
+                                />
+                                <span class="text-danger">{{ errors.first("language") }}</span>
                             </div>
 
                             <div class="form-group">
@@ -109,11 +107,9 @@
                                     :max-height="175"
                                     :options="timezones"
                                     :show-labels="false"
-                                    data-vv-as="timezone"
                                     name="timezone"
-                                >
-                                    <span class="text-danger">{{ errors.first("timezone") }}</span>
-                                </multiselect>
+                                />
+                                <span class="text-danger">{{ errors.first("timezone") }}</span>
                             </div>
 
                             <div class="form-group">
@@ -129,17 +125,14 @@
                                     :show-labels="false"
                                     label="currency"
                                     track-by="code"
-                                    deselect-label=""
-                                    select-label=""
-                                    data-vv-as="currency"
                                     name="currency"
                                     @input="setSelectValue($event, 'currency_id')"
                                 >
                                     <template slot="singleLabel" slot-scope="{ option }">
-                                        {{ option.currency }}  ({{ option.code }})
+                                        {{ option.currency }} ({{ option.code }})
                                     </template>
-                                    <span class="text-danger">{{ errors.first("currency") }}</span>
                                 </multiselect>
+                                <span class="text-danger">{{ errors.first("currency") }}</span>
                             </div>
                         </div>
                     </div>
@@ -156,7 +149,6 @@
 
 <script>
 import { mapState } from "vuex";
-import vuexMixins from "../../mixins/vuexMixins";
 import vueRouterMixins from "../../mixins/vueRouterMixins";
 import clone from "lodash/clone";
 import ContainerTemplate from "../../container";
@@ -173,8 +165,7 @@ export default {
         TabsMenu
     },
     mixins: [
-        vueRouterMixins,
-        vuexMixins
+        vueRouterMixins
     ],
     data() {
         return {

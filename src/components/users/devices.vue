@@ -34,7 +34,7 @@
 
 <script>
 import { mapState } from "vuex";
-import vuexMixins from "../../mixins/vuexMixins";
+import generalMixins from "../../mixins/general";
 import listMixins from "../../mixins/listMixins";
 import ContainerTemplate from "../../container";
 import TabsMenu from "./tabs";
@@ -46,7 +46,7 @@ export default {
         TabsMenu
     },
     mixins: [
-        vuexMixins,
+        generalMixins,
         listMixins
     ],
     data() {
@@ -80,7 +80,7 @@ export default {
     },
     methods: {
         confirmDelete(device) {
-            this.deleteModal({
+            this.basicActionsModal({
                 title: "Detach Device",
                 message: "Do you want to detach this device?",
                 handler: this.detachDevice,

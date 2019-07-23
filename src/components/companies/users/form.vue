@@ -17,8 +17,8 @@
                                         type="text"
                                         name="firstname"
                                         data-vv-as="First Name"
-                                        data-vv-name="First Name">
-                                    <span class="text-danger">{{ errors.first("First Name") }}</span>
+                                    >
+                                    <span class="text-danger">{{ errors.first("firstname") }}</span>
                                 </div>
                                 <div class="form-group form-group-default required">
                                     <label>Last name</label>
@@ -26,11 +26,11 @@
                                         v-validate="'required:true|min:2|alpha_spaces'"
                                         v-model="userData.lastname"
                                         data-vv-as="Last Name"
-                                        data-vv-name="Last Name"
                                         name="lastname"
                                         class="form-control"
-                                        type="text">
-                                    <span class="text-danger">{{ errors.first("Last Name") }}</span>
+                                        type="text"
+                                    >
+                                    <span class="text-danger">{{ errors.first("lastname") }}</span>
                                 </div>
                                 <div class="form-group form-group-default">
                                     <label>Cell phone</label>
@@ -38,11 +38,11 @@
                                         v-validate="'min:2|numeric'"
                                         v-model="userData.cell_phone_number"
                                         data-vv-as="Cell phone"
-                                        data-vv-name="Cell phone"
                                         class="form-control"
                                         name="phone"
-                                        type="text">
-                                    <span class="text-danger">{{ errors.first("Cell phone") }}</span>
+                                        type="text"
+                                    >
+                                    <span class="text-danger">{{ errors.first("phone") }}</span>
                                 </div>
                             </template>
                             <div class="form-group form-group-default required">
@@ -51,11 +51,12 @@
                                     v-validate="'required:true|email'"
                                     v-model="userData.email"
                                     data-vv-as="Email"
-                                    data-vv-name="Email"
+                                    data-vv-name="email"
                                     class="form-control"
                                     type="text"
-                                    name="email">
-                                <span class="text-danger">{{ errors.first("Email") }}</span>
+                                    name="email"
+                                >
+                                <span class="text-danger">{{ errors.first("email") }}</span>
                             </div>
                         </div>
 
@@ -65,10 +66,12 @@
                                     <div class="form-group">
                                         <label>Language</label>
                                         <multiselect
+                                            v-if="initializeComplete"
                                             v-model="selectedLanguage"
                                             :options="languages"
                                             :show-labels="false"
                                             label="name"
+                                            name="language"
                                             track-by="id"
                                             @input="setLanguage"
                                         />
@@ -76,10 +79,12 @@
                                     <div class="form-group">
                                         <label>Timezone</label>
                                         <multiselect
+                                            v-if="initializeComplete"
                                             v-model="userData.timezone"
                                             :show-labels="false"
                                             :max-height="175"
                                             :options="timezones"
+                                            name="timezone"
                                         />
                                     </div>
                                 </template>
@@ -89,12 +94,14 @@
                                     </label>
                                     <multiselect
                                         v-validate="'required:true'"
+                                        v-if="initializeComplete"
                                         v-model="selectedRole"
                                         :max-height="175"
                                         :options="roles"
                                         :show-labels="false"
                                         data-vv-as="role"
                                         data-vv-name="role"
+                                        name="role"
                                         label="name"
                                         track-by="id"
                                         @input="setRole"
@@ -107,8 +114,14 @@
                 </div>
 
                 <div class="col-12 col-xl d-flex justify-content-end mt-2">
-                    <button :disabled="isLoading" class="btn btn-danger m-r-10" @click="triggerCancel()">Cancel</button>
-                    <button :disabled="isLoading" class="btn btn-primary" @click="verifyFields()">Save</button>
+                    <button :disabled="isLoading" class="btn btn-danger m-r-10" @click="cancel()">Cancel</button>
+                    <button
+                        :disabled="isLoading"
+                        class="btn btn-primary"
+                        @click="confirmAction()"
+                    >
+                        {{ isEditing ? "Save" : "Invite" }}
+                    </button>
                 </div>
             </div>
         </div>
@@ -117,7 +130,8 @@
 
 <script>
 import { mapState } from "vuex";
-import crudMixins from "../../../mixins/crudMixins";
+import generalMixins from "../../../mixins/general";
+import vueRouterMixins from "../../../mixins/vueRouterMixins";
 import ContainerTemplate from "../../../container";
 import TabsMenu from "../tabs";
 
@@ -128,16 +142,26 @@ export default {
         TabsMenu
     },
     mixins: [
-        crudMixins
+        generalMixins,
+        vueRouterMixins
     ],
     data() {
         return {
+            dialogProps: {
+                editing: {
+                    title: "Editing User!",
+                    message: "Are you sure you want to update this user's information?"
+                },
+                inviting: {
+                    title: "Invite User!",
+                    message: "Are you sure you want to invite this user to your company?"
+                }
+            },
+            initializeComplete: false,
             isLoading: false,
             selectedLanguage: null,
             selectedRole: null,
-            userData: {
-                email: ""
-            }
+            userData: {}
         }
     },
     computed: {
@@ -147,9 +171,9 @@ export default {
             roles: state => state.Application.roles
         }),
         title() {
-            return this.isEditing && "Edit User" || "New User";
+            return this.isEditing && "Editing User" || "Invite User";
         },
-        isEditing(){
+        isEditing() {
             return !!this.$route.params.id;
         }
     },
@@ -161,8 +185,22 @@ export default {
             this.selectedLanguage = this.languages.find(language => language.id == this.userData.language);
             this.selectedRole = this.roles.find(role => role.id == this.userData.roles_id);
         }
+
+        this.initializeComplete = true;
     },
     methods: {
+        async confirmAction() {
+            const isValid = await this.$validator.validateAll();
+
+            if (isValid) {
+                const action = this.isEditing ? "editing" : "inviting";
+
+                this.basicActionsModal({
+                    ...this.dialogProps[action],
+                    handler: this.save
+                });
+            }
+        },
         async getUserData() {
             await axios({
                 url: `/users/${this.$route.params.id}`
@@ -176,56 +214,11 @@ export default {
         setRole(value) {
             this.userData.roles_id = value.id;
         },
-        verifyFields(){
-            let dialogProps = {
-                title:"Invite User!",
-                message: "Did you want to invite a new user to your company?"
-            };
-
-            if (this.isEditing) {
-                dialogProps = {
-                    title: "Edit User!",
-                    message: "Did you want to Edit this user?"
-                };
-            }
-
-            if (this.errors.items.length) {
-                let verificationMessage = this.errors.items[0].msg;
-                let verificationTitle = `Please verify the ${this.errors.items[0].field}`;
-
-                this.$notify({
-                    title: verificationTitle,
-                    text: verificationMessage,
-                    type: "warn"
-                });
-            } else {
-                this.validateFields(dialogProps);
-            }
-        },
-        async validateFields(modalProps){
-            const isValid = await this.$validator.validateAll();
-
-            if (isValid) {
-                this.$modal.show("basic-modal", {
-                    ...modalProps,
-                    buttons: [{
-                        title: "Accept",
-                        class: "btn-primary",
-                        handler: () => {
-                            this.$modal.hide("basic-modal");
-                            this.save();
-                        }
-                    }, {
-                        title: "Cancel",
-                        class: "btn-danger",
-                        handler: () => {
-                            this.$modal.hide("basic-modal");
-                        }
-                    }]
-                });
-            }
-        },
         save() {
+            if (this.isLoading) {
+                return;
+            }
+
             const url = this.isEditing ? `/users/${this.userData.id}` : "/users/invite";
             const method = this.isEditing ? "PUT" : "POST";
             let data;
@@ -238,9 +231,7 @@ export default {
                 data = this.userData;
             }
 
-            if (!this.isLoading) {
-                this.sendRequest(url, method, data);
-            }
+            this.sendRequest(url, method, data);
         },
         sendRequest(url, method, data) {
             this.isLoading = true;
@@ -251,7 +242,6 @@ export default {
                 data
             }).then(() => {
                 this.$notify({
-                    group: null,
                     title: "Confirmation",
                     text: "Your information has been updated!",
                     type: "success"
@@ -259,7 +249,6 @@ export default {
                 this.cancel();
             }).catch((error) => {
                 this.$notify({
-                    group: null,
                     title: "Error",
                     text: error.response.data.errors.message,
                     type: "error"
@@ -268,7 +257,8 @@ export default {
                 this.isLoading = false;
             });
         },
-        cancel() {
+        async cancel() {
+            await this.$validator.reset();
             this.$router.push({ name: "settingsCompaniesUsersList" });
         }
     }

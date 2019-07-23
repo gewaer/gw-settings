@@ -46,7 +46,11 @@ export default {
             const vvFields = {};
 
             Object.keys(this.vvFields).forEach(field => {
-                const $el = document.querySelector(`input[name="${field}"]`);
+                let $el = document.querySelector(`[name="${field}"]`);
+
+                if ($el.className.includes("multiselect__")) {
+                    $el = $el.closest("div.multiselect");
+                }
 
                 if (!$el.hasAttribute("data-vv-ignore-unsaved")) {
                     vvFields[field] = this.vvFields[field];

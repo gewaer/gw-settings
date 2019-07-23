@@ -3,7 +3,12 @@
         <tabs-menu slot="tab-menu"/>
         <div slot="tab-content" class="row">
             <div class="col">
-                <h5>Create a new Role<button v-if="!isNewRole" class="btn btn-primary" @click="cloneRole">Clone role</button></h5>
+                <h5>
+                    Create a new Role
+                    <button v-if="!isEditing" class="btn btn-primary" @click="cloneRole()">
+                        Clone role
+                    </button>
+                </h5>
                 <!-- Role Form-->
                 <form class="row" role="form">
                     <div class="col-md-6">
@@ -13,10 +18,9 @@
                                 v-validate="'required'"
                                 v-model="roleData.name"
                                 name="name"
-                                vee-validate="required"
                                 type="text"
                                 class="form-control"
-                                required>
+                            >
                             <span class="text-danger">{{ errors.first("name") }}</span>
                         </div>
                     </div>
@@ -24,20 +28,21 @@
                         <div class="form-group form-group-default">
                             <label>Description</label>
                             <input
-                                v-validate="''"
+                                v-validate=""
                                 v-model="roleData.description"
                                 type="text"
                                 name="description"
-                                class="form-control" >
+                                class="form-control"
+                            >
                             <span class="text-danger">{{ errors.first("description") }}</span>
                         </div>
                     </div>
                 </form>
+
                 <!-- Role Select -->
                 <div class="row">
-                    <div v-if="accessGroup" class="col">
+                    <div v-if="accessGroup" class="col-6">
                         <div
-                            id="accordion"
                             class="card-group horizontal"
                             role="tablist"
                             aria-multiselectable="true"
@@ -47,43 +52,38 @@
                                     <h4 class="card-title access-group__title">
                                         <div class="checkbox check-success">
                                             <input
-                                                id="checkbox1"
+                                                :id="`group-${groupName}`"
                                                 v-model="group.isGroupSelected"
                                                 type="checkbox"
-                                                checked="checked"
-                                                @click="checkGroup($event, groupName, true)">
-                                            <label for="checkbox1"/>
+                                                @click="checkGroup(group, groupName)"
+                                            >
+                                            <label :for="`group-${groupName}`"/>
                                         </div>
-                                        <a
-                                            :href="`#collapse-${groupName}`"
-                                            data-toggle="collapse"
-                                            data-parent="#accordion"
-                                            aria-expanded="true"
-                                            aria-controls="collapseOne">
+                                        <a href="#" @click="checkGroup(group, groupName)">
                                             {{ groupName }}
+                                            <i class="fa fa-minus-circle" @click.stop="toggleCollapse(groupName)" />
                                         </a>
                                     </h4>
                                 </div>
-                                <div
-                                    :id="`collapse-${groupName}`"
-                                    class="collapse show"
-                                    role="tabcard"
-                                    aria-labelledby="headingOne">
+                                <div :id="`collapse-${groupName}`">
                                     <div class="card-body">
                                         <div class="row">
-                                            <div v-for="(access, accessName) in group.permissions" :key="`${groupName}-${accessName}`" class="col-md-6 row">
-                                                <div class="col">
-                                                    <span>{{ accessName | capitalize }}</span>
-                                                </div>
-                                                <div class="col-xs-1">
-                                                    <div class="checkbox check-success">
-                                                        <input
-                                                            :id="`checkbox-${groupName}-${accessName}`"
-                                                            :name="`checkbox-${groupName}-${accessName}`"
-                                                            v-model="access.allowed"
-                                                            type="checkbox"
-                                                            @change="checkSelectedGroup(groupName, true)">
-                                                        <label :for="`checkbox-${groupName}-${accessName}`"/>
+                                            <div v-for="(access, accessName) in group.permissions" :key="`${groupName}-${accessName}`" class="col-md-6">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <label :for="`checkbox-${groupName}-${accessName}`">{{ accessName | capitalize }}</label>
+                                                    </div>
+                                                    <div class="col-xs-1">
+                                                        <div class="checkbox check-success">
+                                                            <input
+                                                                :id="`checkbox-${groupName}-${accessName}`"
+                                                                :name="`checkbox-${groupName}-${accessName}`"
+                                                                v-model="access.allowed"
+                                                                type="checkbox"
+                                                                @change="checkSelectedGroup(groupName, true)"
+                                                            >
+                                                            <label :for="`checkbox-${groupName}-${accessName}`"/>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -126,12 +126,12 @@ export default {
         return {
             accessListData: [],
             accessGroup: {},
-            roleData: {},
-            groupHasChanged:[]
+            groupHasChanged: [],
+            roleData: {}
         }
     },
     computed: {
-        isNewRole() {
+        isEditing() {
             return !this.roleData.id
         },
         hasChanged() {
@@ -180,6 +180,21 @@ export default {
         }
     },
     methods: {
+        checkGroup(group, groupName) {
+            const checked = document.querySelector(`#group-${groupName}`).checked;
+            group.isGroupSelected = !group.isGroupSelected;
+
+            for (const access in group.permissions) {
+                group.permissions[access].allowed = checked;
+            }
+
+            if (!this.groupHasChanged.includes(`${groupName} role section.`)) {
+                this.groupHasChanged.push(`${groupName} role section.`);
+            }
+        },
+        toggleCollapse(groupName) {
+            document.querySelector(`#collapse-${groupName}`).classList.toggle("hide");
+        },
         getRoleData(roleId) {
             return axios({
                 url: `/roles/${roleId}`
@@ -187,11 +202,11 @@ export default {
                 return data;
             });
         },
-        // initialization
-        getRole(roleId = 1, forCreate = true) {
+        getRole(roleId, forCreate = true) {
             let role = {};
+
             axios({
-                url: `/roles-acceslist?q=(roles_id: ${roleId})`
+                url: `/roles-acceslist?q=(roles_id:${roleId})`
             }).then(async({ data }) => {
                 if (forCreate) {
                     data.forEach(access => {
@@ -209,7 +224,6 @@ export default {
                 this.formatRole(accessList, role);
             })
         },
-
         getAccess(role) {
             return axios({
                 url: "/permissions-resources-access"
@@ -217,7 +231,6 @@ export default {
                 return this.formatAccesses(data, role);
             })
         },
-
         mergeAccesses(accessList, accessesTemplate) {
             accessesTemplate.forEach(access => {
                 const localAccess = this.findLocalAccess(accessList, access);
@@ -227,18 +240,15 @@ export default {
             })
             return accessList;
         },
-
         findLocalAccess(accessList, access) {
             return  accessList.find(permission => access.access_name == permission.access_name &&  access.resources_name == permission.resources_name);
         },
-
         formatRole(accessList, role) {
             this.accessListData =  _.sortBy(accessList, ["resources_name", "access_name"]);
             this.roleData = role;
             this.groupPermissions();
             this.checkSelectedGroups();
         },
-
         formatAccesses(accesList, role ) {
             return accesList.map(access => {
                 if (role) {
@@ -265,22 +275,10 @@ export default {
 
             this.accessGroup = accessGroup;
         },
-        // checkbox related
         isGroupChecked(resourcesName) {
             const group = this.accessGroup[resourcesName].permissions;
             const allowedAccesses = Object.values(group);
             return allowedAccesses.every(access => access.allowed);
-        },
-        checkGroup(event, resourcesName, changed = false) {
-            const group = this.accessGroup[resourcesName];
-            for (const access in group.permissions) {
-                if (group.permissions.hasOwnProperty(access)) {
-                    group.permissions[access].allowed = event.target.checked;
-                }
-            }
-            if (changed) {
-                this.groupHasChanged.push(`${resourcesName} role section.`)
-            }
         },
         checkSelectedGroup(resourcesName, changed = false) {
             this.accessGroup[resourcesName]["isGroupSelected"] = this.isGroupChecked(resourcesName);
@@ -293,14 +291,13 @@ export default {
                 this.checkSelectedGroup(resourcesName);
             }
         },
-        // form related
         verifyFields() {
             let dialogProps = {
                 title: `Create ${this.roleData.name} Role!`,
                 message: `Did you want to Create this Role?`
             };
 
-            if (!this.isNewRole) {
+            if (!this.isEditing) {
                 dialogProps = {
                     title:`Edit ${this.roleData.name} Role!`,
                     message:`Did you want to Edit this Role?`
@@ -347,7 +344,7 @@ export default {
             let url;
             let method;
 
-            if (this.isNewRole) {
+            if (this.isEditing) {
                 url = "/roles-acceslist/";
                 method = "POST";
             } else {
@@ -399,7 +396,6 @@ export default {
                 type: "error"
             });
         },
-        // utilities
         getDisabledPermissions() {
             return this.accessListData.map(this.formatAllowedProperty).filter(access => access);
         },
@@ -411,14 +407,9 @@ export default {
                 return accessLocal;
             }
         },
-        cancel() {
-            this.rolesList();
-        },
-        // events up
         rolesList() {
             this.$router.push({ name: "settingsCompaniesRolesList" });
         },
-
         cloneRole() {
             axios({
                 url:`/roles-acceslist/${this.roleData.id}/copy`,
@@ -437,21 +428,55 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-#accordion
-    .checkbox,
-        .radio{
-            margin-top: 0%;
+.checkbox,
+.radio {
+    margin-top: 0;
+
+    label {
+        margin-right: 0;
+        padding-left: 0;
+    }
+
+    input {
+        display: none;
+    }
 }
 
 .access-group__title {
+    align-items: center;
     display: flex !important;
 
-    label {
-        padding-left: 0
+    .checkbox {
+        margin-bottom: 0;
     }
 
-    a{
-        padding-top: 0
+    label {
+        margin-right: 5px;
+        padding-left: 0;
+    }
+
+    a {
+        padding-bottom: 0;
+        padding-top: 0;
+
+        &::after {
+            content: "" !important;
+        }
+
+        i {
+            font-family: "FontAwesome";
+            content: "\f056";
+            position: absolute;
+            right: 19px;
+            top: 24px;
+            color: #626262;
+        }
+    }
+}
+
+.card-body {
+    label {
+        cursor: pointer;
     }
 }
 </style>

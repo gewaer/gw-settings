@@ -81,7 +81,7 @@
 
 <script>
 import { mapState } from "vuex";
-import vuexMixins from "../../../mixins/vuexMixins";
+import generalMixins from "../../../mixins/general";
 import listMixins from "../../../mixins/listMixins";
 import ContainerTemplate from "../../../container";
 import TabsMenu from "../tabs";
@@ -93,7 +93,7 @@ export default {
         TabsMenu
     },
     mixins: [
-        vuexMixins,
+        generalMixins,
         listMixins
     ],
     data() {
@@ -163,20 +163,20 @@ export default {
     },
     methods: {
         deleteConfirm(usersId) {
-            this.deleteModal({
+            this.basicActionsModal({
                 title: "Delete User",
                 message: "Are you sure you want to delete this user?",
                 handler: this.deleteUser,
                 params: usersId
             });
         },
-        deleteUser(id) {
-            if (this.isCurrentUser(id)) {
-                return
+        deleteUser(usersId) {
+            if (this.isCurrentUser(usersId)) {
+                return;
             }
 
             axios({
-                url: `/users/${id}`,
+                url: `/users/${usersId}`,
                 method: "DELETE"
             }).then(() => {
                 this.$notify({
@@ -196,11 +196,11 @@ export default {
 
             })
         },
-        editUser(userId) {
+        editUser(usersId) {
             this.$router.push({
                 name: "settingsCompaniesUsersFormEdit",
                 params:{
-                    id: userId
+                    id: usersId
                 }
             });
         },
@@ -210,8 +210,8 @@ export default {
                 params: options.params
             });
         },
-        isCurrentUser(userId) {
-            return userId == this.userData.id;
+        isCurrentUser(usersId) {
+            return usersId == this.userData.id;
         }
     }
 };

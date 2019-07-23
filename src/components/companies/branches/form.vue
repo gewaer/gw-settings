@@ -16,7 +16,7 @@
                                 name="name"
                             >
                             <span class="text-danger">
-                                {{ errors.first('name') }}
+                                {{ errors.first("name") }}
                             </span>
                         </div>
                         <div class="form-group form-group-default required">
@@ -30,7 +30,7 @@
                                 name="branch-address"
                             >
                             <span class="text-danger">
-                                {{ errors.first('branch-address') }}
+                                {{ errors.first("branch-address") }}
                             </span>
                         </div>
                         <div class="form-group form-group-default required">
@@ -44,7 +44,7 @@
                                 name="zipcode"
                             >
                             <span class="text-danger">
-                                {{ errors.first('zipcode') }}
+                                {{ errors.first("zipcode") }}
                             </span>
                         </div>
                         <div class="form-group form-group-default required">
@@ -57,7 +57,7 @@
                                 type="email"
                             >
                             <span class="text-danger">
-                                {{ errors.first('email') }}
+                                {{ errors.first("email") }}
                             </span>
                         </div>
                         <div class="form-group form-group-default required">
@@ -71,7 +71,7 @@
                                 type="tel"
                             >
                             <span class="text-danger">
-                                {{ errors.first('phone') }}
+                                {{ errors.first("phone") }}
                             </span>
                         </div>
                     </div>
@@ -111,7 +111,7 @@ export default {
             return !!this.$route.params.id;
         },
         title() {
-            return this.isEditing ? `Editing branch (${this.branchData.name})` : "Add branch";
+            return this.isEditing ? "Editing branch" : "Add branch";
         }
     },
     created() {

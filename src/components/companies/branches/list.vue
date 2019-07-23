@@ -41,7 +41,7 @@
 
 <script>
 import { mapState } from "vuex";
-import vuexMixins from "../../../mixins/vuexMixins";
+import generalMixins from "../../../mixins/general";
 import listMixins from "../../../mixins/listMixins";
 import ContainerTemplate from "../../../container";
 import TabsMenu from "../tabs";
@@ -53,7 +53,7 @@ export default {
         TabsMenu
     },
     mixins: [
-        vuexMixins,
+        generalMixins,
         listMixins
     ],
     data() {
@@ -82,7 +82,7 @@ export default {
     },
     methods: {
         confirmDelete(roleId) {
-            this.deleteModal({
+            this.basicActionsModal({
                 title: "Delete Branch",
                 message: "Are you sure you want to delete this branch?",
                 handler: this.delete,
