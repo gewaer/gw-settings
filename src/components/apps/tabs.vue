@@ -24,14 +24,14 @@
                 Webhooks
             </router-link>
         </li> -->
-        <li class="nav-item">
+        <!-- <li class="nav-item">
             <router-link
                 :to="{ name: 'settingsAppsEmailTemplatesList' }"
                 :class="{ active: $route.meta.group == 'settingsAppsEmailTemplates' }"
             >
                 Email Templates
             </router-link>
-        </li>
+        </li> -->
         <!-- <li class="nav-item">
             <router-link
                 :to="{ name: 'settingsAppsThemesList' }"

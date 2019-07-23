@@ -5,12 +5,12 @@ import UsersSecurity from "./components/users/security";
 import UsersDevices from "./components/users/devices";
 import AppsCustomFieldsList from "./components/apps/custom-fields/list";
 import AppsCustomFieldsForm from "./components/apps/custom-fields/form";
-import AppsEmailTemplatesList from "./components/apps/email-templates/list";
-import AppsEmailTemplatesForm from "./components/apps/email-templates/form";
-import AppsWebhooksList from "./components/apps/webhooks/list";
-import AppsWebhooksForm from "./components/apps/webhooks/form";
-import AppsImportList from "./components/apps/import/";
-import AppsThemes from "./components/apps/themes";
+// import AppsEmailTemplatesList from "./components/apps/email-templates/list";
+// import AppsEmailTemplatesForm from "./components/apps/email-templates/form";
+// import AppsWebhooksList from "./components/apps/webhooks/list";
+// import AppsWebhooksForm from "./components/apps/webhooks/form";
+// import AppsImportList from "./components/apps/import/";
+// import AppsThemes from "./components/apps/themes";
 import CompaniesProfile from "./components/companies/profile";
 import CompaniesBranchesList from "./components/companies/branches/list";
 import CompaniesBranchesForm from "./components/companies/branches/form";
@@ -91,70 +91,70 @@ export default [
             group: "settingsAppsCustomFields"
         }
     },
-    {
-        path: "/settings/apps/email-templates",
-        name: "settingsAppsEmailTemplatesList",
-        component: AppsEmailTemplatesList,
-        meta: {
-            group: "settingsAppsEmailTemplates"
-        }
-    },
-    {
-        path: "/settings/apps/email-templates/add",
-        name: "settingsAppsEmailTemplatesForm",
-        component: AppsEmailTemplatesForm,
-        meta: {
-            group: "settingsAppsEmailTemplates"
-        }
-    },
-    {
-        path: "/settings/apps/email-templates/edit/:id",
-        name: "settingsAppsEmailTemplatesFormEdit",
-        component: AppsEmailTemplatesForm,
-        meta: {
-            group: "settingsAppsEmailTemplates"
-        }
-    },
-    {
-        path: "/settings/apps/webhooks",
-        name: "settingsAppsWebhooksList",
-        component: AppsWebhooksList,
-        meta: {
-            group: "settingsAppsWebhooks"
-        }
-    },
-    {
-        path: "/settings/apps/webhooks/add",
-        name: "settingsAppsWebhooksForm",
-        component: AppsWebhooksForm,
-        meta: {
-            group: "settingsAppsWebhooks"
-        }
-    },
-    {
-        path: "/settings/apps/webhooks/edit/:id",
-        name: "settingsAppsWebhooksFormEdit",
-        component: AppsWebhooksForm,
-        meta: {
-            group: "settingsAppsWebhooks"
-        }
-    },
-    {
-        path: "/settings/apps/import",
-        name: "settingsAppsImportList",
-        component: AppsImportList,
-        meta: {
-            group: "settingsAppsImport"
-        }
-    },
-    {
-        path: "/settings/apps/themes",
-        name: "settingsAppsThemesList",
-        component: AppsThemes,
-        meta: {
-            group: "settingsAppsThemes"
-        }
-    },
+    // {
+    //     path: "/settings/apps/email-templates",
+    //     name: "settingsAppsEmailTemplatesList",
+    //     component: AppsEmailTemplatesList,
+    //     meta: {
+    //         group: "settingsAppsEmailTemplates"
+    //     }
+    // },
+    // {
+    //     path: "/settings/apps/email-templates/add",
+    //     name: "settingsAppsEmailTemplatesForm",
+    //     component: AppsEmailTemplatesForm,
+    //     meta: {
+    //         group: "settingsAppsEmailTemplates"
+    //     }
+    // },
+    // {
+    //     path: "/settings/apps/email-templates/edit/:id",
+    //     name: "settingsAppsEmailTemplatesFormEdit",
+    //     component: AppsEmailTemplatesForm,
+    //     meta: {
+    //         group: "settingsAppsEmailTemplates"
+    //     }
+    // },
+    // {
+    //     path: "/settings/apps/webhooks",
+    //     name: "settingsAppsWebhooksList",
+    //     component: AppsWebhooksList,
+    //     meta: {
+    //         group: "settingsAppsWebhooks"
+    //     }
+    // },
+    // {
+    //     path: "/settings/apps/webhooks/add",
+    //     name: "settingsAppsWebhooksForm",
+    //     component: AppsWebhooksForm,
+    //     meta: {
+    //         group: "settingsAppsWebhooks"
+    //     }
+    // },
+    // {
+    //     path: "/settings/apps/webhooks/edit/:id",
+    //     name: "settingsAppsWebhooksFormEdit",
+    //     component: AppsWebhooksForm,
+    //     meta: {
+    //         group: "settingsAppsWebhooks"
+    //     }
+    // },
+    // {
+    //     path: "/settings/apps/import",
+    //     name: "settingsAppsImportList",
+    //     component: AppsImportList,
+    //     meta: {
+    //         group: "settingsAppsImport"
+    //     }
+    // },
+    // {
+    //     path: "/settings/apps/themes",
+    //     name: "settingsAppsThemesList",
+    //     component: AppsThemes,
+    //     meta: {
+    //         group: "settingsAppsThemes"
+    //     }
+    // },
     // ===== Settings Companies Routes =====
     {
         path: "/settings/companies",

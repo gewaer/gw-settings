@@ -116,7 +116,7 @@
                 <div class="col-12 col-xl d-flex justify-content-end mt-2">
                     <button :disabled="isLoading" class="btn btn-danger m-r-10" @click="cancel()">Cancel</button>
                     <button
-                        :disabled="isLoading"
+                        :disabled="isLoading || !hasChanged"
                         class="btn btn-primary"
                         @click="confirmAction()"
                     >

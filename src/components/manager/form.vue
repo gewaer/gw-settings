@@ -63,8 +63,10 @@
                         <div class="col-12 col-md">
                             <label>Language </label>
                             <multiselect
+                                v-if="initializeComplete"
                                 v-model="selectedLanguage"
                                 :options="languages"
+                                :show-labels="false"
                                 label="name"
                                 track-by="id"
                                 @input="setLanguage"
@@ -73,17 +75,19 @@
                         <div class="col-12 col-md">
                             <label>Timezone</label>
                             <multiselect
+                                v-if="initializeComplete"
                                 v-model="companyData.timezone"
                                 :max-height="175"
                                 :options="timezones"
+                                :show-labels="false"
                             />
                         </div>
                     </div>
                 </div>
             </div>
             <div class="col-12 col-xl d-flex justify-content-end mt-2">
-                <button :disabled="isLoading" class="btn btn-danger m-r-10" @click="triggerCancel()">Cancel</button>
-                <button :disabled="isLoading || !hasChanged" class="btn btn-primary" @click="save()"> Save </button>
+                <button :disabled="isLoading" class="btn btn-danger m-r-10" @click="cancel()">Cancel</button>
+                <button :disabled="isLoading || !hasChanged" class="btn btn-primary" @click="save()">Save</button>
             </div>
         </div>
     </container-template>
@@ -91,7 +95,8 @@
 
 <script>
 import {mapState} from "vuex";
-import crudMixins from "../../mixins/crudMixins";
+import generalMixins from "../../mixins/general";
+import vueRouterMixins from "../../mixins/vueRouterMixins";
 import ContainerTemplate from "../../container";
 
 export default {
@@ -100,20 +105,14 @@ export default {
         ContainerTemplate
     },
     mixins: [
-        crudMixins
+        generalMixins,
+        vueRouterMixins
     ],
-    props: {
-        company: {
-            type: Object,
-            default() {
-                return {};
-            }
-        }
-    },
     data() {
         return {
+            initializeComplete: false,
             isLoading: false,
-            companyData: null,
+            companyData: {},
             selectedLanguage: null
         }
     },
@@ -123,74 +122,52 @@ export default {
             timezones: state => state.Application.timezones,
             languages: state => state.Application.languages
         }),
+        isEditing() {
+            return !!this.$route.params.id;
+        },
         title() {
-            if (!this.company.id) {
-                return "Add company";
-            } else {
-                return "Edit company";
-            }
-        },
-        hasChanged() {
-            return !_.isEqual(this.companyData, this.company);
+            return this.isEditing ? "Editing company" : "Add company";
         }
     },
+    async created() {
+        await this.$store.dispatch("Application/getSettingsLists");
 
-    watch: {
-        "companyData.language"() {
-            this.setInitialLanguage();
-        },
-        company() {
-            this.setCompany();
+        if (this.isEditing) {
+            await this.getCompanyData();
+            this.selectedLanguage = this.languages.find(language => language.id == this.companyData.language);
         }
-    },
 
-    mounted() {
-        this.setInitialLanguage();
+        this.initializeComplete = true;
     },
-
-    created() {
-        this.$store.dispatch("Application/getSettingsLists");
-        this.setCompany();
-    },
-
     methods: {
-        setCompany() {
-            this.companyData = _.clone(this.company);
+        async cancel() {
+            await this.$validator.reset();
+            this.$router.push({ name: "settingsManagerList" });
+        },
+        async getCompanyData() {
+            await axios({
+                url: `/companies/${this.$route.params.id}`
+            }).then(({ data }) => {
+                this.companyData = data;
+            });
         },
         setLanguage(value) {
             this.companyData.language = value.id;
         },
+        async save() {
+            const isValid = await this.$validator.validateAll();
 
-        setInitialLanguage() {
-            this.selectedLanguage = this.languages.find(language => language.id == this.companyData.language);
-        },
-
-        save() {
-            let url;
-            let method;
-
-            if (!this.companyData.id) {
-                url = "/companies";
-                method = "POST";
-            } else {
-                url = `/companies/${this.companyData.id}`;
-                method = "PUT";
-            }
-
-            this.$validator.validate().then((result) => {
-                if (result) {
-                    this.sendRequest(url, method);
-                }
-            })
-
-        },
-        sendRequest(url, method) {
-            if (this.isLoading) {
+            if (this.isLoading || !isValid) {
                 return;
             }
 
-            this.isLoading = true;
+            const url = this.isEditing ? `/companies/${this.companyData.id}` : "/companies";
+            const method = this.isEditing ? "PUT" : "POST";
 
+            this.isLoading = true;
+            this.sendRequest(url, method);
+        },
+        sendRequest(url, method) {
             axios({
                 url,
                 method,
@@ -199,10 +176,10 @@ export default {
                 this.$notify({
                     group: null,
                     title: "Confirmation",
-                    text: "The company information has been changed",
+                    text: "The company information has been updated!",
                     type: "success"
                 });
-                this.$router.push({ name: "companiesList" });
+                this.cancel();
             }).catch((error) => {
                 this.$notify({
                     group: null,
@@ -213,10 +190,6 @@ export default {
             }).finally(() => {
                 this.isLoading = false;
             });
-        },
-
-        cancel() {
-            this.$router.push({ name: "settingsManagerList" });
         }
     }
 };

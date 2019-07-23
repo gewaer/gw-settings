@@ -19,18 +19,19 @@
                         pagination-path=""
                     >
                         <img
-                            slot="profile_image"
+                            slot="profile-image"
                             slot-scope="props"
-                            :src="props.rowData.logo"
+                            :src="props.rowData.logo && props.rowData.logo.url"
                             height="25px"
                         >
                         <template slot="actions" slot-scope="props">
-                            <button class="btn btn-primary m-l-5" @click="editCompany(props.rowData.id, false)"><i class="fa fa-eye" aria-hidden="true"/></button>
                             <button class="btn btn-complete m-l-5" @click="editCompany(props.rowData.id)"><i class="fa fa-edit" aria-hidden="true"/></button>
                             <button
+                                :class="{ 'disable-element': isCurrentCompany(props.rowData.id) }"
                                 :disabled="isCurrentCompany(props.rowData.id)"
                                 class="btn btn-danger m-l-5"
-                                @click="beforeDeleteCompany(props.rowData)">
+                                @click="confirmDelete(props.rowData.id)"
+                            >
                                 <i class="fa fa-trash" aria-hidden="true" />
                             </button>
                         </template>
@@ -44,15 +45,15 @@
                 :scrollable="true"
                 name="company-modal"
                 height="auto"
-                @closed="selectedCompany = null"/>
+                @closed="selectedCompany = null"
+            />
         </div>
     </container-template>
 </template>
 
 <script>
 import { mapState } from "vuex";
-import vuexMixins from "../../mixins/vuexMixins";
-import listMixins from "../../mixins/listMixins";
+import generalMixins from "../../mixins/general";
 import ContainerTemplate from "../../container";
 
 export default {
@@ -61,13 +62,12 @@ export default {
         ContainerTemplate
     },
     mixins: [
-        vuexMixins,
-        listMixins
+        generalMixins
     ],
     data() {
         return {
             companiesFields: [{
-                name: "profile_image",
+                name: "profile-image",
                 title: "Logo",
                 width: "30%"
             }, {
@@ -85,7 +85,6 @@ export default {
                 relationships: "hasActivities,logo",
                 q: "(is_deleted:0)"
             },
-            defaultImage: "https://mctekk.com/images/logo-o.svg",
             isEditable: true,
             isLoading: false,
             selectedCompany: null
@@ -97,38 +96,33 @@ export default {
         })
     },
     methods: {
-        beforeDeleteCompany(company){
-            if (this.isLoading) {
-                return ;
-            }
-            if(company.hasActivities == "1"){
-                this.$notify({
-                    title: "Error",
-                    text: "No puede eliminar esta compañia por que tiene actividades",
-                    type: "error"
+        checkActivities(companyId) {
+            if (company.has_activities == 1) {
+                this.$modal.show("basic-modal", {
+                    title: "Delete Company",
+                    message: "You cannot delete companies that have activities registered in the system.",
+                    buttons: [{
+                        title: "Accept",
+                        class: "btn-success",
+                        handler: () => {
+                            this.$modal.hide("basic-modal");
+                        }
+                    }]
                 });
-                return ;
+            } else {
+                this.deleteCompany(companyId);
             }
-            this.confirmDeleteCompany(company);
         },
-        confirmDeleteCompany(company){
-            this.$modal.show("basic-modal", {
-                title:"Delete Company",
-                message:`Did you want to delete ${company.name} company ?`,
-                buttons: [{
-                    title: "Accept",
-                    class: "btn-success",
-                    handler: () => {
-                        this.$modal.hide("basic-modal");
-                        this.deleteCompany(company.id);
-                    }
-                }, {
-                    title: "Cancel",
-                    class: "btn-danger",
-                    handler: () => {
-                        this.$modal.hide("basic-modal");
-                    }
-                }]
+        confirmDelete(companyId) {
+            if (this.isLoading) {
+                return;
+            }
+
+            this.basicActionsModal({
+                title: "Delete Company",
+                message: "Are you sure you want to delete this company?",
+                handler: this.checkActivities,
+                params: companyId
             });
         },
         deleteCompany(companyId) {
@@ -143,6 +137,7 @@ export default {
                     text: "The company has been deleted",
                     type: "success"
                 });
+
                 this.$refs.Vuetable.reload();
             }).catch((error) => {
                 this.$notify({
@@ -152,11 +147,15 @@ export default {
                 });
             }).finally(() => {
                 this.isLoading = false;
-            })
+            });
         },
-        editCompany(companyId, isEditable = true) {
-            this.isEditable = isEditable;
-            this.$emit("getCompany", companyId);
+        editCompany(companyId) {
+            this.$router.push({
+                name: "settingsManagerFormEdit",
+                params: {
+                    id: companyId
+                }
+            });
         },
         getTableData(apiUrl, options) {
             return axios({
@@ -165,7 +164,7 @@ export default {
             });
         },
         isCurrentCompany(companyId) {
-            return this.company.id == companyId;
+            return companyId == this.company.id;
         }
     }
 };
