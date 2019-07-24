@@ -140,12 +140,11 @@ export default {
     },
     watch: {
         "$route.params.id"(roleId) {
-            this.getRole(roleId, !roleId)
+            this.getRole(roleId)
         }
     },
     created() {
-        const roleId = this.$route.params.id;
-        this.getRole(roleId, !roleId)
+        this.getRole(this.$route.params.id);
     },
     beforeRouteLeave(to, from, next) {
         const formFields = pickBy(this.vvFields, field => field.changed);
@@ -201,13 +200,13 @@ export default {
                 return data;
             });
         },
-        getRole(roleId, forCreate = true) {
+        getRole(roleId) {
             let role = {};
 
             axios({
                 url: `/roles-acceslist?q=(roles_id:${roleId})`
             }).then(async({ data }) => {
-                if (forCreate) {
+                if (!this.isEditing) {
                     data.forEach(access => {
                         access.allowed = "1";
                         access.role_name = "";
