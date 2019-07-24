@@ -7,7 +7,7 @@
                 Your subscription has ended. Please purchase a new subscription plan.
             </div>
             <div class="generic_price_table">
-                <section v-if="plans.length" class="container">
+                <section v-if="plans.length" class="container pb-2">
                     <plans
                         :plans="plans"
                         :selected-plan="planData.stripe_plan"
@@ -15,8 +15,8 @@
                         :show-modal="!showBilligInfo"
                         @changesubscription="handleSubscription"
                     />
+                    <p class="text-center mt-2 mb-4">Our prices exclude VAT, GST, or any other taxes that may be applicable in your region.</p>
                 </section>
-                <p class="text-center mt-2 mb-4">Our prices exclude VAT, GST, or any other taxes that may be applicable in your region.</p>
                 <div v-if="plans.length" class="container">
                     <div class="row">
                         <div class="col">
@@ -646,6 +646,12 @@ export default {
         cursor: pointer;
     }
 
+    .generic_price_table .generic_content .generic_price_btn.cancel a {
+        border: 1px solid #f55753;
+        color: #f55753 !important;
+        background-color: transparent !important;
+    }
+
     .generic_price_table .generic_content.active .generic_head_price .generic_head_content .head_bg,
     .generic_price_table .generic_content:hover .generic_head_price .generic_head_content .head_bg{
         border-color: var(--base-color) rgba(0, 0, 0, 0) rgba(0, 0, 0, 0) var(--base-color);
@@ -684,12 +690,12 @@ export default {
     }
 
     .generic_price_table .generic_content .generic_head_price .generic_head_content{
-        margin: 0 0 50px 0;
+        margin: 0 0 30px 0;
     }
 
     .generic_price_table .generic_content .generic_head_price .generic_head_content .head_bg{
         border-style: solid;
-        border-width: 90px 1411px 23px 399px;
+        border-width: 90px 0 0 2000px;
         position: absolute;
     }
 
@@ -779,18 +785,15 @@ export default {
     }
 
     .generic_price_table .generic_content .generic_price_btn a{
-        border-radius: 50px;
-        -moz-border-radius: 50px;
-        -ms-border-radius: 50px;
-        -o-border-radius: 50px;
-        -webkit-border-radius: 50px;
+        border-radius: 0;
         display: inline-block;
         font-family: "Lato",sans-serif;
         font-size: 18px;
         outline: medium none;
-        padding: 12px 30px;
+        padding: 5px 60px;
         text-decoration: none;
         text-transform: uppercase;
+        width: 80%;
     }
 
     .generic_price_table .generic_content,
