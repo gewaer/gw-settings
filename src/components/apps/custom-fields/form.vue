@@ -5,43 +5,35 @@
             <div class="col">
                 <div class="custom-fields">
                     <h5>
-                        Add Custom Field
+                        {{ title }}
                     </h5>
-                    <div class="row">
-                        <div class="col">
-                            <div class="form-group required">
-                                <label>Category</label>
-                                <multiselect
-                                    v-validate="'required'"
-                                    v-model="selectedModules"
-                                    :multiple="true"
-                                    :show-labels="false"
-                                    :options="modules"
-                                    label="name"
-                                    name="modules"
-                                    track-by="id"
-                                />
-                                <span class="error">{{ errors.first("modules") }}</span>
-                            </div>
-                        </div>
-                    </div>
                     <div class="row custom-fields-container">
                         <div class="col-md-3">
-                            <fields-text @schema="setSchema"/>
-                            <fields-select @schema="setSchema"/>
+                            <fields-text
+                                ref="text"
+                                :class="{ 'selected': fieldsType == 'text' }"
+                                :field-data="fieldData"
+                                @schema="setSchema"
+                            />
+                            <fields-select
+                                ref="select"
+                                :class="{ 'selected': fieldsType == 'select' }"
+                                @schema="setSchema"
+                            />
                         </div>
                         <div class="col-md-9">
                             <custom-fields-form
+                                v-if="fieldsSchema"
+                                ref="customFields"
+                                :emit-values-on-update="true"
                                 :form-fields="fieldsSchema"
-                                :form-name="'customFields'"
+                                :form-options="formOptions"
+                                class="d-flex h-100 flex-column"
+                                form-name="customFields"
+                                @formCancelled="formCancelled"
                                 @formSubmitted="formSubmitted"
+                                @formValuesUpdated="formValuesUpdated"
                             />
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12 col-xl d-flex justify-content-end mt-2">
-                            <router-link :to="{ name: 'settingsAppsCustomFieldsList' }" class="btn btn-danger m-r-10">Cancel</router-link>
-                            <button class="btn btn-primary" @click="save()">Save</button>
                         </div>
                     </div>
                 </div>
@@ -69,42 +61,114 @@ export default {
             formData: {
                 name: ""
             },
+            fieldData: null,
             fieldsSchema: [],
             fieldsType: null,
-            modules: [],
+            fieldsTypeId: null,
+            formOptions: {
+                actionsWrapperClass: "d-flex justify-content-end mt-auto",
+                buttons: {
+                    cancel: {
+                        class: "btn btn-danger m-r-10",
+                        text: "Cancel"
+                    },
+                    submit: {
+                        class: "btn btn-primary",
+                        text: "Save"
+                    }
+                }
+            },
             selectedCustomField: "text-field",
-            selectedModules: []
+            selectedModule: {}
         };
+    },
+    computed: {
+        isEditing() {
+            return !!this.$route.params.id;
+        },
+        title() {
+            return (this.isEditing ? "Editing Custom Field for: " : "Adding Custom Field for: ") + this.selectedModule.name;
+        }
     },
     created() {
         this.getModules();
+
+        if (this.isEditing) {
+            this.getCustomFieldData();
+        }
     },
     methods: {
-        formSubmitted(values) {
-            console.log(values);
+        formCancelled() {
+            this.$router.push({ name: "settingsAppsCustomFieldsList" });
+        },
+        formSubmitted({ values }) {
+            const data = {
+                name: Math.random().toString(36).substr(2, 4) + "_" + Math.random().toString(36).substr(2, 4),
+                custom_fields_modules_id: this.selectedModule.id,
+                fields_type_id: this.fieldsTypeId,
+                attributes: {}
+            };
+            const url = "/custom-fields" + (this.isEditing ? `/${this.$route.params.id}` : "");
+            const method = this.isEditing ? "PUT" : "POST";
+
+            Object.keys(values).forEach((key) => {
+                if (key.startsWith("attributes:")) {
+                    data.attributes[key.split(":")[1]] = values[key];
+                } else {
+                    data[key] = values[key];
+                }
+            });
+
+            axios({
+                url,
+                method,
+                data
+            }).then(() => {
+                this.formCancelled();
+            });
+        },
+        formValuesUpdated(values) {
+            // While not the best solution due to design. It's something that can be worked with.
+            if (this.fieldsType == "select") {
+                const options = values.values.split("\n").map(option => option.trim());
+
+                this.$refs.customFields.$refs.control[2].$children[0].options = options;
+            }
+        },
+        getCustomFieldData() {
+            axios({
+                url: `/custom-fields/${this.$route.params.id}?relationships=type`
+            }).then(async({ data }) => {
+                data.attributes = JSON.parse(data.attributes);
+
+                if (data.type.name == "select") {
+                    data.values = data.values.join("\n");
+                }
+
+                this.fieldsType = data.type.name;
+                this.fieldsTypeId = data.fieldsTypeId;
+                await (this.fieldData = data);
+                this.$refs[this.fieldsType].sendSchema();
+            });
         },
         getModules() {
             axios({
                 url: "/custom-fields-modules"
             }).then(({ data }) => {
-                if (data) {
-                    let preSelectedModule = null;
-                    this.modules = data;
+                let preSelectedModule = null;
+                preSelectedModule = data.find(module => module.name == this.$route.params.module);
 
-                    if (this.$route.params.module) {
-                        preSelectedModule = data.find(module => module.name == this.$route.params.module);
-
-                        if (preSelectedModule) {
-                            this.selectedModules.push(preSelectedModule);
-                        }
-                    }
+                if (preSelectedModule) {
+                    this.selectedModule = preSelectedModule;
                 }
             });
         },
         save() {},
-        setSchema(schema, type) {
+        async setSchema(schema, type, typeId) {
+            await (this.fieldsSchema = []);
             this.fieldsSchema = schema;
             this.fieldsType = type;
+            this.fieldsTypeId = typeId;
         }
     }
 };
@@ -114,6 +178,10 @@ export default {
 .custom-fields {
     .custom-fields-container /deep/ {
         padding-top: 40px;
+
+        .selected {
+            border:1px solid var(--base-color);
+        }
 
         .col-3 {
             padding-left: 20px;

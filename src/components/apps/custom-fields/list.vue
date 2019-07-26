@@ -5,13 +5,15 @@
             <div class="col">
                 <h5>
                     Custom Fields
-                    <router-link :to="{ name: 'settingsAppsCustomFieldsForm', params: { module: tab } }" class="btn btn-primary">Create</router-link>
+                    <router-link :to="{ name: 'settingsAppsCustomFieldsForm', params: { module: selectedModule.name } }" class="btn btn-primary">
+                        Create
+                    </router-link>
                 </h5>
                 <div class="card card-borderless">
                     <ul class="nav nav-tabs nav-tabs-simple" role="tablist" data-init-reponsive-tabs="dropdownfx">
                         <li v-for="module in modules" :key="'modules-' + module.id" class="nav-item">
                             <a
-                                :class="{ active: tab == module.name }"
+                                :class="{ active: selectedModule.name == module.name }"
                                 href="#"
                                 @click.prevent="changeModule(module)"
                             >
@@ -24,47 +26,29 @@
                             <div class="row">
                                 <div class="col-12">
                                     <div class="table-responsive">
-                                        <!-- <vuetable
+                                        <vuetable
+                                            v-if="selectedModule.id"
+                                            ref="CustomFieldsTable"
                                             :append-params="appendParams"
-                                            :fields="companiesFields"
-                                            :http-fetch="getTableData"
-                                            api-url="/companies"
+                                            :fields="tableFields"
+                                            :http-fetch="getCustomFields"
+                                            api-url=""
                                             class="table table-hover table-condensed"
+                                            data-path=""
                                             pagination-path=""
                                         >
                                             <template slot="actions" slot-scope="props">
-                                                <button class="btn btn-primary m-l-5" @click="editCompany(props.rowData.id, false)"><i class="fa fa-eye" aria-hidden="true"/></button>
-                                                <button class="btn btn-complete m-l-5" @click="editCompany(props.rowData.id)"><i class="fa fa-edit" aria-hidden="true"/></button>
+                                                <button class="btn btn-complete m-l-5" @click="editCustomField(props.rowData.id)">
+                                                    <i class="fa fa-edit" aria-hidden="true"/>
+                                                </button>
                                                 <button
-                                                    :disabled="isCurrentCompany(props.rowData.id)"
                                                     class="btn btn-danger m-l-5"
-                                                    @click="deleteCompany(props.rowData)">
+                                                    @click="confirmDelete(props.rowData.id)"
+                                                >
                                                     <i class="fa fa-trash" aria-hidden="true" />
                                                 </button>
                                             </template>
-                                        </vuetable> -->
-
-                                        <table class="table table-hover table-condensed">
-                                            <thead>
-                                                <tr>
-                                                    <th style="width:45%">Field name</th>
-                                                    <th style="width:20%">Type</th>
-                                                    <th style="width:20%">Field API</th>
-                                                    <th style="width:15%" class="table-actions">Actions</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td class="v-align-middle semi-bold">Title</td>
-                                                    <td class="v-align-middle semi-bold">Text</td>
-                                                    <td class="v-align-middle semi-bold">title</td>
-                                                    <td class="v-align-middle semi-bold table-actions">
-                                                        <button class="btn btn-complete m-l-5"><i class="fa fa-edit" aria-hidden="true"/></button>
-                                                        <button class="btn btn-danger m-l-5"><i class="fa fa-trash" aria-hidden="true"/></button>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                                        </vuetable>
                                     </div>
                                 </div>
                             </div>
@@ -77,7 +61,6 @@
 </template>
 
 <script>
-import vuexMixins from "../../../mixins/vuexMixins";
 import ContainerTemplate from "../../../container";
 import TabsMenu from "../tabs";
 
@@ -87,29 +70,47 @@ export default {
         ContainerTemplate,
         TabsMenu
     },
-    mixins: [
-        vuexMixins
-    ],
     data() {
         return {
-            fields: [],
+            appendParams:{
+                format: "true"
+            },
             modules: [],
-            tab: ""
+            selectedModule: {},
+            tableFields: [{
+                name: "label",
+                sortField: "label"
+            }, {
+                name: "actions",
+                title: "Actions",
+                titleClass: "table-actions",
+                dataClass: "table-actions"
+            }]
         }
     },
+    created() {
+        this.getModules();
+    },
     methods: {
-        initialize() {
-            this.getModules();
-        },
         changeModule(module) {
-            this.tab = module.name;
-            this.getFields(module.id);
+            this.selectedModule = module;
+
+            if (this.$refs.CustomFieldsTable) {
+                this.$refs.CustomFieldsTable.refresh();
+            }
         },
-        getFields(moduleId) {
-            axios({
-                url: `/custom-fields-modules/${moduleId}/fields`
-            }).then(({ data }) => {
-                this.fields = data;
+        editCustomField(customFieldsId) {
+            this.$router.push({
+                name: "settingsAppsCustomFieldsFormEdit",
+                params: {
+                    module: this.selectedModule.name,
+                    id: customFieldsId
+                }
+            });
+        },
+        getCustomFields() {
+            return axios({
+                url: `/custom-fields-modules/${this.selectedModule.id}/fields`
             });
         },
         getModules() {

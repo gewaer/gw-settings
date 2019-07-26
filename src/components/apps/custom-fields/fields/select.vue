@@ -12,26 +12,89 @@
 <script>
 export default {
     name: "FieldsSelect",
+    props: {
+        fieldData: {
+            type: Object,
+            default: null
+        }
+    },
     data() {
         return {
-            schema: [{
-                label: "Field Label",
-                type: "text",
-                validations: {
-                    required: true
-                }
-            }, {
-                label: "Field Options",
-                type: "textarea",
-                validations: {
-                    required: true
-                }
-            }]
+            schemaData: {
+                attributes: {}
+            }
         }
     },
     methods: {
+        generateFieldsSchema() {
+            return [
+                {
+                    field: "label",
+                    label: "Field Label",
+                    type: "text",
+                    value: this.schemaData.label || "",
+                    attributes: {
+                        class: {
+                            "form-control": true
+                        }
+                    },
+                    wrapperAttributes: {
+                        class: {
+                            "form-group": true,
+                            "form-group-default": true,
+                            required: true
+                        }
+                    },
+                    validations: {
+                        required: true
+                    }
+                },
+                {
+                    field: "values",
+                    label: "Field Options",
+                    type: "textarea",
+                    value: this.schemaData.values || "",
+                    attributes: {
+                        class: {
+                            "form-control": true
+                        },
+                        style: {
+                            height: "100px"
+                        }
+                    },
+                    wrapperAttributes: {
+                        class: {
+                            "form-group": true,
+                            "form-group-default": true,
+                            required: true
+                        }
+                    },
+                    validations: {
+                        required: true
+                    }
+                },
+                {
+                    field: "default_value",
+                    label: "Default Option",
+                    type: "select",
+                    options: [],
+                    attributes: {
+                        "show-labels": false
+                    },
+                    wrapperAttributes: {
+                        class: {
+                            "form-group": true
+                        }
+                    }
+                }
+            ]
+        },
         sendSchema() {
-            this.$emit("schema", this.schema, "select");
+            if (this.fieldData) {
+                this.schemaData = this.fieldData;
+            }
+
+            this.$emit("schema", this.generateFieldsSchema(), "select", 2);
         }
     }
 }

@@ -76,7 +76,7 @@ export default [
         }
     },
     {
-        path: "/settings/apps/custom-fields/add",
+        path: "/settings/apps/custom-fields/:module/add",
         name: "settingsAppsCustomFieldsForm",
         component: AppsCustomFieldsForm,
         meta: {
@@ -84,7 +84,7 @@ export default [
         }
     },
     {
-        path: "/settings/apps/custom-fields/edit/:id",
+        path: "/settings/apps/custom-fields/:module/edit/:id",
         name: "settingsAppsCustomFieldsFormEdit",
         component: AppsCustomFieldsForm,
         meta: {

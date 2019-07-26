@@ -12,35 +12,74 @@
 <script>
 export default {
     name: "FieldsText",
+    props: {
+        fieldData: {
+            type: Object,
+            default: null
+        }
+    },
     data() {
         return {
-            schema: [{
-                label: "Modules",
-                type: "select",
-                url: "/custom-fields-modules",
-                searchOnOpen: true,
-                attributes: {
-                    allowEmpty: false,
-                    clearOnSelect: false,
-                    closeOnSelect: false,
-                    internalSearch: false,
-                    label: "name",
-                    multiple: true,
-                    showLabels: false,
-                    trackBy: "id"
-                }
-            }, {
-                label: "Field Label",
-                type: "text",
-                validations: {
-                    required: true
-                }
-            }]
+            schemaData: {
+                attributes: {}
+            }
         }
     },
     methods: {
+        generateFieldsSchema() {
+            return [
+                {
+                    field: "label",
+                    label: "Field Label",
+                    type: "text",
+                    value: this.schemaData.label || "",
+                    attributes: {
+                        class: {
+                            "form-control": true
+                        }
+                    },
+                    wrapperAttributes: {
+                        class: {
+                            "form-group": true,
+                            "form-group-default": true,
+                            required: true
+                        }
+                    },
+                    validations: {
+                        required: true
+                    }
+                },
+                {
+                    field: "attributes:maxlength",
+                    label: "Max Length",
+                    type: "number",
+                    value: this.schemaData.attributes.maxlength || 255,
+                    attributes: {
+                        class: {
+                            "form-control": true
+                        }
+                    },
+                    wrapperAttributes: {
+                        class: {
+                            "form-group": true,
+                            "form-group-default": true,
+                            required: true
+                        }
+                    },
+                    validations: {
+                        required: true,
+                        min_value: 1,
+                        max_value: 255
+                    }
+                }
+            ];
+        },
         sendSchema() {
-            this.$emit("schema", this.schema, "text");
+            if (this.fieldData) {
+                this.schemaData = this.fieldData;
+            }
+
+            this.$emit("schema", this.generateFieldsSchema(), "text", 1);
         }
     }
 }
