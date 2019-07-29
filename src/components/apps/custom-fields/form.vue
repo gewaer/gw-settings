@@ -18,6 +18,7 @@
                             <fields-select
                                 ref="select"
                                 :class="{ 'selected': fieldsType == 'select' }"
+                                :field-data="fieldData"
                                 @schema="setSchema"
                             />
                         </div>
@@ -115,7 +116,11 @@ export default {
                 if (key.startsWith("attributes:")) {
                     data.attributes[key.split(":")[1]] = values[key];
                 } else {
-                    data[key] = values[key];
+                    if (this.fieldsType == "select" && key == "values") {
+                        data[key] = values[key].split("\n");
+                    } else {
+                        data[key] = values[key];
+                    }
                 }
             });
 
@@ -129,7 +134,7 @@ export default {
         },
         formValuesUpdated(values) {
             // While not the best solution due to design. It's something that can be worked with.
-            if (this.fieldsType == "select") {
+            if (this.fieldsType == "select" && values.values) {
                 const options = values.values.split("\n").map(option => option.trim());
 
                 this.$refs.customFields.$refs.control[2].$children[0].options = options;
@@ -137,12 +142,15 @@ export default {
         },
         getCustomFieldData() {
             axios({
-                url: `/custom-fields/${this.$route.params.id}?relationships=type`
+                url: `/custom-fields/${this.$route.params.id}`
             }).then(async({ data }) => {
                 data.attributes = JSON.parse(data.attributes);
 
                 if (data.type.name == "select") {
-                    data.values = data.values.join("\n");
+                    data.values = data.values.reduce((valuesArray, value) => {
+                        valuesArray[+value.value] = value.label;
+                        return valuesArray;
+                    }, []).join("\n");
                 }
 
                 this.fieldsType = data.type.name;
