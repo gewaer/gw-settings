@@ -6,7 +6,7 @@ export default {
     },
     watch: {
         currentCompanyId() {
-            if (this.hasOwnProperty("initialize")) {
+            if (this.initialize) {
                 this.initialize();
             } else {
                 console.warn("Component expects a defined initialize() method to respond properly to a currentCompanyId change");

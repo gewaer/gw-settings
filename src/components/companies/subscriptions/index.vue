@@ -2,10 +2,6 @@
     <container-template>
         <tabs-menu slot="tab-menu"/>
         <div slot="tab-content" class="subscriptions-plans">
-            <div v-if="subscriptionHasEnded" class="card-yellow d-flex">
-                <i class="fa fa-exclamation-triangle m-r-10" aria-hidden="true"/>
-                Your subscription has ended. Please purchase a new subscription plan.
-            </div>
             <div class="generic_price_table">
                 <section v-if="plans.length" class="container pb-2">
                     <plans
@@ -20,7 +16,7 @@
                 <div v-if="plans.length" class="container">
                     <div class="row">
                         <div class="col">
-                            <button class="btn btn-block btn-primary" @click="displayBilligInfo">{{ showBilligInfo ? 'Hide' : 'Show' }} Billing Details</button>
+                            <button class="btn btn-block btn-primary" @click="toggleDisplayBilligInfo">{{ showBilligInfo ? 'Hide' : 'Show' }} Billing Details</button>
                         </div>
                     </div>
                     <div v-if="showBilligInfo" class="row mt-4">
@@ -48,11 +44,11 @@
                                                                 v-validate="'required:true|alpha_spaces|min:2'"
                                                                 id="first-name"
                                                                 v-model="contact.contact_first_name"
-                                                                data-vv-as="contact first name"
-                                                                data-vv-name="contact first name"
+                                                                name="contact first name"
                                                                 type="text"
                                                                 class="form-control"
-                                                                placeholder="First name">
+                                                                placeholder="First Name"
+                                                            >
                                                             <span class="text-danger">{{ errors.first("contact first name") }}</span>
                                                         </div>
                                                     </div>
@@ -63,11 +59,11 @@
                                                                 v-validate="'required:true|alpha_spaces|min:2'"
                                                                 id="last-name"
                                                                 v-model="contact.contact_last_name"
-                                                                data-vv-as="contact last name"
-                                                                data-vv-name="contact last name"
+                                                                name="contact last name"
                                                                 type="text"
                                                                 class="form-control"
-                                                                placeholder="Last name">
+                                                                placeholder="Last Name"
+                                                            >
                                                             <span class="text-danger">{{ errors.first("contact last name") }}</span>
                                                         </div>
                                                     </div>
@@ -80,11 +76,11 @@
                                                                 v-validate="'required:true'"
                                                                 id="company-name"
                                                                 v-model="contact.contact_company"
-                                                                data-vv-as="company name"
-                                                                data-vv-name="company name"
+                                                                name="company name"
                                                                 type="text"
                                                                 class="form-control"
-                                                                placeholder="Company name">
+                                                                placeholder="Company name"
+                                                            >
                                                             <span class="text-danger">{{ errors.first("company name") }}</span>
                                                         </div>
                                                     </div>
@@ -97,11 +93,11 @@
                                                                 v-validate="'required:true|email'"
                                                                 id="email-address"
                                                                 v-model="contact.email"
-                                                                data-vv-as="contact email address"
-                                                                data-vv-name="contact email address"
+                                                                name="contact email address"
                                                                 type="email"
                                                                 class="form-control"
-                                                                placeholder="Email">
+                                                                placeholder="Email"
+                                                            >
                                                             <span class="text-danger">{{ errors.first("contact email address") }}</span>
                                                         </div>
                                                     </div>
@@ -120,14 +116,14 @@
                                                         <div class="form-group">
                                                             <label for="address">Address</label>
                                                             <input
-                                                                v-validate="'required:true||min:2'"
+                                                                v-validate="'required:true|min:2'"
                                                                 id="address"
                                                                 v-model="address.address"
-                                                                data-vv-as="address"
-                                                                data-vv-name="address"
+                                                                name="address"
                                                                 type="text"
                                                                 class="form-control"
-                                                                placeholder="Address">
+                                                                placeholder="Address"
+                                                            >
                                                             <span class="text-danger">{{ errors.first("address") }}</span>
                                                         </div>
                                                     </div>
@@ -138,11 +134,11 @@
                                                                 v-validate="'required:true|min:1'"
                                                                 id="apt-suite"
                                                                 v-model="address.suite"
-                                                                data-vv-as="apt/suite"
-                                                                data-vv-name="apt/suite"
+                                                                name="apt/suite"
                                                                 type="text"
                                                                 class="form-control"
-                                                                placeholder="APT/SUITE">
+                                                                placeholder="APT/SUITE"
+                                                            >
                                                             <span class="text-danger">{{ errors.first("apt/suite") }}</span>
                                                         </div>
                                                     </div>
@@ -155,11 +151,11 @@
                                                                 v-validate="'required:true|min:3'"
                                                                 id="city"
                                                                 v-model="address.city"
-                                                                data-vv-as="city"
-                                                                data-vv-name="city"
+                                                                name="city"
                                                                 type="text"
                                                                 class="form-control"
-                                                                placeholder="City">
+                                                                placeholder="City"
+                                                            >
                                                             <span class="text-danger">{{ errors.first("city") }}</span>
                                                         </div>
                                                     </div>
@@ -170,11 +166,11 @@
                                                                 v-validate="'required:true|min:3'"
                                                                 id="country"
                                                                 v-model="address.country"
-                                                                data-vv-as="country"
-                                                                data-vv-name="country"
+                                                                name="country"
                                                                 type="text"
                                                                 class="form-control"
-                                                                placeholder="Country">
+                                                                placeholder="Country"
+                                                            >
                                                             <span class="text-danger">{{ errors.first("country") }}</span>
                                                         </div>
                                                     </div>
@@ -187,11 +183,11 @@
                                                                 v-validate="'required:true|min:2'"
                                                                 id="state-province"
                                                                 v-model="address.state"
-                                                                data-vv-as="state/province"
-                                                                data-vv-name="state/province"
+                                                                name="state/province"
                                                                 type="text"
                                                                 class="form-control"
-                                                                placeholder="State/Province">
+                                                                placeholder="State/Province"
+                                                            >
                                                             <span class="text-danger">{{ errors.first("state/province") }}</span>
                                                         </div>
                                                     </div>
@@ -211,7 +207,11 @@
                                                         data-toggle="tab"
                                                         role="tab"
                                                         data-target="#credit-card"
-                                                        href="#">CREDIT CARD</a>
+                                                        href="#"
+                                                        @click.prevent
+                                                    >
+                                                        CREDIT CARD
+                                                    </a>
                                                 </li>
                                                 <!-- <li class="nav-item">
                                                     <a
@@ -240,7 +240,9 @@
                                     </div>
                                 </div>
                                 <div class="row update-billing-details">
-                                    <button :disabled="!planData.card_token" class="btn btn-block btn-primary" @click="verifyPlanPayment()">Update Billing Details</button>
+                                    <button :disabled="!planData.card_token" class="btn btn-block btn-primary" @click="verifyPlanPayment()">
+                                        Update Billing Details
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -291,66 +293,66 @@ export default {
     ],
     data() {
         return {
-            plans:[],
-            contact:{
-                contact_company:"",
-                email:"",
-                contact_first_name:"",
-                contact_last_name:""
+            address: {
+                address: "",
+                city: "",
+                country: "",
+                state: "",
+                suite: ""
             },
-            planData :{
-                payment_style:"monthly",
+            contact: {
+                contact_company: "",
+                email: "",
+                contact_first_name: "",
+                contact_last_name: ""
+            },
+            plans: [],
+            planData: {
+                payment_style: "monthly",
                 stripe_plan: "",
                 stripe_id: "",
                 card_token: ""
             },
-            address:{
-                address:"",
-                city:"",
-                country:"",
-                state:"",
-                suite:""
-            },
             selectedFrecuency: {
-                type:"pricing",
+                type: "pricing",
                 title: "Monthly",
                 price: "10",
                 frecuency: "month"
             },
-            showBilligInfo:false
+            showBilligInfo: false
         };
     },
-    computed:{
-        selectedPlan(){
-            return this.plans.find(subcription => subcription.stripe_plan == this.planData["stripe_plan"]);
-        },
+    computed: {
         ...mapState({
             userData: state => state.User.data,
             defaultCompany: state => state.Company.data
         }),
-        ...mapGetters( {
-            isTrialSuscription: "Company/isTrialSubscription",
-            subscriptionDays: "Company/subscriptionDaysLeft",
-            subscriptionHasEnded: "Company/subscriptionHasEnded"
-        })
+        ...mapGetters({
+            daysLeft: "Subscription/daysLeft"
+        }),
+        selectedPlan() {
+            return this.plans.find(subcription => subcription.stripe_plan == this.planData["stripe_plan"]);
+        }
     },
-    watch:{
-        showBilligInfo(current, oldVal){
-            if(oldVal == true){
+    watch: {
+        showBilligInfo(current, previous) {
+            if (previous == true) {
                 this.planData.stripe_plan = this.defaultCompany.subscription.stripe_plan;
                 this.planData.stripe_id = this.defaultCompany.subscription.stripe_id;
             }
         }
     },
     beforeRouteLeave(to, from, next) {
-        if( this.showBilligInfo){
+        if (this.showBilligInfo) {
             this.$refs.creditCard.clear();
         }
+
         next();
     },
-    created(){
+    created() {
         this.initialize();
-        if (this.subscriptionHasEnded) {
+
+        if (this.daysLeft < 0) {
             this.showBilligInfo = true;
         }
     },
@@ -372,37 +374,40 @@ export default {
                 });
             });
         },
-        handleAppPlans(response){
-            if(_.has(this.defaultCompany, "subscription")){
+        handleAppPlans(response) {
+            if (_.has(this.defaultCompany, "subscription")) {
                 this.planData.stripe_plan = this.defaultCompany.subscription.stripe_plan;
                 this.planData.stripe_id = this.defaultCompany.subscription.stripe_id;
                 // TODO get the payment frecuency
             }
+
             this.plans = response.data;
         },
         prepareData(jsonData) {
             let data = new FormData();
+
             Object.keys(jsonData).forEach((field) => {
                 data.append(field, jsonData[field]);
             });
+
             return data;
         },
         setCardToken(stripeTokenId = null) {
             this.planData.card_token = stripeTokenId;
         },
-        updateDefaultCompany(){
+        updateDefaultCompany() {
             const defaultCompany = this.$store.dispatch("Company/getData", null, { root: true });
             defaultCompany.then(res => this.$store.dispatch("Company/setData", res.data[0]));
         },
-        handleSubscription(plan){
-            if(this.subscriptionHasEnded || this.showBilligInfo){
+        handleSubscription(plan) {
+            if (this.daysLeft < 0 || this.showBilligInfo) {
                 this.planData["stripe_plan"] = plan.stripe_plan;
                 this.planData.stripe_id = plan.stripe_id;
             } else {
                 this.changePlan(plan, true);
             }
         },
-        changePlan(plan, showNotify = true){
+        changePlan(plan, showNotify = true) {
             return new Promise((resolve) => {
                 axios({
                     url: `/apps-plans/${plan.stripe_plan}`,
@@ -410,19 +415,23 @@ export default {
                 }).then(() => {
                     this.planData.stripe_plan = plan.stripe_plan;
                     this.planData.stripe_id = plan.stripe_id;
-                    if(showNotify){
+
+                    if (showNotify) {
                         this.updateDefaultCompany();
                         this.showSuccessNotify("Subscriptión updated successfully.");
                     }
-                }).catch((error) => this.showErrorNotify(error))
-                    .finally(() => resolve())
+                }).catch((error) => {
+                    this.showErrorNotify(error);
+                }).finally(() => {
+                    resolve();
+                });
             });
         },
-
-        verifyPlanPayment(){
-            if(this.errors.items.length){
+        verifyPlanPayment() {
+            if (this.errors.items.length) {
                 let verificationMessage = this.errors.items[0].msg;
                 let verificationTitle = `Please verify the ${this.errors.items[0].field}`;
+
                 this.$notify({
                     title: verificationTitle,
                     text: verificationMessage,
@@ -432,7 +441,7 @@ export default {
                 this.confirmPaymentUpdate();
             }
         },
-        confirmPaymentUpdate(){
+        confirmPaymentUpdate() {
             this.$validator.validate().then(result => {
                 if (result) {
                     this.$modal.show("basic-modal", {
@@ -456,13 +465,14 @@ export default {
                 }
             });
         },
-        async updatePlanPayment(){
+        async updatePlanPayment() {
             await this.changePlan(this.planData, false);
 
             const appPlan = {
                 ...this.planData,
                 ...this.address,
-                ...this.contact};
+                ...this.contact
+            };
 
             const data = this.prepareData(appPlan);
 
@@ -474,34 +484,38 @@ export default {
                 this. updateDefaultCompany();
                 this.$refs.creditCard.clear();
                 this.showSuccessNotify("Payment Informatión updated successfully.");
-            }).catch((error) => this.showErrorNotify(error))
+            }).catch((error) => {
+                this.showErrorNotify(error);
+            });
         },
-        showSuccessNotify(text = ""){
+        showSuccessNotify(text = "") {
             this.$notify({
                 title: "Success",
                 text,
                 type: "success"
             });
         },
-        showErrorNotify(error){
+        showErrorNotify(error) {
             this.$notify({
                 title: "Error",
                 text: error.response.data.errors.message,
                 type: "error"
             });
         },
-        displayBilligInfo(){
-            this.showBilligInfo = !this.showBilligInfo ;
+        toggleDisplayBilligInfo() {
+            this.showBilligInfo = !this.showBilligInfo;
         },
-        selectFrequency(frecuencyType, frecuency){
+        selectFrequency(frecuencyType, frecuency) {
             this.selectedFrecuency = frecuency;
             this.planData.payment_style = frecuencyType.toLowerCase();
         },
-        getFormDefaultData(){
+        getFormDefaultData() {
             const formKeys = {
                 email : "email",
                 contact_first_name : "firstname",
-                contact_last_name : "lastname" };
+                contact_last_name : "lastname"
+            };
+
             this.contact.contact_company =  this.defaultCompany.name;
             Object.keys(formKeys).forEach(key=> this.contact[key] = this.userData[formKeys[key]]);
         }
@@ -513,8 +527,8 @@ export default {
 @import url(https://fonts.googleapis.com/css?family=Lato:400,100,100italic,300,300italic,400italic,700italic,700,900italic,900);
 @import url(https://fonts.googleapis.com/css?family=Raleway:400,100,200,300,500,600,700,800,900);
 @import url(https://fonts.googleapis.com/css?family=Raleway:400,100,200,300,500,600,700,800,900);
-.subscriptions-plans {
 
+.subscriptions-plans {
     @media(max-width: 768px) {
         .container {
             padding-left: 5px;
@@ -547,8 +561,6 @@ export default {
                 }
             }
         }
-
-
 
         .contact, .address {
             .card-block {
@@ -596,116 +608,115 @@ export default {
     }
 
     /*PRICE COLOR CODE START*/
-    .generic_price_table .generic_content{
+    .generic_price_table .generic_content {
         background-color: #fff;
     }
 
-    .generic_price_table .generic_content .generic_head_price{
+    .generic_price_table .generic_content .generic_head_price {
         background-color: #f6f6f6;
     }
 
-    .generic_price_table .generic_content .generic_head_price .generic_head_content .head_bg{
+    .generic_price_table .generic_content .generic_head_price .generic_head_content .head_bg {
         border-color: #e4e4e4 rgba(0, 0, 0, 0) rgba(0, 0, 0, 0) #e4e4e4;
     }
 
-    .generic_price_table .generic_content .generic_head_price .generic_head_content .head span{
+    .generic_price_table .generic_content .generic_head_price .generic_head_content .head span {
         color: #525252;
     }
 
-    .generic_price_table .generic_content .generic_head_price .generic_price_tag .price .sign{
+    .generic_price_table .generic_content .generic_head_price .generic_price_tag .price .sign {
         color: #414141;
     }
 
-    .generic_price_table .generic_content .generic_head_price .generic_price_tag .price .currency{
+    .generic_price_table .generic_content .generic_head_price .generic_price_tag .price .currency {
         color: #414141;
     }
 
-    .generic_price_table .generic_content .generic_head_price .generic_price_tag .price .cent{
+    .generic_price_table .generic_content .generic_head_price .generic_price_tag .price .cent {
         color: #414141;
     }
 
-    .generic_price_table .generic_content .generic_head_price .generic_price_tag .month{
+    .generic_price_table .generic_content .generic_head_price .generic_price_tag .month {
         color: #414141;
     }
 
-    .generic_price_table .generic_content .generic_feature_list ul li{
+    .generic_price_table .generic_content .generic_feature_list ul li {
         color: #a7a7a7;
     }
 
-    .generic_price_table .generic_content .generic_feature_list ul li span{
+    .generic_price_table .generic_content .generic_feature_list ul li span {
         color: #414141;
     }
-    .generic_price_table .generic_content .generic_feature_list ul li:hover{
+    .generic_price_table .generic_content .generic_feature_list ul li:hover {
         background-color: #E4E4E4;
         border-left: 5px solid var(--base-color);
     }
 
-    .generic_price_table .generic_content .generic_price_btn a{
+    .generic_price_table .generic_content .generic_price_btn a {
         border: 1px solid var(--base-color);
         color: var(--base-color);
         cursor: pointer;
     }
 
-    .generic_price_table .generic_content .generic_price_btn.cancel a {
+    .generic_price_table .generic_content .generic_price_btn.cancel a  {
         border: 1px solid #f55753;
         color: #f55753 !important;
         background-color: transparent !important;
     }
 
     .generic_price_table .generic_content.active .generic_head_price .generic_head_content .head_bg,
-    .generic_price_table .generic_content:hover .generic_head_price .generic_head_content .head_bg{
+    .generic_price_table .generic_content:hover .generic_head_price .generic_head_content .head_bg {
         border-color: var(--base-color) rgba(0, 0, 0, 0) rgba(0, 0, 0, 0) var(--base-color);
         color: #fff;
     }
 
     .generic_price_table .generic_content:hover .generic_head_price .generic_head_content .head span,
-    .generic_price_table .generic_content.active .generic_head_price .generic_head_content .head span{
+    .generic_price_table .generic_content.active .generic_head_price .generic_head_content .head span {
         color: #fff;
     }
 
     .generic_price_table .generic_content:hover .generic_price_btn a,
-    .generic_price_table .generic_content.active .generic_price_btn a{
+    .generic_price_table .generic_content.active .generic_price_btn a {
         background-color: var(--base-color);
         color: #fff;
     }
-    .generic_price_table{
+    .generic_price_table {
         // margin: 50px 0 50px 0;
         padding: 50px 0;
         font-family: 'Raleway', sans-serif;
     }
-    .row .table{
+    .row .table {
         padding: 28px 0;
     }
 
     /*PRICE BODY CODE START*/
-
-    .generic_price_table .generic_content{
+    .generic_price_table .generic_content {
         overflow: hidden;
         position: relative;
         text-align: center;
     }
 
-    .generic_price_table .generic_content .generic_head_price {
+    .generic_price_table .generic_content .generic_head_price  {
         margin: 0 0 20px 0;
     }
 
-    .generic_price_table .generic_content .generic_head_price .generic_head_content{
+    .generic_price_table .generic_content .generic_head_price .generic_head_content {
         margin: 0 0 30px 0;
     }
 
-    .generic_price_table .generic_content .generic_head_price .generic_head_content .head_bg{
+    .generic_price_table .generic_content .generic_head_price .generic_head_content .head_bg {
         border-style: solid;
         border-width: 90px 0 0 2000px;
         position: absolute;
     }
 
-    .generic_price_table .generic_content .generic_head_price .generic_head_content .head{
+    .generic_price_table .generic_content .generic_head_price .generic_head_content .head {
         padding-top: 40px;
         position: relative;
         z-index: 1;
     }
 
-    .generic_price_table .generic_content .generic_head_price .generic_head_content .head span{
+    .generic_price_table .generic_content .generic_head_price .generic_head_content .head span {
         font-family: "Raleway",sans-serif;
         font-size: 28px;
         font-weight: 400;
@@ -715,15 +726,15 @@ export default {
         text-transform: uppercase;
     }
 
-    .generic_price_table .generic_content .generic_head_price .generic_price_tag{
+    .generic_price_table .generic_content .generic_head_price .generic_price_tag {
         padding: 0 0 20px;
     }
 
-    .generic_price_table .generic_content .generic_head_price .generic_price_tag .price{
+    .generic_price_table .generic_content .generic_head_price .generic_price_tag .price {
         display: block;
     }
 
-    .generic_price_table .generic_content .generic_head_price .generic_price_tag .price .sign{
+    .generic_price_table .generic_content .generic_head_price .generic_price_tag .price .sign {
         display: inline-block;
         font-family: "Lato",sans-serif;
         font-size: 28px;
@@ -731,7 +742,7 @@ export default {
         vertical-align: middle;
     }
 
-    .generic_price_table .generic_content .generic_head_price .generic_price_tag .price .currency{
+    .generic_price_table .generic_content .generic_head_price .generic_price_tag .price .currency {
         font-family: "Lato",sans-serif;
         font-size: 60px;
         font-weight: 300;
@@ -741,7 +752,7 @@ export default {
         vertical-align: middle;
     }
 
-    .generic_price_table .generic_content .generic_head_price .generic_price_tag .price .cent{
+    .generic_price_table .generic_content .generic_head_price .generic_price_tag .price .cent {
         display: inline-block;
         font-family: "Lato",sans-serif;
         font-size: 24px;
@@ -749,7 +760,7 @@ export default {
         vertical-align: bottom;
     }
 
-    .generic_price_table .generic_content .generic_head_price .generic_price_tag .month{
+    .generic_price_table .generic_content .generic_head_price .generic_price_tag .month {
         font-family: "Lato",sans-serif;
         font-size: 18px;
         font-weight: 400;
@@ -757,19 +768,19 @@ export default {
         vertical-align: bottom;
     }
 
-    .generic_price_table .generic_content .generic_feature_list ul{
+    .generic_price_table .generic_content .generic_feature_list ul {
         list-style: none;
         padding: 0;
         margin: 0;
     }
 
-    .generic_price_table .generic_content .generic_feature_list ul li{
+    .generic_price_table .generic_content .generic_feature_list ul li {
         font-family: "Lato",sans-serif;
         font-size: 18px;
         padding: 15px 0;
         transition: all 0.3s ease-in-out 0s;
     }
-    .generic_price_table .generic_content .generic_feature_list ul li:hover{
+    .generic_price_table .generic_content .generic_feature_list ul li:hover {
         transition: all 0.3s ease-in-out 0s;
         -moz-transition: all 0.3s ease-in-out 0s;
         -ms-transition: all 0.3s ease-in-out 0s;
@@ -777,14 +788,14 @@ export default {
         -webkit-transition: all 0.3s ease-in-out 0s;
 
     }
-    .generic_price_table .generic_content .generic_feature_list ul li .fa{
+    .generic_price_table .generic_content .generic_feature_list ul li .fa {
         padding: 0 10px;
     }
-    .generic_price_table .generic_content .generic_price_btn{
+    .generic_price_table .generic_content .generic_price_btn {
         margin: 20px 0 32px;
     }
 
-    .generic_price_table .generic_content .generic_price_btn a{
+    .generic_price_table .generic_content .generic_price_btn a {
         border-radius: 0;
         display: inline-block;
         font-family: "Lato",sans-serif;
@@ -805,106 +816,115 @@ export default {
     .generic_price_table .generic_content .price,
     .generic_price_table .generic_content:hover .price,
     .generic_price_table .generic_content .generic_price_btn a,
-    .generic_price_table .generic_content:hover .generic_price_btn a{
+    .generic_price_table .generic_content:hover .generic_price_btn a {
         transition: all 0.3s ease-in-out 0s;
         -moz-transition: all 0.3s ease-in-out 0s;
         -ms-transition: all 0.3s ease-in-out 0s;
         -o-transition: all 0.3s ease-in-out 0s;
         -webkit-transition: all 0.3s ease-in-out 0s;
     }
-    @media (max-width: 320px) {
-    }
 
     @media (max-width: 767px) {
-        .generic_price_table .generic_content{
+        .generic_price_table .generic_content {
             margin-bottom:25px;
         }
     }
+
     @media (min-width: 768px) and (max-width: 991px) {
-        .generic_price_table .col-md-3{
+        .generic_price_table .col-md-3 {
             float:left;
             width:50%;
         }
 
-        .generic_price_table .col-md-4{
+        .generic_price_table .col-md-4 {
             float:left;
             width:50%;
         }
 
-        .generic_price_table .generic_content{
+        .generic_price_table .generic_content {
             margin-bottom:25px;
         }
     }
-    @media (min-width: 992px) and (max-width: 1199px) {
-    }
-    @media (min-width: 1200px) {
-    }
-    .generic_price_table_home{
+
+    .generic_price_table_home {
         font-family: 'Raleway', sans-serif;
     }
 
     .text-center h1,
-    .text-center h1 a{
+    .text-center h1 a {
         color: #7885CB;
         font-size: 30px;
         font-weight: 300;
         text-decoration: none;
     }
-    .demo-pic{
+
+    .demo-pic {
         margin: 0 auto;
     }
-    .demo-pic:hover{
+
+    .demo-pic:hover {
         opacity: 0.7;
     }
 
-    .generic_price_table_home ul{
+    .generic_price_table_home ul {
         margin: 0 auto;
         padding: 0;
         list-style: none;
         display: table;
     }
-    .generic_price_table_home li{
+
+    .generic_price_table_home li {
         float: left;
     }
-    .generic_price_table_home li + li{
+
+    .generic_price_table_home li + li {
         margin-left: 10px;
         padding-bottom: 10px;
     }
-    .generic_price_table_home li a{
+
+    .generic_price_table_home li a {
         display: block;
         width: 50px;
         height: 50px;
         font-size: 0px;
     }
-    .generic_price_table_home .blue{
+
+    .generic_price_table_home .blue {
         background: #3498DB;
         transition: all 0.3s ease-in-out 0s;
     }
-    .generic_price_table_home .emerald{
+
+    .generic_price_table_home .emerald {
         background: var(--base-color);
         transition: all 0.3s ease-in-out 0s;
     }
-    .generic_price_table_home .grey{
+
+    .generic_price_table_home .grey {
         background: #7F8C8D;
         transition: all 0.3s ease-in-out 0s;
     }
-    .generic_price_table_home .midnight{
+
+    .generic_price_table_home .midnight {
         background: #34495E;
         transition: all 0.3s ease-in-out 0s;
     }
-    .generic_price_table_home .orange{
+
+    .generic_price_table_home .orange {
         background: #E67E22;
         transition: all 0.3s ease-in-out 0s;
     }
-    .generic_price_table_home .purple{
+
+    .generic_price_table_home .purple {
         background: #9B59B6;
         transition: all 0.3s ease-in-out 0s;
     }
-    .generic_price_table_home .red{
+
+    .generic_price_table_home .red {
         background: #E74C3C;
         transition:all 0.3s ease-in-out 0s;
     }
-    .generic_price_table_home .turquoise{
+
+    .generic_price_table_home .turquoise {
         background: #1ABC9C;
         transition: all 0.3s ease-in-out 0s;
     }
@@ -916,19 +936,21 @@ export default {
     .generic_price_table_home .orange:hover,
     .generic_price_table_home .purple:hover,
     .generic_price_table_home .red:hover,
-    .generic_price_table_home .turquoise:hover{
+    .generic_price_table_home .turquoise:hover {
         border-bottom-left-radius: 50px;
         border-bottom-right-radius: 50px;
         border-top-left-radius: 50px;
         border-top-right-radius: 50px;
         transition: all 0.3s ease-in-out 0s;
     }
-    .generic_price_table_home .divider{
+
+    .generic_price_table_home .divider {
         border-bottom: 1px solid #ddd;
         margin-bottom: 20px;
         padding: 20px;
     }
-    .generic_price_table_home .divider span{
+
+    .generic_price_table_home .divider span {
         width: 100%;
         display: table;
         height: 2px;
@@ -936,7 +958,8 @@ export default {
         margin: 50px auto;
         line-height: 2px;
     }
-    .generic_price_table_home .itemname{
+
+    .generic_price_table_home .itemname {
         text-align: center;
         font-size: 50px ;
         padding: 50px 0 20px ;
@@ -945,25 +968,29 @@ export default {
         text-decoration: none;
         font-weight: 300;
     }
-    .generic_price_table_home .itemnametext{
+
+    .generic_price_table_home .itemnametext {
         text-align: center;
         font-size: 20px;
         padding-top: 5px;
         text-transform: uppercase;
         display: inline-block;
     }
-    .generic_price_table_home .footer{
+
+    .generic_price_table_home .footer {
         padding:40px 0;
     }
 
-    .price-heading{
+    .price-heading {
         text-align: center;
     }
-    .price-heading h1{
+
+    .price-heading h1 {
         color: #666;
         margin: 0;
         padding: 0 0 50px 0;
     }
+
     .demo-button {
         background-color: #333333;
         color: #ffffff;
@@ -980,7 +1007,8 @@ export default {
         text-align: center;
         text-transform: uppercase;
     }
-    .bottom_btn{
+
+    .bottom_btn {
         background-color: #333333;
         color: #ffffff;
         display: table;
@@ -990,18 +1018,19 @@ export default {
         text-align: center;
         text-transform: uppercase;
     }
-    .demo-button:hover{
+
+    .demo-button:hover {
         background-color: #666;
         color: #FFF;
         text-decoration:none;
 
     }
-    .bottom_btn:hover{
+
+    .bottom_btn:hover {
         background-color: #666;
         color: #FFF;
         text-decoration:none;
     }
-
 }
 
 </style>
