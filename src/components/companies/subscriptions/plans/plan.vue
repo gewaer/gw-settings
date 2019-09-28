@@ -50,12 +50,14 @@
         </div>
         <div :style="{ opacity : isSelected ? '1' : '0' }" class="selected-plan-details">
             <h5>This is your current plan</h5>
-            <p>Your membership will automatically renew on 06/28/20</p>
+            <p v-if="isPaid">Your membership will automatically renew on 06/28/20</p>
         </div>
     </div>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
     name: "Plan",
     filters: {
@@ -84,8 +86,12 @@ export default {
             required: true,
             type: Object
         }
+    },
+    computed: {
+        ...mapGetters({
+            isPaid: "Subscription/isPaid"
+        })
     }
-
 }
 </script>
 

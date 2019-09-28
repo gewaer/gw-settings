@@ -3,13 +3,15 @@
         <div
             v-for="plan in plans"
             :key="plan.stripe_plan"
-            class="col-12 col-lg-6">
+            class="col-12 col-lg-6"
+        >
             <plan
                 :plan="plan"
                 :selected-frecuency="selectedFrecuency"
                 :is-selected="selectedPlan == plan.stripe_plan"
-                :class="{ 'is-not-selected' : (selectedPlan != '') && (selectedPlan != plan.stripe_plan) }"
-                @changeplan="changePlan"/>
+                :class="{ 'is-not-selected': (selectedPlan != '') && (selectedPlan != plan.stripe_plan) }"
+                @changeplan="changePlan"
+            />
         </div>
     </div>
 </template>

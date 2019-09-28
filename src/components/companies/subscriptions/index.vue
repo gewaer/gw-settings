@@ -11,12 +11,16 @@
                         :show-modal="!showBilligInfo"
                         @changesubscription="handleSubscription"
                     />
-                    <p class="text-center mt-2 mb-4">Our prices exclude VAT, GST, or any other taxes that may be applicable in your region.</p>
+                    <p class="text-center mt-2 mb-4">
+                        Our prices exclude VAT, GST, or any other taxes that may be applicable in your region.
+                    </p>
                 </section>
                 <div v-if="plans.length" class="container">
                     <div class="row">
                         <div class="col">
-                            <button class="btn btn-block btn-primary" @click="toggleDisplayBilligInfo">{{ showBilligInfo ? 'Hide' : 'Show' }} Billing Details</button>
+                            <button class="btn btn-block btn-primary" @click="toggleDisplayBilligInfo">
+                                {{ showBilligInfo ? 'Hide' : 'Show' }} Billing Details
+                            </button>
                         </div>
                     </div>
                     <div v-if="showBilligInfo" class="row mt-4">
@@ -26,7 +30,8 @@
                                     :plan="selectedPlan"
                                     :selected-frecuency="selectedFrecuency.type"
                                     show-redeem
-                                    @selectbillingtype="selectFrequency"/>
+                                    @selectbillingtype="selectFrequency"
+                                />
                                 <order-details
                                     :plan="selectedPlan"
                                     :frecuency="selectedFrecuency"
