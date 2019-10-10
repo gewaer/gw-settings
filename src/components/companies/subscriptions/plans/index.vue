@@ -10,7 +10,8 @@
                 :selected-frecuency="selectedFrecuency"
                 :is-selected="selectedPlan == plan.stripe_plan"
                 :class="{ 'is-not-selected': (selectedPlan != '') && (selectedPlan != plan.stripe_plan) }"
-                @changeplan="changePlan"
+                @cancel-plan="(plan) => $emit('cancel-subscription', plan)"
+                @change-plan="changePlan"
             />
         </div>
     </div>
@@ -27,8 +28,8 @@ export default {
     props: {
         plans: {
             type: Array,
-            default(){
-                return []
+            default() {
+                return [];
             }
         },
         selectedPlan: {
@@ -46,13 +47,13 @@ export default {
     },
     methods: {
         changePlan(plan){
-            if(this.showModal){
+            if (this.showModal) {
                 this.changeSubscription(plan)
-            }else{
-                this.$emit("changesubscription", plan);
+            } else {
+                this.$emit("change-subscription", plan);
             }
         },
-        changeSubscription(plan){
+        changeSubscription(plan) {
             this.$modal.show("basic-modal", {
                 title:"Change Subcription!",
                 message:`Did you want to Update your Subcription?`,
@@ -61,7 +62,7 @@ export default {
                     class: "btn-primary",
                     handler: () => {
                         this.$modal.hide("basic-modal");
-                        this.$emit("changesubscription", plan);
+                        this.$emit("change-subscription", plan);
                     }
                 }, {
                     title: "Cancel",

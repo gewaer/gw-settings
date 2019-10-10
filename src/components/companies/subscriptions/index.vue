@@ -9,7 +9,8 @@
                         :selected-plan="planData.stripe_plan"
                         :selected-frecuency="selectedFrecuency"
                         :show-modal="!showBilligInfo"
-                        @changesubscription="handleSubscription"
+                        @cancel-subscription="cancelSubscription"
+                        @change-subscription="handleSubscription"
                     />
                     <p class="text-center mt-2 mb-4">
                         Our prices exclude VAT, GST, or any other taxes that may be applicable in your region.
@@ -404,6 +405,16 @@ export default {
             const defaultCompany = this.$store.dispatch("Company/getData", null, { root: true });
             defaultCompany.then(res => this.$store.dispatch("Company/setData", res.data[0]));
         },
+        cancelSubscription(plan) {
+            axios({
+                url: `/apps-plans/${plan.stripe_plan}`,
+                method: "DELETE"
+            }).then(() => {
+                this.updateDefaultCompany();
+            }).catch((error) => {
+                this.showErrorNotify(error);
+            });
+        },
         handleSubscription(plan) {
             if (this.daysLeft < 0 || this.showBilligInfo) {
                 this.planData["stripe_plan"] = plan.stripe_plan;
@@ -669,6 +680,12 @@ export default {
         background-color: transparent !important;
     }
 
+    .generic_price_table .generic_content .generic_price_btn.re-subscribe a  {
+        border: 1px solid #319c21;
+        color: #319c21 !important;
+        background-color: transparent !important;
+    }
+
     .generic_price_table .generic_content.active .generic_head_price .generic_head_content .head_bg,
     .generic_price_table .generic_content:hover .generic_head_price .generic_head_content .head_bg {
         border-color: var(--base-color) rgba(0, 0, 0, 0) rgba(0, 0, 0, 0) var(--base-color);
@@ -797,7 +814,7 @@ export default {
         padding: 0 10px;
     }
     .generic_price_table .generic_content .generic_price_btn {
-        margin: 20px 0 32px;
+        margin: 20px 0 20px;
     }
 
     .generic_price_table .generic_content .generic_price_btn a {

@@ -32,19 +32,27 @@
                         v-for="planSetting in plan.settings"
                         :key="planSetting.key"
                     >
-                        <span> {{ planSetting.value }}</span> {{ planSetting.key | formatSetting }}
+                        <span> {{ planSetting.value }}</span>
+                        {{ planSetting.key | formatSetting }}
                     </li>
                 </ul>
             </div>
             <!--//FEATURE LIST END-->
 
             <!--BUTTON START-->
-            <div v-if="isSelected" class="generic_price_btn cancel clearfix">
-                <a href="">Cancel</a>
-            </div>
-            <div v-else class="generic_price_btn clearfix">
-                <a @click.prevent.stop="() => $emit('changeplan', plan)" >Try {{ plan.name }}</a>
-            </div>
+            <template v-if="isSelected">
+                <div v-if="!isActive || isCancelled" class="generic_price_btn re-subscribe clearfix">
+                    <a href="#" @click.prevent.stop="() => $emit('change-plan', plan)">Re-Subscribe</a>
+                </div>
+                <div v-else class="generic_price_btn cancel clearfix">
+                    <a href="#" @click.prevent.stop="() => $emit('cancel-plan', plan)">Cancel</a>
+                </div>
+            </template>
+            <template v-else>
+                <div class="generic_price_btn clearfix">
+                    <a @click.prevent.stop="() => $emit('change-plan', plan)">Try {{ plan.name }}</a>
+                </div>
+            </template>
             <!--//BUTTON END-->
 
         </div>
@@ -89,6 +97,8 @@ export default {
     },
     computed: {
         ...mapGetters({
+            isActive: "Subscription/isActive",
+            isCancelled: "Subscription/isCancelled",
             isPaid: "Subscription/isPaid"
         })
     }
@@ -108,16 +118,22 @@ export default {
         padding: 20px;
 
         h5 {
+            border-bottom: none;
             color: white;
             justify-content: center;
+            padding-bottom: 0;
+            margin-bottom: 0;
             margin-top: 0;
         }
 
         p {
-            margin-bottom: 0;
-            font-size: 16px;
-            text-align: center;
+            border-top: 1px solid rgba(230, 230, 230, 0.7);
             color: white;
+            font-size: 16px;
+            margin-bottom: 0;
+            margin-top: 10px;
+            padding-top: 10px;
+            text-align: center;
         }
     }
 }
