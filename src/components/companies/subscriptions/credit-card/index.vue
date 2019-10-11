@@ -91,7 +91,7 @@
 </template>
 
 <script>
-
+import { mapState } from "vuex";
 import { CardNumber, CardExpiry, CardCvc, PostalCode, createToken } from "vue-stripe-elements-plus";
 import creditcardNetworks from "./card-networks";
 
@@ -106,7 +106,6 @@ export default {
     },
     data() {
         return {
-            stripeKey: process.env.VUE_APP_STRIPE_PUBLISHABLE_KEY,
             complete: false,
             isComplete: {
                 cardExpiry: false,
@@ -129,6 +128,11 @@ export default {
             },
             cardBrand: "unknown"
         }
+    },
+    computed: {
+        ...mapState({
+            stripeKey: state => state.Application.env.VUE_APP_STRIPE_PUBLISHABLE_KEY
+        })
     },
     watch: {
         isComplete: {
