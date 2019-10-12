@@ -493,7 +493,7 @@ export default {
             axios({
                 url: `/apps-plans/${this.planData.stripe_plan}/method`,
                 method: "PUT",
-                appPlan
+                data: appPlan
             }).then(() => {
                 this. updateDefaultCompany();
                 this.$refs.creditCard.clear();
