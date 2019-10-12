@@ -490,12 +490,10 @@ export default {
                 ...this.contact
             };
 
-            const data = this.prepareData(appPlan);
-
             axios({
                 url: `/apps-plans/${this.planData.stripe_plan}/method`,
                 method: "PUT",
-                data
+                appPlan
             }).then(() => {
                 this. updateDefaultCompany();
                 this.$refs.creditCard.clear();
