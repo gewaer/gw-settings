@@ -493,7 +493,7 @@ export default {
             const data = this.prepareData(appPlan);
 
             axios({
-                url: "/apps-plans",
+                url: `/apps-plans/${this.planData.stripe_plan}/method`,
                 method: "PUT",
                 data
             }).then(() => {
