@@ -20,7 +20,7 @@
                     pagination-path=""
                 >
                     <template slot="actions" slot-scope="props">
-                        <button v-if="!isGlobal(props.rowData)" class="btn btn-complete m-l-5" @click="editRole(props.rowData)">
+                        <button v-if="!isGlobal(props.rowData)" class="btn btn-primary m-l-5" @click="editRole(props.rowData)">
                             <i class="fa fa-edit" aria-hidden="true"/>
                         </button>
                         <button class="btn btn-primary m-l-5" title="clone role" @click="cloneRole(props.rowData)">

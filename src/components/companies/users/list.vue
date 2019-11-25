@@ -8,7 +8,7 @@
                     New User Invite
                 </router-link>
             </h5>
-            <ul class="nav nav-tabs nav-tabs-simple">
+            <ul class="nav nav-tabs nav-horizontal">
                 <li class="nav-item">
                     <a
                         :class="{ active: listToShow == 'usersList' }"
@@ -41,7 +41,7 @@
                     </template>
 
                     <template slot="actions" slot-scope="props">
-                        <button class="btn btn-complete m-l-5" @click="editUser(props.rowData.id)">
+                        <button class="btn btn-primary m-l-5" @click="editUser(props.rowData.id)">
                             <i class="fa fa-edit" aria-hidden="true"/>
                         </button>
                         <button
