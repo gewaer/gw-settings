@@ -4,7 +4,7 @@
             <div class="col-12 m-b-20">
                 <h5> {{ title }}</h5>
                 <div class="row">
-                    <div class="col-6 col-md">
+                    <div class="col-12 col-md">
                         <div class="form-group form-group-default required">
                             <label>Name</label>
                             <input
@@ -59,7 +59,7 @@
                             <span class="text-danger"> {{ errors.first('phone') }}</span>
                         </div>
                     </div>
-                    <div class="col-6 m-b-20">
+                    <div class="col-12 col-md m-b-20">
                         <div class="col-12 col-md">
                             <label>Language </label>
                             <multiselect
@@ -86,7 +86,7 @@
                 </div>
             </div>
             <div class="col-12 col-xl d-flex justify-content-end mt-2">
-                <button :disabled="isLoading" class="btn btn-danger m-r-10" @click="cancel()">Cancel</button>
+                <button :disabled="isLoading" class="btn btn-danger mr-2" @click="cancel()">Cancel</button>
                 <button :disabled="isLoading || !hasChanged" class="btn btn-primary" @click="save()">Save</button>
             </div>
         </div>

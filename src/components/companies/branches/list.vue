@@ -19,17 +19,19 @@
                     pagination-path=""
                 >
                     <template slot="actions" slot-scope="props">
-                        <button class="btn btn-primary m-l-5" @click="editBranch(props.rowData.id)">
-                            <i class="fa fa-edit" aria-hidden="true"/>
-                        </button>
-                        <button
-                            :class="{ 'disable-element': isCurrentBranch(props.rowData.id) }"
-                            :disabled="isCurrentBranch(props.rowData.id)"
-                            class="btn btn-danger m-l-5"
-                            @click="confirmDelete(props.rowData.id)"
-                        >
-                            <i class="fa fa-trash" aria-hidden="true" />
-                        </button>
+                        <div class="d-flex align-items-center justify-content-end">
+                            <button class="btn btn-primary m-l-5" @click="editBranch(props.rowData.id)">
+                                <i class="fa fa-edit" aria-hidden="true"/>
+                            </button>
+                            <button
+                                :class="{ 'disable-element': isCurrentBranch(props.rowData.id) }"
+                                :disabled="isCurrentBranch(props.rowData.id)"
+                                class="btn btn-danger m-l-5"
+                                @click="confirmDelete(props.rowData.id)"
+                            >
+                                <i class="fa fa-trash" aria-hidden="true" />
+                            </button>
+                        </div>
                     </template>
                 </vuetable>
             </div>

@@ -109,7 +109,7 @@
             </div>
 
             <div class="col-12 col-xl d-flex justify-content-end mt-2">
-                <button class="btn btn-danger m-r-10" @click="teamsList">Cancel</button>
+                <button class="btn btn-danger mr-2" @click="teamsList">Cancel</button>
                 <button class="btn btn-primary" @click="save">Save</button>
             </div>
         </div>

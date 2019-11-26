@@ -62,10 +62,8 @@
                 </div>
                 <div class="row">
                     <div class="col-12 col-xl d-flex justify-content-end mt-2">
-                        <div class="col-12 col-xl d-flex justify-content-end mt-2">
-                            <button :disabled="isLoading" class="btn btn-danger m-r-10" @click="triggerCancel">Cancel</button>
-                            <button :disabled="isLoading" class="btn btn-primary" @click="verifyFields">Save</button>
-                        </div>
+                        <button :disabled="isLoading" class="btn btn-danger mr-2" @click="triggerCancel">Cancel</button>
+                        <button :disabled="isLoading" class="btn btn-primary" @click="verifyFields">Save</button>
                     </div>
                 </div>
             </div>
