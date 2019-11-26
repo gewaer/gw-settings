@@ -1,6 +1,6 @@
 <template>
     <container-template>
-        <tabs-menu slot="tab-menu"/>
+        <tabs-menu slot="tab-menu" />
         <div slot="tab-content" class="row">
             <div class="col">
                 <h5>
@@ -21,7 +21,8 @@
                         <template slot="actions" slot-scope="props">
                             <button
                                 class="btn btn-danger m-l-5"
-                                @click="confirmDelete(props.rowData)">
+                                @click="confirmDelete(props.rowData)"
+                            >
                                 <i class="fa fa-trash" aria-hidden="true" />
                             </button>
                         </template>
@@ -93,7 +94,7 @@ export default {
             }
 
             this.isLoading = true;
-            let data = { ...device, app: this.appsId };
+            const data = { ...device, app: this.appsId };
 
             axios({
                 url: `users/${this.userData.id}/devices/${device.source_users_id_text}/detach`,

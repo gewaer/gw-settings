@@ -15,25 +15,27 @@
                         :http-fetch="getTableData"
                         api-url="/email-templates"
                         class="table table-hover table-condensed"
-                        pagination-path="">
+                        pagination-path=""
+                    >
                         <template slot="actions" slot-scope="props">
                             <button
                                 v-if="props.rowData.companies_id == defaultCompany.id"
                                 class="btn btn-complete m-l-5"
                                 title="edit template"
-                                @click="editTemplate(props.rowData)">
-                                <i
-                                    class="fa fa-edit"
-                                    aria-hidden="true" /></button>
+                                @click="editTemplate(props.rowData)"
+                            >
+                                <i class="fa fa-edit" aria-hidden="true" />
+                            </button>
                             <button
                                 v-if="props.rowData.companies_id == defaultCompany.id"
                                 class="btn btn-danger m-l-5"
                                 title="delete template"
-                                @click="confirmDeleteTemplate(props.rowData)">
+                                @click="confirmDeleteTemplate(props.rowData)"
+                            >
                                 <i class="fa fa-trash" aria-hidden="true" />
                             </button>
                             <button class="btn btn-complete m-l-5" title="clone template" @click="cloneTemplate(props.rowData)">
-                                <i class="fa fa-copy" aria-hidden="true"/>
+                                <i class="fa fa-copy" aria-hidden="true" />
                             </button>
                         </template>
                     </vuetable>
@@ -154,5 +156,4 @@ export default {
         }
     }
 }
-
 </script>

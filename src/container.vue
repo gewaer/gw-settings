@@ -1,11 +1,13 @@
 <template>
     <div class="apps-settings">
-        <h4 class="section-title p-l-10">Settings</h4>
+        <h4 class="section-title p-l-10">
+            Settings
+        </h4>
         <div class="card flex-md-row">
-            <slot name="tab-menu"/>
+            <slot name="tab-menu" />
             <div class="tab-content bg-white">
                 <div class="tab-pane active">
-                    <slot name="tab-content"/>
+                    <slot name="tab-content" />
                 </div>
             </div>
         </div>

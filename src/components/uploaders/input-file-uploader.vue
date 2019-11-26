@@ -1,5 +1,5 @@
 <template>
-    <div :id="uppyId" >
+    <div :id="uppyId">
         <button
             :id="buttonInstanceId"
             :class="['uppy-container','btn btn-primary']"

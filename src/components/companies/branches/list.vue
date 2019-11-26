@@ -1,6 +1,6 @@
 <template>
     <container-template>
-        <tabs-menu slot="tab-menu"/>
+        <tabs-menu slot="tab-menu" />
         <div slot="tab-content" class="row">
             <div class="col">
                 <h5>
@@ -21,7 +21,7 @@
                     >
                         <template slot="actions" slot-scope="props">
                             <button class="btn btn-complete m-l-5" @click="editBranch(props.rowData.id)">
-                                <i class="fa fa-edit" aria-hidden="true"/>
+                                <i class="fa fa-edit" aria-hidden="true" />
                             </button>
                             <button
                                 :class="{ 'disable-element': isCurrentBranch(props.rowData.id) }"
