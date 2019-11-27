@@ -209,12 +209,12 @@ export default {
                         access.allowed = "1";
                         access.role_name = "";
                     });
-                    role = {name: "", description: ""}
+                    role = { name: "", description: "" }
                 } else {
                     role = await this.getRoleData(roleId);
                 }
 
-                let accessesTemplate = await this.getAccess(role);
+                const accessesTemplate = await this.getAccess(role);
                 let accessList = this.mergeAccesses(data, accessesTemplate);
                 accessList = this.formatAccesses(accessList);
                 this.formatRole(accessList, role);
@@ -223,29 +223,33 @@ export default {
         getAccess(role) {
             return axios({
                 url: "/permissions-resources-access"
-            }).then(({data}) => {
+            }).then(({ data }) => {
                 return this.formatAccesses(data, role);
-            })
+            });
         },
         mergeAccesses(accessList, accessesTemplate) {
             accessesTemplate.forEach(access => {
                 const localAccess = this.findLocalAccess(accessList, access);
+
                 if (!localAccess) {
-                    accessList.push(access)
+                    accessList.push(access);
                 }
-            })
+            });
+
             return accessList;
         },
         findLocalAccess(accessList, access) {
-            return  accessList.find(permission => access.access_name == permission.access_name &&  access.resources_name == permission.resources_name);
+            return accessList.find((permission) => {
+                return access.access_name == permission.access_name && access.resources_name == permission.resources_name;
+            });
         },
         formatRole(accessList, role) {
-            this.accessListData =  _.sortBy(accessList, ["resources_name", "access_name"]);
+            this.accessListData = _.sortBy(accessList, ["resources_name", "access_name"]);
             this.roleData = role;
             this.groupPermissions();
             this.checkSelectedGroups();
         },
-        formatAccesses(accesList, role ) {
+        formatAccesses(accesList, role) {
             return accesList.map(access => {
                 if (role) {
                     delete access.resources_id;
@@ -262,7 +266,7 @@ export default {
             this.accessListData.forEach(access => {
                 if (access.access_name != "*") {
                     if (!accessGroup[access.resources_name]) {
-                        accessGroup[access.resources_name] = {permissions: {[access.access_name]: access}};
+                        accessGroup[access.resources_name] = { permissions: { [access.access_name]: access } };
                     } else {
                         accessGroup[access.resources_name]["permissions"][access.access_name] = access;
                     }
@@ -301,12 +305,9 @@ export default {
             }
 
             if (this.errors.items.length) {
-                let verificationMessage = this.errors.items[0].msg;
-                let verificationTitle = `Please verify the ${this.errors.items[0].field}`;
-
                 this.$notify({
-                    title: verificationTitle,
-                    text: verificationMessage,
+                    title: this.errors.items[0].msg,
+                    text: `Please verify the ${this.errors.items[0].field}`,
                     type: "warn"
                 });
             } else {

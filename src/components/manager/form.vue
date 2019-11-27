@@ -2,60 +2,65 @@
     <container-template>
         <div slot="tab-content" class="row company-general-information">
             <div class="col-12 m-b-20">
-                <h5> {{ title }}</h5>
+                <h5>{{ title }}</h5>
                 <div class="row">
                     <div class="col-12 col-md">
                         <div class="form-group form-group-default required">
                             <label>Name</label>
                             <input
-                                v-validate="'required:true|min:2|alpha_spaces'"
                                 v-model="companyData.name"
+                                v-validate="'required:true|min:2|alpha_spaces'"
                                 class="form-control"
                                 type="text"
-                                name="name">
+                                name="name"
+                            >
                             <span class="text-danger"> {{ errors.first('name') }}</span>
                         </div>
                         <div class="form-group form-group-default required">
                             <label>Address</label>
                             <input
-                                v-validate="'required:true|min:2'"
                                 v-model="companyData.address"
+                                v-validate="'required:true|min:2'"
                                 class="form-control"
                                 type="text"
                                 data-vv-as="company address"
-                                name="company-address">
+                                name="company-address"
+                            >
                             <span class="text-danger"> {{ errors.first('company-address') }}</span>
                         </div>
                         <div class="form-group form-group-default required">
                             <label>Zip Code</label>
                             <input
-                                v-validate="'required:true|numeric|min:2'"
                                 v-model="companyData.zipcode"
+                                v-validate="'required:true|numeric|min:2'"
                                 class="form-control"
                                 type="text"
                                 data-vv-as="zip code"
-                                name="zipcode">
+                                name="zipcode"
+                            >
                             <span class="text-danger"> {{ errors.first('zipcode') }}</span>
                         </div>
                         <div class="form-group form-group-default">
                             <label>Email</label>
                             <input
-                                v-validate="'required|email'"
                                 v-model="companyData.email"
+                                v-validate="'required|email'"
                                 class="form-control"
                                 name="email"
-                                type="email">
+                                type="email"
+                            >
                             <span class="text-danger"> {{ errors.first('email') }}</span>
                         </div>
                         <div class="form-group form-group-default required">
                             <label>Phone</label>
                             <input
-                                v-validate="'required|numeric'"
                                 v-model="companyData.phone"
+                                v-validate="'required|numeric'"
                                 class="form-control"
                                 data-vv-as="phone number"
                                 name="phone"
-                                type="tel">
+                                type="tel"
+                            >
                             <span class="text-danger"> {{ errors.first('phone') }}</span>
                         </div>
                     </div>
@@ -94,7 +99,7 @@
 </template>
 
 <script>
-import {mapState} from "vuex";
+import { mapState } from "vuex";
 import generalMixins from "../../mixins/general";
 import vueRouterMixins from "../../mixins/vueRouterMixins";
 import ContainerTemplate from "../../container";

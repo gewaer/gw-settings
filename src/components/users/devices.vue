@@ -21,7 +21,8 @@
                         <div class="d-flex align-items-center justify-content-end">
                             <button
                                 class="btn btn-danger m-l-5"
-                                @click="confirmDelete(props.rowData)">
+                                @click="confirmDelete(props.rowData)"
+                            >
                                 <i class="fa fa-trash" aria-hidden="true" />
                             </button>
                         </div>
@@ -93,7 +94,7 @@ export default {
             }
 
             this.isLoading = true;
-            let data = { ...device, app: this.appsId };
+            const data = { ...device, app: this.appsId };
 
             axios({
                 url: `users/${this.userData.id}/devices/${device.source_users_id_text}/detach`,

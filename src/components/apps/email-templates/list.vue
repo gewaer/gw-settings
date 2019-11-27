@@ -15,7 +15,8 @@
                         :http-fetch="getTableData"
                         api-url="/email-templates"
                         class="table table-hover table-condensed"
-                        pagination-path="">
+                        pagination-path=""
+                    >
                         <template slot="actions" slot-scope="props">
                             <div class="d-flex align-items-center justify-content-end">
                                 <button
@@ -156,5 +157,4 @@ export default {
         }
     }
 }
-
 </script>

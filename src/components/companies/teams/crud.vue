@@ -1,6 +1,8 @@
 <template>
     <div>
-        <h5 class="form-title">{{ title }}</h5>
+        <h5 class="form-title">
+            {{ title }}
+        </h5>
         <div class="row">
             <div class="col-12 m-b-20">
                 <div class="row">
