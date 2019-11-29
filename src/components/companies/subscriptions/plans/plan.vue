@@ -6,7 +6,7 @@
                 <!--HEAD CONTENT START-->
                 <div class="generic_head_content clearfix">
                     <!--HEAD START-->
-                    <div class="head_bg"/>
+                    <div class="head_bg" />
                     <div class="head">
                         <span>{{ plan.name }}</span>
                     </div>
