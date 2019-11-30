@@ -1,89 +1,87 @@
 <template>
     <container-template>
         <tabs-menu slot="tab-menu" />
-        <div slot="tab-content" class="row">
-            <div class="col">
-                <h5>
-                    Create a new Role
-                    <button v-if="!isEditing" class="btn btn-primary" @click="cloneRole()">
-                        Clone role
-                    </button>
-                </h5>
-                <!-- Role Form-->
-                <form class="row" role="form">
-                    <div class="col-md-6">
-                        <div class="form-group form-group-default required">
-                            <label>Name role</label>
-                            <input
-                                v-model="roleData.name"
-                                v-validate="'required'"
-                                name="name"
-                                type="text"
-                                class="form-control"
-                            >
-                            <span class="text-danger">{{ errors.first("name") }}</span>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group form-group-default">
-                            <label>Description</label>
-                            <input
-                                v-model="roleData.description"
-                                v-validate=""
-                                type="text"
-                                name="description"
-                                class="form-control"
-                            >
-                            <span class="text-danger">{{ errors.first("description") }}</span>
-                        </div>
-                    </div>
-                </form>
-
-                <!-- Role Select -->
-                <div class="row">
-                    <div v-if="accessGroup" class="col-6">
-                        <div
-                            class="card-group horizontal"
-                            role="tablist"
-                            aria-multiselectable="true"
+        <div slot="tab-content">
+            <h5>
+                Create a new Role
+                <button v-if="!isEditing" class="btn btn-primary" @click="cloneRole()">
+                    Clone role
+                </button>
+            </h5>
+            <!-- Role Form-->
+            <form class="row" role="form">
+                <div class="col-md-6">
+                    <div class="form-group form-group-default required">
+                        <label>Name role</label>
+                        <input
+                            v-model="roleData.name"
+                            v-validate="'required'"
+                            name="name"
+                            type="text"
+                            class="form-control"
                         >
-                            <div v-for="(group, groupName) in accessGroup" :key="groupName" class="card card-default m-b-0">
-                                <div id="headingOne" class="card-header " role="tab">
-                                    <h4 class="card-title access-group__title">
-                                        <div class="checkbox check-success">
-                                            <input
-                                                :id="`group-${groupName}`"
-                                                v-model="group.isGroupSelected"
-                                                type="checkbox"
-                                                @click="checkGroup(group, groupName)"
-                                            >
-                                            <label :for="`group-${groupName}`" />
-                                        </div>
-                                        <a href="#" @click="checkGroup(group, groupName)">
-                                            {{ groupName }}
-                                            <i class="fa fa-minus-circle" @click.stop="toggleCollapse(groupName)" />
-                                        </a>
-                                    </h4>
-                                </div>
-                                <div :id="`collapse-${groupName}`">
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div v-for="(access, accessName) in group.permissions" :key="`${groupName}-${accessName}`" class="col-md-6">
-                                                <div class="row">
-                                                    <div class="col">
-                                                        <label :for="`checkbox-${groupName}-${accessName}`">{{ accessName | capitalize }}</label>
-                                                    </div>
-                                                    <div class="col-xs-1">
-                                                        <div class="checkbox check-success">
-                                                            <input
-                                                                :id="`checkbox-${groupName}-${accessName}`"
-                                                                v-model="access.allowed"
-                                                                :name="`checkbox-${groupName}-${accessName}`"
-                                                                type="checkbox"
-                                                                @change="checkSelectedGroup(groupName, true)"
-                                                            >
-                                                            <label :for="`checkbox-${groupName}-${accessName}`" />
-                                                        </div>
+                        <span class="text-danger">{{ errors.first("name") }}</span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group form-group-default">
+                        <label>Description</label>
+                        <input
+                            v-model="roleData.description"
+                            v-validate=""
+                            type="text"
+                            name="description"
+                            class="form-control"
+                        >
+                        <span class="text-danger">{{ errors.first("description") }}</span>
+                    </div>
+                </div>
+            </form>
+
+            <!-- Role Select -->
+            <div class="row">
+                <div v-if="accessGroup" class="col-6">
+                    <div
+                        class="card-group horizontal"
+                        role="tablist"
+                        aria-multiselectable="true"
+                    >
+                        <div v-for="(group, groupName) in accessGroup" :key="groupName" class="card card-default m-b-0">
+                            <div id="headingOne" class="card-header " role="tab">
+                                <h4 class="card-title access-group__title">
+                                    <div class="checkbox check-success">
+                                        <input
+                                            :id="`group-${groupName}`"
+                                            v-model="group.isGroupSelected"
+                                            type="checkbox"
+                                            @click="checkGroup(group, groupName)"
+                                        >
+                                        <label :for="`group-${groupName}`" />
+                                    </div>
+                                    <a href="#" @click="checkGroup(group, groupName)">
+                                        {{ groupName }}
+                                        <i class="fa fa-minus-circle" @click.stop="toggleCollapse(groupName)" />
+                                    </a>
+                                </h4>
+                            </div>
+                            <div :id="`collapse-${groupName}`">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div v-for="(access, accessName) in group.permissions" :key="`${groupName}-${accessName}`" class="col-md-6">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <label :for="`checkbox-${groupName}-${accessName}`">{{ accessName | capitalize }}</label>
+                                                </div>
+                                                <div class="col-xs-1">
+                                                    <div class="checkbox check-success">
+                                                        <input
+                                                            :id="`checkbox-${groupName}-${accessName}`"
+                                                            v-model="access.allowed"
+                                                            :name="`checkbox-${groupName}-${accessName}`"
+                                                            type="checkbox"
+                                                            @change="checkSelectedGroup(groupName, true)"
+                                                        >
+                                                        <label :for="`checkbox-${groupName}-${accessName}`" />
                                                     </div>
                                                 </div>
                                             </div>
@@ -94,15 +92,15 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-12 col-xl d-flex justify-content-end mt-2">
-                        <button class="btn btn-danger m-r-10" @click="rolesList()">
-                            Cancel
-                        </button>
-                        <button :disabled="!hasChanged" class="btn btn-primary" @click="verifyFields()">
-                            Save
-                        </button>
-                    </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-xl d-flex justify-content-end mt-2">
+                    <button class="btn btn-danger mr-2" @click="rolesList()">
+                        Cancel
+                    </button>
+                    <button :disabled="!hasChanged" class="btn btn-primary" @click="verifyFields()">
+                        Save
+                    </button>
                 </div>
             </div>
         </div>

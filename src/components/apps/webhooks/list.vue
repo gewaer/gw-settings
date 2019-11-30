@@ -20,15 +20,17 @@
                         pagination-path=""
                     >
                         <template slot="actions" slot-scope="props">
-                            <button class="btn btn-complete m-l-5" @click="editWebhook(props.rowData)">
-                                <i class="fa fa-edit" aria-hidden="true" />
-                            </button>
-                            <button
-                                class="btn btn-danger m-l-5"
-                                @click="confirmDeleteWebhook(props.rowData)"
-                            >
-                                <i class="fa fa-trash" aria-hidden="true" />
-                            </button>
+                            <div class="d-flex align-items-center justify-content-end">
+                                <button class="btn btn-complete m-l-5" @click="editWebhook(props.rowData)">
+                                    <i class="fa fa-edit" aria-hidden="true" />
+                                </button>
+                                <button
+                                    class="btn btn-danger m-l-5"
+                                    @click="confirmDeleteWebhook(props.rowData)"
+                                >
+                                    <i class="fa fa-trash" aria-hidden="true" />
+                                </button>
+                            </div>
                         </template>
                     </vuetable>
                 </div>
