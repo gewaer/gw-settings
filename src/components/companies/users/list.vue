@@ -43,7 +43,7 @@
                     <template slot="actions" slot-scope="props">
                         <div class="d-flex align-items-center justify-content-end">
                             <button class="btn btn-primary m-l-5" @click="editUser(props.rowData.id)">
-                                <i class="fa fa-edit" aria-hidden="true"/>
+                                <i class="fa fa-edit" aria-hidden="true" />
                             </button>
                             <button
                                 :class="{ 'disable-element': isCurrentUser(props.rowData.id) }"
@@ -73,7 +73,7 @@
                                 class="btn btn-danger m-l-5"
                                 @click="deleteConfirm(props.rowData.id)"
                             >
-                                <i class="fa fa-trash" aria-hidden="true"/>
+                                <i class="fa fa-trash" aria-hidden="true" />
                             </button>
                         </div>
                     </template>

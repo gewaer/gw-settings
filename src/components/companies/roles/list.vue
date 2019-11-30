@@ -22,10 +22,10 @@
                     <template slot="actions" slot-scope="props">
                         <div class="d-flex align-items-center justify-content-end">
                             <button v-if="!isGlobal(props.rowData)" class="btn btn-primary m-l-5" @click="editRole(props.rowData)">
-                                <i class="fa fa-edit" aria-hidden="true"/>
+                                <i class="fa fa-edit" aria-hidden="true" />
                             </button>
                             <button class="btn btn-primary m-l-5" title="clone role" @click="cloneRole(props.rowData)">
-                                <i class="fa fa-copy" aria-hidden="true"/>
+                                <i class="fa fa-copy" aria-hidden="true" />
                             </button>
                             <button v-if="!isGlobal(props.rowData)" class="btn btn-danger m-l-5" @click="confirmDelete(props.rowData.id)">
                                 <i class="fa fa-trash" aria-hidden="true" />

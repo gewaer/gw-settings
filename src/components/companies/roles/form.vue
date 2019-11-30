@@ -1,6 +1,6 @@
 <template>
     <container-template>
-        <tabs-menu slot="tab-menu"/>
+        <tabs-menu slot="tab-menu" />
         <div slot="tab-content">
             <h5>
                 Create a new Role
@@ -14,8 +14,8 @@
                     <div class="form-group form-group-default required">
                         <label>Name role</label>
                         <input
-                            v-validate="'required'"
                             v-model="roleData.name"
+                            v-validate="'required'"
                             name="name"
                             type="text"
                             class="form-control"
@@ -27,8 +27,8 @@
                     <div class="form-group form-group-default">
                         <label>Description</label>
                         <input
-                            v-validate=""
                             v-model="roleData.description"
+                            v-validate=""
                             type="text"
                             name="description"
                             class="form-control"
@@ -56,7 +56,7 @@
                                             type="checkbox"
                                             @click="checkGroup(group, groupName)"
                                         >
-                                        <label :for="`group-${groupName}`"/>
+                                        <label :for="`group-${groupName}`" />
                                     </div>
                                     <a href="#" @click="checkGroup(group, groupName)">
                                         {{ groupName }}
@@ -76,12 +76,12 @@
                                                     <div class="checkbox check-success">
                                                         <input
                                                             :id="`checkbox-${groupName}-${accessName}`"
-                                                            :name="`checkbox-${groupName}-${accessName}`"
                                                             v-model="access.allowed"
+                                                            :name="`checkbox-${groupName}-${accessName}`"
                                                             type="checkbox"
                                                             @change="checkSelectedGroup(groupName, true)"
                                                         >
-                                                        <label :for="`checkbox-${groupName}-${accessName}`"/>
+                                                        <label :for="`checkbox-${groupName}-${accessName}`" />
                                                     </div>
                                                 </div>
                                             </div>
@@ -95,8 +95,12 @@
             </div>
             <div class="row">
                 <div class="col-12 col-xl d-flex justify-content-end mt-2">
-                    <button class="btn btn-danger mr-2" @click="rolesList()">Cancel</button>
-                    <button :disabled="!hasChanged" class="btn btn-primary" @click="verifyFields()">Save</button>
+                    <button class="btn btn-danger mr-2" @click="rolesList()">
+                        Cancel
+                    </button>
+                    <button :disabled="!hasChanged" class="btn btn-primary" @click="verifyFields()">
+                        Save
+                    </button>
                 </div>
             </div>
         </div>

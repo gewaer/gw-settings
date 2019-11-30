@@ -25,7 +25,9 @@
                     >
                     <template slot="actions" slot-scope="props">
                         <div class="d-flex align-items-center justify-content-end">
-                            <button class="btn btn-primary m-l-5" @click="editCompany(props.rowData.id)"><i class="fa fa-edit" aria-hidden="true"/></button>
+                            <button class="btn btn-primary m-l-5" @click="editCompany(props.rowData.id)">
+                                <i class="fa fa-edit" aria-hidden="true"/>
+                            </button>
                             <button
                                 :class="{ 'disable-element': isCurrentCompany(props.rowData.id) }"
                                 :disabled="isCurrentCompany(props.rowData.id)"
