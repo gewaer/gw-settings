@@ -35150,7 +35150,7 @@ var manager_form_component = normalizeComponent(
 //     name: "settingsUsersSocial",
 //     component: () => import(/* webpackChunkName: "settings-users-social" */ "./components/users/social"),
 //     meta: {
-//         requiresAuth: true
+//         requiresAuth: true,
 //     }
 // },
 {
