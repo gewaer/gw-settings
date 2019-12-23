@@ -25,10 +25,18 @@
                         Invites
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a
+                        :class="{ active: listToShow == 'inactiveUsersList' }"
+                        @click.prevent="listToShow = 'inactiveUsersList'"
+                    >
+                        Inactive
+                    </a>
+                </li>
             </ul>
             <div v-if="listToShow == 'usersList'" class="table-responsive">
                 <vuetable
-                    ref="Vuetable"
+                    ref="vuetable"
                     :append-params="appendParams.users"
                     :fields="usersFields"
                     :http-fetch="getTableData"
@@ -57,9 +65,9 @@
                     </template>
                 </vuetable>
             </div>
-            <div v-else class="table-responsive">
+            <div v-if="listToShow == 'newUsersList'" class="table-responsive">
                 <vuetable
-                    ref="Vuetable"
+                    ref="vuetable"
                     :append-params="appendParams.invites"
                     :fields="usersInviteFields"
                     :http-fetch="getTableData"
@@ -76,6 +84,21 @@
                                 <i class="fa fa-trash" aria-hidden="true" />
                             </button>
                         </div>
+                    </template>
+                </vuetable>
+            </div>
+            <div v-if="listToShow == 'inactiveUsersList'" class="table-responsive">
+                <vuetable
+                    ref="vuetable"
+                    :append-params="appendParams.inactive"
+                    :fields="userInactiveFields"
+                    :http-fetch="getTableData"
+                    api-url="/users"
+                    class="table table-hover table-condensed"
+                    pagination-path=""
+                >
+                    <template slot="fullname" slot-scope="props">
+                        <span>{{ props.rowData.firstname }} {{ props.rowData.lastname }}</span>
                     </template>
                 </vuetable>
             </div>
@@ -103,6 +126,11 @@ export default {
     data() {
         return {
             appendParams: {
+                inactive: {
+                    format: "true",
+                    relationships: "companies,roles",
+                    q: "(user_active:0)"
+                },
                 invites: {
                     format: "true",
                     relationships: "companies,roles",
@@ -113,6 +141,21 @@ export default {
                     relationships: "roles"
                 }
             },
+            userInactiveFields: [{
+                name: "fullname",
+                sortField: "firstname",
+                title: "Name"
+            }, {
+                name: "roles.0.name",
+                title:"Role",
+                sortField: "roles_id",
+                width: "30%"
+            }, {
+                name: "lastvisit",
+                title: "Last Visit",
+                sortField: "lastvisit",
+                width: "30%"
+            }],
             usersFields: [{
                 name: "fullname",
                 sortField: "firstname",
@@ -132,7 +175,7 @@ export default {
                 sortField: "status",
                 width: "30%",
                 formatter(value) {
-                    return value ? "Active" : "Inactive";
+                    return +value ? "Active" : "Inactive";
                 }
             }, {
                 name: "actions",
@@ -164,6 +207,12 @@ export default {
         ...mapState({
             userData: state => state.User.data
         })
+    },
+    watch: {
+        listToShow() {
+            this.$refs.vuetable.tableData = [];
+            this.$refs.vuetable.refresh();
+        }
     },
     methods: {
         deleteConfirm(usersId) {

@@ -56,6 +56,7 @@
 <script>
 import { mapState } from "vuex";
 import generalMixins from "../../mixins/general";
+import listMixins from "../../mixins/listMixins";
 import ContainerTemplate from "../../container";
 
 export default {
@@ -64,7 +65,8 @@ export default {
         ContainerTemplate
     },
     mixins: [
-        generalMixins
+        generalMixins,
+        listMixins
     ],
     data() {
         return {
