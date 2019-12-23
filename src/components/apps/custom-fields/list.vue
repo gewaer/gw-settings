@@ -59,6 +59,7 @@
 </template>
 
 <script>
+import listMixins from "../../../mixins/listMixins";
 import ContainerTemplate from "../../../container";
 import TabsMenu from "../tabs";
 
@@ -68,6 +69,9 @@ export default {
         ContainerTemplate,
         TabsMenu
     },
+    mixins: [
+        listMixins
+    ],
     data() {
         return {
             appendParams:{

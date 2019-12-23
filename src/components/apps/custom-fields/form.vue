@@ -21,6 +21,12 @@
                                 :field-data="fieldData"
                                 @schema="setSchema"
                             />
+                            <fields-checkbox
+                                ref="checkbox"
+                                :class="{ 'selected': fieldsType == 'checkbox' }"
+                                :field-data="fieldData"
+                                @schema="setSchema"
+                            />
                         </div>
                         <div class="col-md-9">
                             <custom-fields-form
@@ -45,6 +51,7 @@
 
 <script>
 import ContainerTemplate from "../../../container";
+import FieldsCheckbox from "./fields/checkbox";
 import FieldsSelect from "./fields/select";
 import FieldsText from "./fields/text";
 import TabsMenu from "../tabs";
@@ -53,6 +60,7 @@ export default {
     name: "Form",
     components: {
         ContainerTemplate,
+        FieldsCheckbox,
         FieldsSelect,
         FieldsText,
         TabsMenu
@@ -144,8 +152,6 @@ export default {
             axios({
                 url: `/custom-fields/${this.$route.params.id}`
             }).then(async({ data }) => {
-                data.attributes = JSON.parse(data.attributes);
-
                 if (data.type.name == "select") {
                     data.values = data.values.reduce((valuesArray, value) => {
                         valuesArray[+value.value] = value.label;
