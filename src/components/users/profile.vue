@@ -18,6 +18,7 @@
                         </div>
                         <div class="col-12 col-xl">
                             <custom-fields-form
+                                ref="profileForm"
                                 :form-fields="fieldsSchema"
                                 :form-name="'generalInformation'"
                                 :form-options="formOptions"
@@ -87,6 +88,10 @@ export default {
     },
     created() {
         this.initialize();
+    },
+    beforeRouteLeave(to, from, next) {
+        const formFields = this.$refs.profileForm.getChangedFields();
+        this.checkForUnsavedChanges(formFields, next);
     },
     methods: {
         async initialize() {

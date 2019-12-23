@@ -16,9 +16,16 @@
                 <div class="row">
                     <div class="col-12">
                         <ul>
-                            <li v-for="(data, field) in fields" :key="'error-' + field">
-                                {{ getFieldAlias(field) | capitalize }}
-                            </li>
+                            <template v-if="Array.isArray(fields)">
+                                <li v-for="field in fields" :key="'error-' + field">
+                                    {{ getFieldAlias(field) | capitalize }}
+                                </li>
+                            </template>
+                            <template v-else>
+                                <li v-for="(data, field) in fields" :key="'error-' + field">
+                                    {{ getFieldAlias(field) | capitalize }}
+                                </li>
+                            </template>
                         </ul>
                     </div>
                 </div>
@@ -43,7 +50,7 @@ export default {
             required: true
         },
         fields: {
-            type: Object,
+            type: [Array, Object],
             required: true
         }
     },
