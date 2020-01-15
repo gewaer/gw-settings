@@ -2,15 +2,19 @@
     <container-template>
         <tabs-menu slot="tab-menu" />
         <div slot="tab-content">
-            <h5>
-                Create a new Role
-                <button v-if="!isEditing" class="btn btn-primary" @click="cloneRole()">
-                    Clone role
-                </button>
-            </h5>
+            <div class="row">
+                <div class="col">
+                    <h5>
+                        Create a new Role
+                        <button v-if="!isEditing" class="btn btn-primary" @click="cloneRole()">
+                            Clone role
+                        </button>
+                    </h5>
+                </div>
+            </div>
             <!-- Role Form-->
             <form class="row" role="form">
-                <div class="col-md-6">
+                <div class="col">
                     <div class="form-group form-group-default required">
                         <label>Name role</label>
                         <input
@@ -23,7 +27,7 @@
                         <span class="text-danger">{{ errors.first("name") }}</span>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col">
                     <div class="form-group form-group-default">
                         <label>Description</label>
                         <input
@@ -39,54 +43,41 @@
             </form>
 
             <!-- Role Select -->
-            <div class="row">
-                <div v-if="accessGroup" class="col-6">
-                    <div
-                        class="card-group horizontal"
-                        role="tablist"
-                        aria-multiselectable="true"
-                    >
-                        <div v-for="(group, groupName) in accessGroup" :key="groupName" class="card card-default m-b-0">
-                            <div id="headingOne" class="card-header " role="tab">
-                                <h4 class="card-title access-group__title">
-                                    <div class="checkbox check-success">
-                                        <input
-                                            :id="`group-${groupName}`"
-                                            v-model="group.isGroupSelected"
-                                            type="checkbox"
-                                            @click="checkGroup(group, groupName)"
-                                        >
-                                        <label :for="`group-${groupName}`" />
-                                    </div>
-                                    <a href="#" @click="checkGroup(group, groupName)">
-                                        {{ groupName }}
-                                        <i class="fa fa-minus-circle" @click.stop="toggleCollapse(groupName)" />
-                                    </a>
-                                </h4>
+            <div class="row mt-4">
+                <div v-for="(group, groupName) in accessGroup" :key="groupName" :title="groupName" class="mb-4 col-12 col-lg-6 col-xl-3">
+                    <div class="card roles-container">
+                        <h4 class="roles-title">
+                            <div class="form-group form-check">
+                                <input
+                                    :id="`group-${groupName}`"
+                                    v-model="group.isGroupSelected"
+                                    type="checkbox"
+                                    class="form-check-input"
+                                    @click="checkGroup(group, groupName)"
+                                >
+                                <label class="form-check-label" :for="`group-${groupName}`" />
                             </div>
-                            <div :id="`collapse-${groupName}`">
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div v-for="(access, accessName) in group.permissions" :key="`${groupName}-${accessName}`" class="col-md-6">
-                                            <div class="row">
-                                                <div class="col">
-                                                    <label :for="`checkbox-${groupName}-${accessName}`">{{ accessName | capitalize }}</label>
-                                                </div>
-                                                <div class="col-xs-1">
-                                                    <div class="checkbox check-success">
-                                                        <input
-                                                            :id="`checkbox-${groupName}-${accessName}`"
-                                                            v-model="access.allowed"
-                                                            :name="`checkbox-${groupName}-${accessName}`"
-                                                            type="checkbox"
-                                                            @change="checkSelectedGroup(groupName, true)"
-                                                        >
-                                                        <label :for="`checkbox-${groupName}-${accessName}`" />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                            <span @click="checkGroup(group, groupName)">
+                                {{ groupName }}
+                            </span>
+                        </h4>
+                        <div class="row">
+                            <div class="col-6" v-for="(access, accessName) in group.permissions" :key="`${groupName}-${accessName}`">
+                                <div class="form-group form-check">
+                                    <input
+                                        :id="`checkbox-${groupName}-${accessName}`"
+                                        v-model="access.allowed"
+                                        :name="`checkbox-${groupName}-${accessName}`"
+                                        type="checkbox"
+                                        class="form-check-input"
+                                        @change="checkSelectedGroup(groupName, true)"
+                                    >
+                                    <label
+                                        class="form-check-label"
+                                        :for="`checkbox-${groupName}-${accessName}`"
+                                    >
+                                        {{ accessName | capitalize }}
+                                    </label>
                                 </div>
                             </div>
                         </div>
@@ -478,6 +469,29 @@ export default {
 .card-body {
     label {
         cursor: pointer;
+    }
+}
+
+.roles-container {
+    height: 100%;
+
+    .roles-title {
+        display: flex;
+        font-size: 16px;
+        color: #383652;
+        margin-bottom: 20px;
+
+        .form-check {
+            margin-bottom: 0;
+
+            .form-check-input {
+                margin-top: 2px;
+            }
+        }
+
+        span {
+            cursor: pointer;
+        }
     }
 }
 </style>
