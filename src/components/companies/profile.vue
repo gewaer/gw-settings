@@ -1,149 +1,151 @@
 <template>
     <container-template>
         <tabs-menu slot="tab-menu" />
-        <div slot="tab-content">
-            <h5>Company Profile</h5>
+        <template slot="tab-content">
+            <!-- <h5>Company Profile</h5> -->
             <div class="row company-general-information">
-                <div class="col-12 col-xl">
-                    <div class="row">
-                        <div class="col-12 col-md-auto">
-                            <div class="profile-image-container">
-                                <profile-uploader
-                                    :avatar-url="avatarUrl"
-                                    endpoint="/filesystem"
-                                    @uploaded="updateProfile"
-                                />
-                            </div>
-                        </div>
-                        <div class="col-12 col-md">
-                            <div class="form-group form-group-default required">
-                                <label>Name</label>
-                                <input
-                                    v-model="companyData.name"
-                                    v-validate="'required'"
-                                    name="name"
-                                    type="text"
-                                    class="form-control"
-                                >
-                                <span class="text-danger">{{ errors.first("name") }}</span>
-                            </div>
-                            <div class="form-group form-group-default required">
-                                <label>Address</label>
-                                <input
-                                    v-model="companyData.address"
-                                    v-validate="'required'"
-                                    data-vv-as="company address"
-                                    name="company-address"
-                                    type="text"
-                                    class="form-control"
-                                >
-                                <span class="text-danger">{{ errors.first("company-address") }}</span>
-                            </div>
-                            <div class="form-group form-group-default required">
-                                <label>Zip Code</label>
-                                <input
-                                    v-model="companyData.zipcode"
-                                    v-validate="'required|numeric'"
-                                    class="form-control"
-                                    type="number"
-                                    data-vv-as="zip code"
-                                    name="zipcode"
-                                >
-                                <span class="text-danger">{{ errors.first("zipcode") }}</span>
-                            </div>
-                            <div class="form-group form-group-default">
-                                <label>Email</label>
-                                <input
-                                    v-model="companyData.email"
-                                    v-validate="'required|email'"
-                                    class="form-control"
-                                    name="email"
-                                    type="email"
-                                >
-                                <span class="text-danger">{{ errors.first("email") }}</span>
-                            </div>
-                            <div class="form-group form-group-default required">
-                                <label>Phone</label>
-                                <input
-                                    v-model="companyData.phone"
-                                    v-validate="'required|numeric'"
-                                    data-vv-as="phone number"
-                                    name="phone"
-                                    type="phone"
-                                    class="form-control"
-                                >
-                                <span class="text-danger">{{ errors.first("phone") }}</span>
-                            </div>
+                <div class="col-12 col-md-auto">
+                    <div class="card h-100 mb-0 d-flex align-items-center justify-content-center">
+                        <div class="profile-image-container">
+                            <profile-uploader
+                                :avatar-url="avatarUrl"
+                                endpoint="/filesystem"
+                                @uploaded="updateProfile"
+                            />
+                            <span class="formats">Supported formats JPG, JPEG, and PNG. More than 5mb will not be accepted.</span>
                         </div>
                     </div>
                 </div>
 
                 <div class="col-12 col-xl">
-                    <div class="row">
-                        <div class="col-12 col-md">
-                            <div class="form-group">
-                                <label>Language</label>
-                                <multiselect
-                                    v-if="initializeComplete"
-                                    v-model="selectedLanguage"
-                                    v-validate="'required'"
-                                    :allow-empty="false"
-                                    :options="languages"
-                                    :show-labels="false"
-                                    name="language"
-                                    label="name"
-                                    track-by="id"
-                                    @input="setSelectValue($event, 'language')"
-                                />
-                                <span class="text-danger">{{ errors.first("language") }}</span>
+                    <div class="card h-100 mb-0">
+                        <div class="row">
+                            <div class="col-12 col-md">
+                                <div class="form-group required">
+                                    <label>Name</label>
+                                    <input
+                                        v-model="companyData.name"
+                                        v-validate="'required'"
+                                        name="name"
+                                        type="text"
+                                        class="form-control"
+                                    >
+                                    <span class="text-danger">{{ errors.first("name") }}</span>
+                                </div>
+                                <div class="form-group required">
+                                    <label>Address</label>
+                                    <input
+                                        v-model="companyData.address"
+                                        v-validate="'required'"
+                                        data-vv-as="company address"
+                                        name="company-address"
+                                        type="text"
+                                        class="form-control"
+                                    >
+                                    <span class="text-danger">{{ errors.first("company-address") }}</span>
+                                </div>
+                                <div class="form-group required">
+                                    <label>Zip Code</label>
+                                    <input
+                                        v-model="companyData.zipcode"
+                                        v-validate="'required|numeric'"
+                                        class="form-control"
+                                        type="number"
+                                        data-vv-as="zip code"
+                                        name="zipcode"
+                                    >
+                                    <span class="text-danger">{{ errors.first("zipcode") }}</span>
+                                </div>
+                                <div class="form-group">
+                                    <label>Email</label>
+                                    <input
+                                        v-model="companyData.email"
+                                        v-validate="'required|email'"
+                                        class="form-control"
+                                        name="email"
+                                        type="email"
+                                    >
+                                    <span class="text-danger">{{ errors.first("email") }}</span>
+                                </div>
                             </div>
+                            <div class="col-12 col-md">
+                                <div class="form-group required">
+                                    <label>Phone</label>
+                                    <input
+                                        v-model="companyData.phone"
+                                        v-validate="'required|numeric'"
+                                        data-vv-as="phone number"
+                                        name="phone"
+                                        type="phone"
+                                        class="form-control"
+                                    >
+                                    <span class="text-danger">{{ errors.first("phone") }}</span>
+                                </div>
+                                <div class="form-group">
+                                    <label>Language</label>
+                                    <multiselect
+                                        v-if="initializeComplete"
+                                        v-model="selectedLanguage"
+                                        v-validate="'required'"
+                                        :allow-empty="false"
+                                        :options="languages"
+                                        :show-labels="false"
+                                        name="language"
+                                        label="name"
+                                        track-by="id"
+                                        @input="setSelectValue($event, 'language')"
+                                    />
+                                    <span class="text-danger">{{ errors.first("language") }}</span>
+                                </div>
 
-                            <div class="form-group">
-                                <label>Timezone</label>
-                                <multiselect
-                                    v-if="initializeComplete"
-                                    v-model="companyData.timezone"
-                                    v-validate="'required'"
-                                    :max-height="175"
-                                    :options="timezones"
-                                    :show-labels="false"
-                                    name="timezone"
-                                />
-                                <span class="text-danger">{{ errors.first("timezone") }}</span>
-                            </div>
+                                <div class="form-group">
+                                    <label>Timezone</label>
+                                    <multiselect
+                                        v-if="initializeComplete"
+                                        v-model="companyData.timezone"
+                                        v-validate="'required'"
+                                        :max-height="175"
+                                        :options="timezones"
+                                        :show-labels="false"
+                                        name="timezone"
+                                    />
+                                    <span class="text-danger">{{ errors.first("timezone") }}</span>
+                                </div>
 
-                            <div class="form-group">
-                                <label>Currency</label>
-                                <multiselect
-                                    v-if="initializeComplete"
-                                    v-model="selectedCurrency"
-                                    v-validate="'required'"
-                                    :allow-empty="false"
-                                    :max-height="175"
-                                    :custom-label="currencyLabel"
-                                    :options="currencies"
-                                    :show-labels="false"
-                                    label="currency"
-                                    track-by="code"
-                                    name="currency"
-                                    @input="setSelectValue($event, 'currency_id')"
-                                >
-                                    <template slot="singleLabel" slot-scope="{ option }">
-                                        {{ option.currency }} ({{ option.code }})
-                                    </template>
-                                </multiselect>
-                                <span class="text-danger">{{ errors.first("currency") }}</span>
+                                <div class="form-group">
+                                    <label>Currency</label>
+                                    <multiselect
+                                        v-if="initializeComplete"
+                                        v-model="selectedCurrency"
+                                        v-validate="'required'"
+                                        :allow-empty="false"
+                                        :max-height="175"
+                                        :custom-label="currencyLabel"
+                                        :options="currencies"
+                                        :show-labels="false"
+                                        label="currency"
+                                        track-by="code"
+                                        name="currency"
+                                        @input="setSelectValue($event, 'currency_id')"
+                                    >
+                                        <template slot="singleLabel" slot-scope="{ option }">
+                                            {{ option.currency }} ({{ option.code }})
+                                        </template>
+                                    </multiselect>
+                                    <span class="text-danger">{{ errors.first("currency") }}</span>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <subscription-manager class="mt-4" />
             <div class="d-flex justify-content-end mt-2">
                 <button :disabled="isLoading || !hasChanged" class="btn btn-primary" @click="update()">
                     Save
                 </button>
             </div>
-        </div>
+        </template>
     </container-template>
 </template>
 
@@ -160,7 +162,8 @@ export default {
     components: {
         ProfileUploader,
         ContainerTemplate,
-        TabsMenu
+        TabsMenu,
+        subscriptionManager: () => import(/* webpackChunkName: "subscription-manager"*/ "./subscription-manager/")
     },
     mixins: [
         vueRouterMixins
@@ -291,18 +294,26 @@ export default {
     .profile-image-container {
         display: flex;
         flex-direction: column;
-        width: 160px;
-        margin: 0 auto;
-        margin-bottom: 15px;
+        width: 180px;
+        margin: 0 20px;
 
         .profile-image {
-            width: 160px;
-            height: 160px;
+            width: 180px;
+            height: 180px;
             overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
             border: 1px solid rgba(230, 230, 230, 0.7);
+            margin-bottom: 20px;
+            border-radius: 100%;
+        }
+
+        span {
+            font-size: 10px;
+            color: #B3C1CB;
+            text-align: center;
+            margin-top: 10px;
         }
 
         label {
