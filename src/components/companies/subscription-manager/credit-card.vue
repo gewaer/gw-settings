@@ -4,7 +4,9 @@
             <div class="col-auto">
                 <div class="current-credit-card">
                     <h3>Current card</h3>
-                    <div class="current-number">•••• •••• •••• 9000</div>
+                    <div class="current-number">
+                        •••• •••• •••• 9000
+                    </div>
                     <img src="/img/creditcards/visa.svg" width="50">
                 </div>
             </div>

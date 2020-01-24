@@ -44,7 +44,12 @@
 
             <!-- Role Select -->
             <div class="row mt-4">
-                <div v-for="(group, groupName) in accessGroup" :key="groupName" :title="groupName" class="mb-4 col-12 col-lg-6 col-xl-3">
+                <div
+                    v-for="(group, groupName) in accessGroup"
+                    :key="groupName"
+                    :title="groupName"
+                    class="mb-4 col-12 col-lg-6 col-xl-3"
+                >
                     <div class="card roles-container">
                         <h4 class="roles-title">
                             <div class="form-group form-check">
@@ -62,7 +67,7 @@
                             </span>
                         </h4>
                         <div class="row">
-                            <div class="col-6" v-for="(access, accessName) in group.permissions" :key="`${groupName}-${accessName}`">
+                            <div v-for="(access, accessName) in group.permissions" :key="`${groupName}-${accessName}`" class="col-6">
                                 <div class="form-group form-check">
                                     <input
                                         :id="`checkbox-${groupName}-${accessName}`"
