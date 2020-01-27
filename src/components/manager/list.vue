@@ -1,46 +1,45 @@
 <template>
     <container-template>
         <div slot="tab-content">
-            <h5>
-                Companies
-                <router-link :to="{ name: 'settingsManagerForm' }" class="btn btn-primary">
-                    New Company
-                </router-link>
-            </h5>
-            <div class="table-responsive">
-                <vuetable
-                    ref="Vuetable"
-                    :append-params="appendParams"
-                    :fields="companiesFields"
-                    :http-fetch="getTableData"
-                    api-url="/companies"
-                    class="table table-hover table-condensed"
-                    pagination-path=""
-                >
-                    <img
-                        slot="profile-image"
-                        slot-scope="props"
-                        :src="props.rowData.logo && props.rowData.logo.url"
-                        height="25px"
+            <h5>Companies</h5>
+            <router-link :to="{ name: 'settingsManagerForm' }" class="mb-4 btn btn-primary">
+                New Company
+            </router-link>
+            <div class="card">
+                <div class="table-responsive">
+                    <vuetable
+                        ref="Vuetable"
+                        :append-params="appendParams"
+                        :fields="companiesFields"
+                        :http-fetch="getTableData"
+                        api-url="/companies"
+                        class="table table-hover table-condensed"
+                        pagination-path=""
                     >
-                    <template slot="actions" slot-scope="props">
-                        <div class="d-flex align-items-center justify-content-end">
-                            <button class="btn btn-primary m-l-5" @click="editCompany(props.rowData.id)">
-                                <i class="fa fa-edit" aria-hidden="true" />
-                            </button>
-                            <button
-                                :class="{ 'disable-element': isCurrentCompany(props.rowData.id) }"
-                                :disabled="isCurrentCompany(props.rowData.id)"
-                                class="btn btn-danger m-l-5"
-                                @click="confirmDelete(props.rowData.id)"
-                            >
-                                <i class="fa fa-trash" aria-hidden="true" />
-                            </button>
-                        </div>
-                    </template>
-                </vuetable>
+                        <img
+                            slot="profile-image"
+                            slot-scope="props"
+                            :src="props.rowData.logo && props.rowData.logo.url"
+                            height="25px"
+                        >
+                        <template slot="actions" slot-scope="props">
+                            <div class="d-flex align-items-center justify-content-end">
+                                <button class="btn btn-primary m-l-5" @click="editCompany(props.rowData.id)">
+                                    <i class="fa fa-edit" aria-hidden="true" />
+                                </button>
+                                <button
+                                    :class="{ 'disable-element': isCurrentCompany(props.rowData.id) }"
+                                    :disabled="isCurrentCompany(props.rowData.id)"
+                                    class="btn btn-danger m-l-5"
+                                    @click="confirmDelete(props.rowData.id)"
+                                >
+                                    <i class="fa fa-trash" aria-hidden="true" />
+                                </button>
+                            </div>
+                        </template>
+                    </vuetable>
+                </div>
             </div>
-
             <modal
                 :draggable="true"
                 :adaptive="true"
