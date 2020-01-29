@@ -4,7 +4,9 @@
             <h5>Company Settings</h5>
             <tabs-menu slot="tab-menu" />
             <div class="card">
-                <h6 class="form-title">{{ title }}</h6>
+                <h6 class="form-title">
+                    {{ title }}
+                </h6>
                 <div class="row m-b-20 user-general-information">
                     <div class="col-12 col-md-6">
                         <template v-if="isEditing">
