@@ -1,5 +1,5 @@
 <template>
-    <ul class="nav nav-tabs">
+    <ul class="nav nav-tabs nav-horizontal">
         <li class="nav-item">
             <router-link :to="{ name: 'settingsUsersProfile' }" :class="{active: $route.name == 'settingsUsersProfile'}">
                 Profile
