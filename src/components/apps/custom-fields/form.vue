@@ -1,8 +1,68 @@
 <template>
     <container-template>
-        <tabs-menu slot="tab-menu" />
-        <div slot="tab-content" class="row custom-fields-settings">
-            <div class="col">
+        <!-- <tabs-menu slot="tab-menu" /> -->
+        <div slot="tab-content" class=" custom-fields-settings">
+            <custom-fields-conf-modal />
+            <h5>{{ title }}</h5>
+            <div class="row">
+                <div class="col-4">
+                    <div class="custom-fields-picker">
+                        <h4>New Fields</h4>
+                        <p>Drag and drop the fields you want to add them to the module.</p>
+                        <p>Edit their options after you add them.</p>
+                        <draggable
+                            class="custom-fields-draggable row"
+                            :list="customFields"
+                            :group="{ name: 'customFields', pull: 'clone', put: false }"
+                        >
+                            <div
+                                class="col-6"
+                                v-for="customField in customFields"
+                                :key="customField.id"
+                            >
+                                <div class="custom-field">
+                                    {{ customField.name }}
+                                    <i :class="customField.icon" />
+                                </div>
+                            </div>
+                        </draggable>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="selected-custom-fields">
+                        <h4>Current Fields</h4>
+                        <draggable
+                            class="row h-100 align-content-start"
+                            :list="selectedCustomFields"
+                            group="customFields"
+                            @change="change"
+                        >
+                            <div
+                                class="col-6 d-flex"
+                                v-for="(customField, index) in selectedCustomFields"
+                                :key="customField.name + customField.id + (index + 1)"
+                            >
+                                <div class="custom-field flex-fill">
+                                    {{ customField.name }}
+                                    <i :class="customField.icon" />
+                                </div>
+                                <div @click="$modal.show('custom-fields-conf-modal')" class="edit-custom-field">
+                                    <i class="fas fa-ellipsis-v" />
+                                </div>
+                            </div>
+                        </draggable>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="d-flex justify-content-end mt-4">
+                        <button type="button" class="btn btn-danger mr-2">Cancel</button>
+                        <button class="btn btn-primary">Save</button>
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="col">
                 <div class="custom-fields">
                     <h5>
                         {{ title }}
@@ -44,7 +104,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
         </div>
     </container-template>
 </template>
@@ -55,6 +115,8 @@ import FieldsCheckbox from "./fields/checkbox";
 import FieldsSelect from "./fields/select";
 import FieldsText from "./fields/text";
 import TabsMenu from "../tabs";
+import draggable from 'vuedraggable';
+import CustomFieldsConfModal from "./field-conf-modal";
 
 export default {
     name: "Form",
@@ -63,31 +125,97 @@ export default {
         FieldsCheckbox,
         FieldsSelect,
         FieldsText,
-        TabsMenu
+        TabsMenu,
+        draggable,
+        CustomFieldsConfModal
     },
     data() {
         return {
-            formData: {
-                name: ""
-            },
-            fieldData: null,
-            fieldsSchema: [],
-            fieldsType: null,
-            fieldsTypeId: null,
-            formOptions: {
-                actionsWrapperClass: "d-flex justify-content-end mt-auto",
-                buttons: {
-                    cancel: {
-                        class: "btn btn-danger m-r-10",
-                        text: "Cancel"
-                    },
-                    submit: {
-                        class: "btn btn-primary",
-                        text: "Save"
-                    }
+            customFields: [
+                {
+                    name: "Text",
+                    icon: "fas fa-font",
+                    id: 1
+                },
+                {
+                    name: "WYSIWYG",
+                    icon: "fas fa-quote-right",
+                    id: 2
+                },
+                {
+                    name: "DateTime",
+                    icon: "fas fa-clock",
+                    id: 3
+                },
+                {
+                    name: "Calendar",
+                    icon: "fas fa-calendar-alt",
+                    id: 4
+                },
+                {
+                    name: "Image",
+                    icon: "fas fa-file-image",
+                    id: 5
+                },
+                {
+                    name: "File",
+                    icon: "fas fa-file-alt",
+                    id: 6
+                },
+                {
+                    name: "Status",
+                    icon: "fas fa-flag",
+                    id: 7
+                },
+                {
+                    name: "Toggle",
+                    icon: "fas fa-toggle-on",
+                    id: 8
+                },
+                {
+                    name: "Language",
+                    icon: "fas fa-language",
+                    id: 9
+                },
+                {
+                    name: "Select",
+                    icon: "fas fa-check-circle",
+                    id: 10
+                },
+            ],
+            selectedCustomFields: [
+                {
+                    name: "Text",
+                    icon: "fas fa-font",
+                    id: 1
+                },
+                {
+                    name: "WYSIWYG",
+                    icon: "fas fa-quote-right",
+                    id: 2
                 }
-            },
-            selectedCustomField: "text-field",
+            ],
+            // formData: {
+            //     name: ""
+            // },
+            // fieldData: null,
+            // fieldsSchema: [],
+            // fieldsType: null,
+            // fieldsTypeId: null,
+            // formOptions: {
+            //     actionsWrapperClass: "d-flex justify-content-end mt-auto",
+            //     buttons: {
+            //         cancel: {
+            //             class: "btn btn-danger m-r-10",
+            //             text: "Cancel"
+            //         },
+            //         submit: {
+            //             class: "btn btn-primary",
+            //             text: "Save"
+            //         }
+            //     }
+            // },
+            // selectedCustomField: "text-field",
             selectedModule: {}
         };
     },
@@ -96,7 +224,7 @@ export default {
             return !!this.$route.params.id;
         },
         title() {
-            return (this.isEditing ? "Editing Custom Field for: " : "Adding Custom Field for: ") + this.selectedModule.name;
+            return this.selectedModule.name;
         }
     },
     created() {
@@ -183,6 +311,20 @@ export default {
             this.fieldsSchema = schema;
             this.fieldsType = type;
             this.fieldsTypeId = typeId;
+        },
+        change(event) {
+            switch (Object.keys(event)[0]) {
+                case 'added':
+                    this.$modal.show("custom-fields-conf-modal");
+                    break;
+
+                case 'moved':
+                    break;
+
+                default:
+                    break;
+            }
+            console.log(event)
         }
     }
 };
@@ -229,6 +371,83 @@ export default {
 
     .form-control {
         height: 43px;
+    }
+
+}
+</style>
+
+<style lang="scss">
+.custom-fields-settings {
+
+    h5 {
+        text-transform: capitalize;
+        margin-top: 0 !important;
+    }
+
+    .custom-field {
+        background-color: white;
+        border-radius: 3px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+        padding: 10px 15px;
+        font-size: 14px;
+        cursor: all-scroll;
+    }
+
+    .custom-fields-picker {
+        padding: 50px;
+        background-color: var(--darken-base-color);
+
+        h4 {
+            color: white;
+            margin-bottom: 25px;
+            font-size: 20px;
+        }
+
+        p {
+            color: white;
+            margin-bottom: 5px;
+            font-size: 12px;
+        }
+
+        .custom-fields-draggable {
+            padding: 30px 0;
+
+            .col-6 {
+                flex: 0 0 100%;
+                max-width: 100%;
+            }
+        }
+    }
+
+    .selected-custom-fields {
+        border: 2px dashed #e4e4e4;
+        padding: 30px;
+        height: 100%;
+
+        h4 {
+            margin-bottom: 25px;
+        }
+
+        .custom-field {
+            border: 1px solid #A5A5A5;
+        }
+
+        .edit-custom-field {
+            margin-bottom: 15px;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #3EB9DD;
+            color: white;
+            margin-left: -3px;
+            border-top-right-radius: 3px;
+            border-bottom-right-radius: 3px;
+            cursor: pointer;
+        }
     }
 }
 </style>
