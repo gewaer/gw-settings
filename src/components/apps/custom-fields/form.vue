@@ -1,46 +1,47 @@
 <template>
     <container-template>
-        <tabs-menu slot="tab-menu" />
         <div slot="tab-content" class="row custom-fields-settings">
             <div class="col">
                 <div class="custom-fields">
-                    <h5>
-                        {{ title }}
-                    </h5>
-                    <div class="row custom-fields-container">
-                        <div class="col-md-3">
-                            <fields-text
-                                ref="text"
-                                :class="{ 'selected': fieldsType == 'text' }"
-                                :field-data="fieldData"
-                                @schema="setSchema"
-                            />
-                            <fields-select
-                                ref="select"
-                                :class="{ 'selected': fieldsType == 'select' }"
-                                :field-data="fieldData"
-                                @schema="setSchema"
-                            />
-                            <fields-checkbox
-                                ref="checkbox"
-                                :class="{ 'selected': fieldsType == 'checkbox' }"
-                                :field-data="fieldData"
-                                @schema="setSchema"
-                            />
-                        </div>
-                        <div class="col-md-9">
-                            <custom-fields-form
-                                v-if="fieldsSchema"
-                                ref="customFields"
-                                :emit-values-on-update="true"
-                                :form-fields="fieldsSchema"
-                                :form-options="formOptions"
-                                class="d-flex h-100 flex-column"
-                                form-name="customFields"
-                                @formCancelled="formCancelled"
-                                @formSubmitted="formSubmitted"
-                                @formValuesUpdated="formValuesUpdated"
-                            />
+                    <h5>Custom Fields</h5>
+                    <tabs-menu slot="tab-menu" />
+                    <div class="card">
+                        <h6>{{ title }}</h6>
+                        <div class="row custom-fields-container">
+                            <div class="col-md-3">
+                                <fields-text
+                                    ref="text"
+                                    :class="{ 'selected': fieldsType == 'text' }"
+                                    :field-data="fieldData"
+                                    @schema="setSchema"
+                                />
+                                <fields-select
+                                    ref="select"
+                                    :class="{ 'selected': fieldsType == 'select' }"
+                                    :field-data="fieldData"
+                                    @schema="setSchema"
+                                />
+                                <fields-checkbox
+                                    ref="checkbox"
+                                    :class="{ 'selected': fieldsType == 'checkbox' }"
+                                    :field-data="fieldData"
+                                    @schema="setSchema"
+                                />
+                            </div>
+                            <div class="col-md-9">
+                                <custom-fields-form
+                                    v-if="fieldsSchema"
+                                    ref="customFields"
+                                    :emit-values-on-update="true"
+                                    :form-fields="fieldsSchema"
+                                    :form-options="formOptions"
+                                    class="d-flex h-100 flex-column"
+                                    form-name="customFields"
+                                    @formCancelled="formCancelled"
+                                    @formSubmitted="formSubmitted"
+                                    @formValuesUpdated="formValuesUpdated"
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -78,7 +79,7 @@ export default {
                 actionsWrapperClass: "d-flex justify-content-end mt-auto",
                 buttons: {
                     cancel: {
-                        class: "btn btn-danger m-r-10",
+                        class: "btn btn-danger mr-2",
                         text: "Cancel"
                     },
                     submit: {
