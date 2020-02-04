@@ -1,13 +1,8 @@
 <template>
     <container-template>
-        <tabs-menu slot="tab-menu" />
         <div slot="tab-content">
-            <h5>
-                Users
-                <router-link :to="{ name: 'settingsCompaniesUsersForm' }" class="btn btn-primary">
-                    New User Invite
-                </router-link>
-            </h5>
+            <h5>Company Settings</h5>
+            <tabs-menu slot="tab-menu" />
             <ul class="nav nav-tabs nav-horizontal">
                 <li class="nav-item">
                     <a
@@ -33,74 +28,79 @@
                         Inactive
                     </a>
                 </li>
+                <router-link :to="{ name: 'settingsCompaniesUsersForm' }" class="ml-auto d-flex align-items-center btn btn-primary">
+                    New User Invite
+                </router-link>
             </ul>
-            <div v-if="listToShow == 'usersList'" class="table-responsive">
-                <vuetable
-                    ref="vuetable"
-                    :append-params="appendParams.users"
-                    :fields="usersFields"
-                    :http-fetch="getTableData"
-                    api-url="/users"
-                    class="table table-hover table-condensed"
-                    pagination-path=""
-                >
-                    <template slot="fullname" slot-scope="props">
-                        <span>{{ props.rowData.firstname }} {{ props.rowData.lastname }}</span>
-                    </template>
+            <div class="card">
+                <div v-if="listToShow == 'usersList'" class="table-responsive">
+                    <vuetable
+                        ref="vuetable"
+                        :append-params="appendParams.users"
+                        :fields="usersFields"
+                        :http-fetch="getTableData"
+                        api-url="/users"
+                        class="table table-hover table-condensed"
+                        pagination-path=""
+                    >
+                        <template slot="fullname" slot-scope="props">
+                            <span>{{ props.rowData.firstname }} {{ props.rowData.lastname }}</span>
+                        </template>
 
-                    <template slot="actions" slot-scope="props">
-                        <div class="d-flex align-items-center justify-content-end">
-                            <button class="btn btn-primary m-l-5" @click="editUser(props.rowData.id)">
-                                <i class="fa fa-edit" aria-hidden="true" />
-                            </button>
-                            <button
-                                :class="{ 'disable-element': isCurrentUser(props.rowData.id) }"
-                                :disabled="isCurrentUser(props.rowData.id)"
-                                class="btn btn-danger m-l-5"
-                                @click="deleteConfirm(props.rowData.id)"
-                            >
-                                <i class="fa fa-trash" aria-hidden="true" />
-                            </button>
-                        </div>
-                    </template>
-                </vuetable>
-            </div>
-            <div v-if="listToShow == 'newUsersList'" class="table-responsive">
-                <vuetable
-                    ref="vuetable"
-                    :append-params="appendParams.invites"
-                    :fields="usersInviteFields"
-                    :http-fetch="getTableData"
-                    api-url="/users-invite"
-                    class="table table-hover table-condensed"
-                    pagination-path=""
-                >
-                    <template slot="actions" slot-scope="props">
-                        <div class="d-flex align-items-center justify-content-end">
-                            <button
-                                class="btn btn-danger m-l-5"
-                                @click="deleteConfirm(props.rowData.id)"
-                            >
-                                <i class="fa fa-trash" aria-hidden="true" />
-                            </button>
-                        </div>
-                    </template>
-                </vuetable>
-            </div>
-            <div v-if="listToShow == 'inactiveUsersList'" class="table-responsive">
-                <vuetable
-                    ref="vuetable"
-                    :append-params="appendParams.inactive"
-                    :fields="userInactiveFields"
-                    :http-fetch="getTableData"
-                    api-url="/users"
-                    class="table table-hover table-condensed"
-                    pagination-path=""
-                >
-                    <template slot="fullname" slot-scope="props">
-                        <span>{{ props.rowData.firstname }} {{ props.rowData.lastname }}</span>
-                    </template>
-                </vuetable>
+                        <template slot="actions" slot-scope="props">
+                            <div class="d-flex align-items-center justify-content-end">
+                                <button class="btn btn-primary m-l-5" @click="editUser(props.rowData.id)">
+                                    <i class="fa fa-edit" aria-hidden="true" />
+                                </button>
+                                <button
+                                    :class="{ 'disable-element': isCurrentUser(props.rowData.id) }"
+                                    :disabled="isCurrentUser(props.rowData.id)"
+                                    class="btn btn-danger m-l-5"
+                                    @click="deleteConfirm(props.rowData.id)"
+                                >
+                                    <i class="fa fa-trash" aria-hidden="true" />
+                                </button>
+                            </div>
+                        </template>
+                    </vuetable>
+                </div>
+                <div v-if="listToShow == 'newUsersList'" class="table-responsive">
+                    <vuetable
+                        ref="vuetable"
+                        :append-params="appendParams.invites"
+                        :fields="usersInviteFields"
+                        :http-fetch="getTableData"
+                        api-url="/users-invite"
+                        class="table table-hover table-condensed"
+                        pagination-path=""
+                    >
+                        <template slot="actions" slot-scope="props">
+                            <div class="d-flex align-items-center justify-content-end">
+                                <button
+                                    class="btn btn-danger m-l-5"
+                                    @click="deleteConfirm(props.rowData.id)"
+                                >
+                                    <i class="fa fa-trash" aria-hidden="true" />
+                                </button>
+                            </div>
+                        </template>
+                    </vuetable>
+                </div>
+                <div v-if="listToShow == 'inactiveUsersList'" class="table-responsive">
+                    <vuetable
+                        ref="vuetable"
+                        :append-params="appendParams.inactive"
+                        :fields="userInactiveFields"
+                        :http-fetch="getTableData"
+                        api-url="/users"
+                        class="table table-hover table-condensed"
+                        pagination-path=""
+                    >
+                        <template slot="fullname" slot-scope="props">
+                            <span>{{ props.rowData.firstname }} {{ props.rowData.lastname }}</span>
+                        </template>
+                    </vuetable>
+                </div>
             </div>
         </div>
     </container-template>

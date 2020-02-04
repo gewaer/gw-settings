@@ -1,5 +1,5 @@
 <template>
-    <ul class="nav nav-tabs">
+    <ul class="nav nav-tabs nav-horizontal">
         <li v-if="1 || $can('read', 'companyprofile')" class="nav-item">
             <router-link
                 :to="{ name: 'settingsCompaniesProfile' }"

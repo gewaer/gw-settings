@@ -1,11 +1,9 @@
 <template>
     <container-template>
-        <tabs-menu slot="tab-menu" />
         <div slot="tab-content">
-            <h5>
-                Branches
-            </h5>
-            <div class="table-responsive">
+            <h5>Company Settings</h5>
+            <tabs-menu slot="tab-menu" />
+            <div class="card">
                 <gw-browse
                     ref="gwBrowse"
                     :append-params="appendParams"
@@ -62,35 +60,10 @@ export default {
     ],
     data() {
         return {
-            branchesFields: [{
-                name: "name",
-                sortField: "name"
-            }, {
-                name: "actions",
-                title: "Actions",
-                titleClass: "table-actions",
-                dataClass: "table-actions"
-            }],
-            appendParams:{
-                format: "true",
-                q: "(is_deleted:0)"
-            },
-            isLoading: false,
             resource: {
                 name: "Branches",
                 slug: "companies-branches"
-            },
-            selectedBranch: null,
-            // ======================================================
-            // ======================================================
-            // ======================================================
-            baseURL: process.env.VUE_APP_BASE_API_URL,
-            queryParams: {
-                sort: "sort",
-                page: "page",
-                perPage: "limit"
-            },
-            token: this.$store.state.User.token || Cookies.get("token")
+            }
         }
     },
     computed: {

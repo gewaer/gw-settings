@@ -1,13 +1,7 @@
 <template>
     <container-template>
-        <tabs-menu slot="tab-menu" />
         <div slot="tab-content" class="custom-fields-settings">
-            <h5>
-                Custom Fields
-                <router-link :to="{ name: 'settingsAppsCustomFieldsForm', params: { module: selectedModule.name } }" class="btn btn-primary">
-                    Create
-                </router-link>
-            </h5>
+            <h5>Custom Fields</h5>
             <ul class="nav nav-tabs nav-horizontal">
                 <li v-for="module in modules" :key="'modules-' + module.id" class="nav-item">
                     <a
@@ -19,39 +13,36 @@
                     </a>
                 </li>
             </ul>
-            <div class="tab-content">
-                <div class="tab-pane active">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="table-responsive">
-                                <vuetable
-                                    v-if="selectedModule.id"
-                                    ref="CustomFieldsTable"
-                                    :append-params="appendParams"
-                                    :fields="tableFields"
-                                    :http-fetch="getCustomFields"
-                                    api-url=""
-                                    class="table table-hover table-condensed"
-                                    data-path=""
-                                    pagination-path=""
+            <router-link :to="{ name: 'settingsAppsCustomFieldsForm', params: { module: selectedModule.name } }" class="mb-4 btn btn-primary">
+                Create
+            </router-link>
+            <div class="card">
+                <div class="table-responsive">
+                    <vuetable
+                        v-if="selectedModule.id"
+                        ref="CustomFieldsTable"
+                        :append-params="appendParams"
+                        :fields="tableFields"
+                        :http-fetch="getCustomFields"
+                        api-url=""
+                        class="table table-hover table-condensed"
+                        data-path=""
+                        pagination-path=""
+                    >
+                        <template slot="actions" slot-scope="props">
+                            <div class="d-flex align-items-center justify-content-end">
+                                <button class="btn btn-primary m-l-5" @click="editCustomField(props.rowData.id)">
+                                    <i class="fa fa-edit" aria-hidden="true" />
+                                </button>
+                                <button
+                                    class="btn btn-danger m-l-5"
+                                    @click="confirmDelete(props.rowData.id)"
                                 >
-                                    <template slot="actions" slot-scope="props">
-                                        <div class="d-flex align-items-center justify-content-end">
-                                            <button class="btn btn-primary m-l-5" @click="editCustomField(props.rowData.id)">
-                                                <i class="fa fa-edit" aria-hidden="true" />
-                                            </button>
-                                            <button
-                                                class="btn btn-danger m-l-5"
-                                                @click="confirmDelete(props.rowData.id)"
-                                            >
-                                                <i class="fa fa-trash" aria-hidden="true" />
-                                            </button>
-                                        </div>
-                                    </template>
-                                </vuetable>
+                                    <i class="fa fa-trash" aria-hidden="true" />
+                                </button>
                             </div>
-                        </div>
-                    </div>
+                        </template>
+                    </vuetable>
                 </div>
             </div>
         </div>
@@ -61,13 +52,11 @@
 <script>
 import listMixins from "../../../mixins/listMixins";
 import ContainerTemplate from "../../../container";
-import TabsMenu from "../tabs";
 
 export default {
     name: "List",
     components: {
-        ContainerTemplate,
-        TabsMenu
+        ContainerTemplate
     },
     mixins: [
         listMixins

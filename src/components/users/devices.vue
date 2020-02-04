@@ -1,33 +1,33 @@
 <template>
     <container-template>
-        <tabs-menu slot="tab-menu" />
         <div slot="tab-content">
-            <h5>
-                Devices
-            </h5>
-            <div class="table-responsive">
-                <vuetable
-                    ref="DevicesList"
-                    :append-params="appendParams"
-                    :fields="branchesFields"
-                    :http-fetch="getTableData"
-                    :transform="transformData"
-                    track-by="id"
-                    api-url="/devices"
-                    class="table table-hover table-condensed"
-                    pagination-path=""
-                >
-                    <template slot="actions" slot-scope="props">
-                        <div class="d-flex align-items-center justify-content-end">
-                            <button
-                                class="btn btn-danger m-l-5"
-                                @click="confirmDelete(props.rowData)"
-                            >
-                                <i class="fa fa-trash" aria-hidden="true" />
-                            </button>
-                        </div>
-                    </template>
-                </vuetable>
+            <h5>User Settings</h5>
+            <tabs-menu slot="tab-menu" />
+            <div class="card h-100 mb-0">
+                <div class="table-responsive">
+                    <vuetable
+                        ref="DevicesList"
+                        :append-params="appendParams"
+                        :fields="branchesFields"
+                        :http-fetch="getTableData"
+                        :transform="transformData"
+                        track-by="id"
+                        api-url="/devices"
+                        class="table table-hover table-condensed"
+                        pagination-path=""
+                    >
+                        <template slot="actions" slot-scope="props">
+                            <div class="d-flex align-items-center justify-content-end">
+                                <button
+                                    class="btn btn-danger m-l-5"
+                                    @click="confirmDelete(props.rowData)"
+                                >
+                                    <i class="fa fa-trash" aria-hidden="true" />
+                                </button>
+                            </div>
+                        </template>
+                    </vuetable>
+                </div>
             </div>
         </div>
     </container-template>
