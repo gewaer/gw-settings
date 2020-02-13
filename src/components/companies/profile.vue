@@ -139,7 +139,6 @@
                     </div>
                 </div>
             </div>
-            <subscription-manager class="mt-4" />
             <div class="d-flex justify-content-end mt-2">
                 <button :disabled="isLoading || !hasChanged" class="btn btn-primary" @click="update()">
                     Save
@@ -162,8 +161,7 @@ export default {
     components: {
         ProfileUploader,
         ContainerTemplate,
-        TabsMenu,
-        subscriptionManager: () => import(/* webpackChunkName: "subscription-manager"*/ "./subscription-manager/")
+        TabsMenu
     },
     mixins: [
         vueRouterMixins
