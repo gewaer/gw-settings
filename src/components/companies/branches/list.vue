@@ -3,37 +3,37 @@
         <div slot="tab-content">
             <h5>Company Settings</h5>
             <tabs-menu slot="tab-menu" />
-            <router-link :to="{ name: 'settingsCompaniesBranchesForm' }" class="mb-4 btn btn-primary">
-                New Branch
-            </router-link>
             <div class="card">
-                <div class="table-responsive">
-                    <vuetable
-                        ref="Vuetable"
-                        :append-params="appendParams"
-                        :fields="branchesFields"
-                        :http-fetch="getTableData"
-                        api-url="/companies-branches"
-                        class="table table-hover table-condensed"
-                        pagination-path=""
-                    >
-                        <template slot="actions" slot-scope="props">
-                            <div class="d-flex align-items-center justify-content-end">
-                                <button class="btn btn-primary m-l-5" @click="editBranch(props.rowData.id)">
-                                    <i class="fa fa-edit" aria-hidden="true" />
-                                </button>
-                                <button
-                                    :class="{ 'disable-element': isCurrentBranch(props.rowData.id) }"
-                                    :disabled="isCurrentBranch(props.rowData.id)"
-                                    class="btn btn-danger m-l-5"
-                                    @click="confirmDelete(props.rowData.id)"
-                                >
-                                    <i class="fa fa-trash" aria-hidden="true" />
-                                </button>
-                            </div>
-                        </template>
-                    </vuetable>
-                </div>
+                <gw-browse
+                    ref="gwBrowse"
+                    :append-params="appendParams"
+                    :create-resource-url="{ name: 'settingsCompaniesBranchesForm' }"
+                    :http-options="{ baseURL, headers: { Authorization: token }}"
+                    :pagination-data="paginationData"
+                    :query-params="queryParams"
+                    :resource="resource"
+                    :show-bulk-actions="false"
+                    :show-search-filters="false"
+                    :show-title="false"
+                    pagination-path=""
+                    @load-error="loadError"
+                >
+                    <template slot="actions" slot-scope="props">
+                        <div class="d-flex align-items-center justify-content-end">
+                            <button class="btn btn-primary m-l-5" @click="editBranch(props.rowData.id)">
+                                <i class="fa fa-edit" aria-hidden="true" />
+                            </button>
+                            <button
+                                :class="{ 'disable-element': isCurrentBranch(props.rowData.id) }"
+                                :disabled="isCurrentBranch(props.rowData.id)"
+                                class="btn btn-danger m-l-5"
+                                @click="confirmDelete(props.rowData.id)"
+                            >
+                                <i class="fa fa-trash" aria-hidden="true" />
+                            </button>
+                        </div>
+                    </template>
+                </gw-browse>
             </div>
         </div>
     </container-template>
@@ -58,21 +58,10 @@ export default {
     ],
     data() {
         return {
-            branchesFields: [{
-                name: "name",
-                sortField: "name"
-            }, {
-                name: "actions",
-                title: "Actions",
-                titleClass: "table-actions",
-                dataClass: "table-actions"
-            }],
-            appendParams:{
-                format: "true",
-                q: "(is_deleted:0)"
-            },
-            isLoading: false,
-            selectedBranch: null
+            resource: {
+                name: "Branches",
+                slug: "companies-branches"
+            }
         }
     },
     computed: {

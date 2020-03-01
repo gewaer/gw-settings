@@ -15,7 +15,7 @@
 import uppy from "@uppy/core";
 import XHRUpload from "@uppy/xhr-upload";
 import FileInput from "@uppy/file-input";
-import uuidv4 from "uuid/v4";
+import { v4 as uuidv4 } from "uuid";
 
 /**
      * Please visit the Uppy docs at https://uppy.io/docs/uppy/
