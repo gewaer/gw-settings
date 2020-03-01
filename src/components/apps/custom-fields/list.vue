@@ -13,37 +13,37 @@
                     </a>
                 </li>
             </ul>
-            <router-link :to="{ name: 'settingsAppsCustomFieldsForm', params: { module: selectedModule.name } }" class="mb-4 btn btn-primary">
-                Create
-            </router-link>
             <div class="card">
-                <div class="table-responsive">
-                    <vuetable
-                        v-if="selectedModule.id"
-                        ref="CustomFieldsTable"
-                        :append-params="appendParams"
-                        :fields="tableFields"
-                        :http-fetch="getCustomFields"
-                        api-url=""
-                        class="table table-hover table-condensed"
-                        data-path=""
-                        pagination-path=""
-                    >
-                        <template slot="actions" slot-scope="props">
-                            <div class="d-flex align-items-center justify-content-end">
-                                <button class="btn btn-primary m-l-5" @click="editCustomField(props.rowData.id)">
-                                    <i class="fa fa-edit" aria-hidden="true" />
-                                </button>
-                                <button
-                                    class="btn btn-danger m-l-5"
-                                    @click="confirmDelete(props.rowData.id)"
-                                >
-                                    <i class="fa fa-trash" aria-hidden="true" />
-                                </button>
-                            </div>
-                        </template>
-                    </vuetable>
-                </div>
+                <gw-browse
+                    v-if="selectedModule.id"
+                    ref="gwBrowse"
+                    :append-params="appendParams"
+                    :create-resource-url="{ name: 'settingsAppsCustomFieldsForm', params: { module: selectedModule.name } }"
+                    :http-options="{ baseURL, headers: { Authorization: token }}"
+                    :query-params="queryParams"
+                    :resource="resource"
+                    :show-bulk-actions="false"
+                    :show-pagination="false"
+                    :show-search-filters="false"
+                    :show-title="false"
+                    data-path=""
+                    pagination-path=""
+                    @load-error="loadError"
+                >
+                    <template slot="actions" slot-scope="props">
+                        <div class="d-flex align-items-center justify-content-end">
+                            <button class="btn btn-primary m-l-5" @click="editCustomField(props.rowData.id)">
+                                <i class="fa fa-edit" aria-hidden="true" />
+                            </button>
+                            <button
+                                class="btn btn-danger m-l-5"
+                                @click="confirmDelete(props.rowData.id)"
+                            >
+                                <i class="fa fa-trash" aria-hidden="true" />
+                            </button>
+                        </div>
+                    </template>
+                </gw-browse>
             </div>
         </div>
     </container-template>
@@ -63,20 +63,17 @@ export default {
     ],
     data() {
         return {
-            appendParams:{
-                format: "true"
-            },
             modules: [],
-            selectedModule: {},
-            tableFields: [{
-                name: "label",
-                sortField: "label"
-            }, {
-                name: "actions",
-                title: "Actions",
-                titleClass: "table-actions",
-                dataClass: "table-actions"
-            }]
+            selectedModule: {}
+        }
+    },
+    computed: {
+        resource() {
+            return {
+                name: "Field",
+                slug: "custom-fields-modules",
+                endpoint: `custom-fields-modules/${this.selectedModule.id}/fields`
+            }
         }
     },
     created() {
@@ -86,8 +83,8 @@ export default {
         changeModule(module) {
             this.selectedModule = module;
 
-            if (this.$refs.CustomFieldsTable) {
-                this.$refs.CustomFieldsTable.refresh();
+            if (this.$refs.gwBrowse) {
+                // this.$refs.gwBrowse.refresh();
             }
         },
         editCustomField(customFieldsId) {
@@ -97,11 +94,6 @@ export default {
                     module: this.selectedModule.name,
                     id: customFieldsId
                 }
-            });
-        },
-        getCustomFields() {
-            return axios({
-                url: `/custom-fields-modules/${this.selectedModule.id}/fields`
             });
         },
         getModules() {
