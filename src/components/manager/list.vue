@@ -2,43 +2,37 @@
     <container-template>
         <div slot="tab-content">
             <h5>Companies</h5>
-            <router-link :to="{ name: 'settingsManagerForm' }" class="mb-4 btn btn-primary">
-                New Company
-            </router-link>
             <div class="card">
-                <div class="table-responsive">
-                    <vuetable
-                        ref="Vuetable"
-                        :append-params="appendParams"
-                        :fields="companiesFields"
-                        :http-fetch="getTableData"
-                        api-url="/companies"
-                        class="table table-hover table-condensed"
-                        pagination-path=""
-                    >
-                        <img
-                            slot="profile-image"
-                            slot-scope="props"
-                            :src="props.rowData.logo && props.rowData.logo.url"
-                            height="25px"
-                        >
-                        <template slot="actions" slot-scope="props">
-                            <div class="d-flex align-items-center justify-content-end">
-                                <button class="btn btn-primary m-l-5" @click="editCompany(props.rowData.id)">
-                                    <i class="fa fa-edit" aria-hidden="true" />
-                                </button>
-                                <button
-                                    :class="{ 'disable-element': isCurrentCompany(props.rowData.id) }"
-                                    :disabled="isCurrentCompany(props.rowData.id)"
-                                    class="btn btn-danger m-l-5"
-                                    @click="confirmDelete(props.rowData.id)"
-                                >
-                                    <i class="fa fa-trash" aria-hidden="true" />
-                                </button>
-                            </div>
-                        </template>
-                    </vuetable>
-                </div>
+                <gw-browse
+                    ref="gwBrowse"
+                    :append-params="appendParams"
+                    :create-resource-url="{ name: 'settingsManagerForm' }"
+                    :http-options="{ baseURL, headers: { Authorization: token }}"
+                    :pagination-data="paginationData"
+                    :query-params="queryParams"
+                    :resource="resource"
+                    :show-bulk-actions="false"
+                    :show-search-filters="false"
+                    :show-title="false"
+                    pagination-path=""
+                    @load-error="loadError"
+                >
+                    <template slot="actions" slot-scope="props">
+                        <div class="d-flex align-items-center justify-content-end">
+                            <button class="btn btn-primary m-l-5" @click="editCompany(props.rowData.id)">
+                                <i class="fa fa-edit" aria-hidden="true" />
+                            </button>
+                            <button
+                                :class="{ 'disable-element': isCurrentCompany(props.rowData.id) }"
+                                :disabled="isCurrentCompany(props.rowData.id)"
+                                class="btn btn-danger m-l-5"
+                                @click="confirmDelete(props.rowData.id)"
+                            >
+                                <i class="fa fa-trash" aria-hidden="true" />
+                            </button>
+                        </div>
+                    </template>
+                </gw-browse>
             </div>
             <modal
                 :draggable="true"
@@ -69,20 +63,6 @@ export default {
     ],
     data() {
         return {
-            companiesFields: [{
-                name: "profile-image",
-                title: "Logo",
-                width: "30%"
-            }, {
-                name: "name",
-                sortField: "name",
-                width: "30%"
-            }, {
-                name: "actions",
-                title: "Actions",
-                titleClass: "table-actions",
-                dataClass: "table-actions"
-            }],
             appendParams:{
                 format: "true",
                 relationships: "hasActivities,logo",
@@ -90,6 +70,10 @@ export default {
             },
             isEditable: true,
             isLoading: false,
+            resource: {
+                name: "Companies",
+                slug: "companies"
+            },
             selectedCompany: null
         }
     },
@@ -158,12 +142,6 @@ export default {
                 params: {
                     id: companyId
                 }
-            });
-        },
-        getTableData(apiUrl, options) {
-            return axios({
-                url: apiUrl,
-                params: options.params
             });
         },
         isCurrentCompany(companyId) {

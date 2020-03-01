@@ -3,36 +3,35 @@
         <div slot="tab-content">
             <h5>Company Settings</h5>
             <tabs-menu slot="tab-menu" />
-            <router-link :to="{ name: 'settingsCompaniesRolesForm' }" class="mb-4 btn btn-primary">
-                New Role
-            </router-link>
-            <!-- <span style="width:30%">{{ 'name' | capitalize }}</span> -->
             <div class="card">
-                <div class="table-responsive">
-                    <vuetable
-                        ref="Vuetable"
-                        :append-params="{format: 'true'}"
-                        :fields="rolesFields"
-                        :http-fetch="getTableData"
-                        api-url="/roles"
-                        class="table table-hover table-condensed"
-                        pagination-path=""
-                    >
-                        <template slot="actions" slot-scope="props">
-                            <div class="d-flex align-items-center justify-content-end">
-                                <button v-if="!isGlobal(props.rowData)" class="btn btn-primary m-l-5" @click="editRole(props.rowData)">
-                                    <i class="fa fa-edit" aria-hidden="true" />
-                                </button>
-                                <button class="btn btn-primary m-l-5" title="clone role" @click="cloneRole(props.rowData)">
-                                    <i class="fa fa-copy" aria-hidden="true" />
-                                </button>
-                                <button v-if="!isGlobal(props.rowData)" class="btn btn-danger m-l-5" @click="confirmDelete(props.rowData.id)">
-                                    <i class="fa fa-trash" aria-hidden="true" />
-                                </button>
-                            </div>
-                        </template>
-                    </vuetable>
-                </div>
+                <gw-browse
+                    ref="gwBrowse"
+                    :append-params="appendParams"
+                    :create-resource-url="{ name: 'settingsCompaniesRolesForm' }"
+                    :http-options="{ baseURL, headers: { Authorization: token }}"
+                    :pagination-data="paginationData"
+                    :query-params="queryParams"
+                    :resource="resource"
+                    :show-bulk-actions="false"
+                    :show-search-filters="false"
+                    :show-title="false"
+                    pagination-path=""
+                    @load-error="loadError"
+                >
+                    <template slot="actions" slot-scope="props">
+                        <div class="d-flex align-items-center justify-content-end">
+                            <button v-if="!isGlobal(props.rowData)" class="btn btn-primary m-l-5" @click="editRole(props.rowData)">
+                                <i class="fa fa-edit" aria-hidden="true" />
+                            </button>
+                            <button class="btn btn-primary m-l-5" title="clone role" @click="cloneRole(props.rowData)">
+                                <i class="fa fa-copy" aria-hidden="true" />
+                            </button>
+                            <button v-if="!isGlobal(props.rowData)" class="btn btn-danger m-l-5" @click="confirmDelete(props.rowData.id)">
+                                <i class="fa fa-trash" aria-hidden="true" />
+                            </button>
+                        </div>
+                    </template>
+                </gw-browse>
             </div>
         </div>
     </container-template>
@@ -56,19 +55,10 @@ export default {
     ],
     data() {
         return {
-            rolesFields: [{
-                name: "name",
-                title: "Name"
-            }, {
-                name: "description"
-            }, {
-                name: "users"
-            }, {
-                name: "actions",
-                title: "Actions",
-                titleClass: "table-actions",
-                dataClass: "table-actions"
-            }]
+            resource: {
+                name: "Roles",
+                slug: "roles"
+            }
         }
     },
     methods: {

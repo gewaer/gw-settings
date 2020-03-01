@@ -139,7 +139,7 @@
                     </div>
                 </div>
             </div>
-            <div class="d-flex justify-content-end mt-2">
+            <div v-if="$can('update', 'companyprofile')" class="d-flex justify-content-end mt-2">
                 <button :disabled="isLoading || !hasChanged" class="btn btn-primary" @click="update()">
                     Save
                 </button>
