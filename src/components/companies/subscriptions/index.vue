@@ -6,10 +6,7 @@
                 <span class="title">Your plan subscription</span>
                 <subscription-details />
             </div>
-            <div class="col-12 col-lg">
-                <span class="title">Billing</span>
-                <credit-card />
-            </div>
+            <div class="col-12 col-lg" />
         </div>
     </container-template>
 </template>
@@ -23,7 +20,6 @@ export default {
     components: {
         ContainerTemplate,
         subscriptionDetails: () => import(/* webpackChunkName: "subscription-details"*/ "./details"),
-        creditCard: () => import(/* webpackChunkName: "credit-card"*/ "./credit-card"),
         TabsMenu
     }
 }
