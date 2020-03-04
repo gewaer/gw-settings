@@ -1,98 +1,66 @@
 <template>
     <div class="plans-modal">
-        <div class="row modal-header">
-            <div class="col d-flex align-items-center">
-                <h5>Update Plan</h5>
-                <a class="ml-auto" href="#" @click="$modal.hide('plans-modal')">x</a>
+            <form @submit.prevent="update()">
+            <a class="close-modal" href="#" @click="$modal.hide('plans-modal')">
+                <i class="fa fa-times" aria-hidden="true"/>
+            </a>
+            <div class="modal-header">
+                <h2>Select a new plan</h2>
+                <p>Please select one of the plans bellow</p>
             </div>
-        </div>
-        <div class="row modal-body">
-            <div class="col">
-                <div class="row m-b-20">
-                    <div
-                        v-for="frequency in billingFrequencies"
-                        :key="frequency.type"
-                        class="col"
-                    >
-                        <input
-                            :id="frequency.type"
-                            :value="frequency.type"
-                            :checked="selectedFrequency.frequency == frequency.frequency"
-                            type="radio"
-                            name="payment-frequency"
-                            @change="selectedFrequency = frequency"
-                        >
-                        <label :for="frequency.type">
-                            Pay {{ frequency.title }}
-                            <small>${{ frequency.price }} per seat per {{ frequency.frequency }}</small>
-                        </label>
-                    </div>
+            <div class="modal-body">
+                <div class="payment-frecuency">
+                    <span :class="{ 'deactivated' : payYearly }">Monthly</span><p-check off-color="danger" class="p-switch p-fill payment-frecuency-switch" v-model="payYearly" /><span :class="{ 'deactivated' : !payYearly }">Yearly</span>
                 </div>
-                <div class="row m-b-20">
+                <div class="plans">
                     <div
                         v-for="plan in plans"
                         :key="plan.stripe_plan"
                         :class="{ selected: selectedPlan == plan.stripe_plan }"
-                        class="col"
-                        @click="selectedPlan = plan.stripe_plan"
+                        class="plan"
                     >
-                        <h3>{{ plan.name }}</h3>
-                        <div>
-                            <span class="price">
-                                <span class="sign">$</span>
-                                <span class="currency">{{ plan[selectedFrequency.type] }} </span>
-                                <span class="month">/{{ selectedFrequency.frequency }}</span>
-                            </span>
-                        </div>
-                        <div>
-                            <ul v-if="plan.settings.length">
-                                <li
-                                    v-for="planSetting in plan.settings"
-                                    :key="planSetting.key"
-                                >
-                                    <span> {{ planSetting.value }}</span>
-                                    {{ planSetting.key | formatSetting }}
-                                </li>
-                            </ul>
-                        </div>
+                        <input type="radio" name="plans" :id="plan.name + plan.id" :value="plan.stripe_plan" v-model="selectedPlan">
+                        <label :for="plan.name + plan.id">
+                            <div class="radio-circle" />
+                            <div class="plan-details">
+                                <div class="plan-name">
+                                    <h5>{{ plan.name }}</h5>
+                                    <div v-if="payYearly" class="monthly-reference-price">Monthly reference price {{ plan.pricing }}</div>
+                                </div>
+                                <div class="plan-price">
+                                    <h3>{{ payYearly ? plan.pricing_anual : plan.pricing }}</h3>
+                                </div>
+                            </div>
+                            <div class="plan-labels">
+                                <span v-if="selectedPlan == plan.stripe_plan" class="current-plan">Current Plan</span>
+                                <span v-if="true" class="recommended-plan">Recommended</span>
+                            </div>
+                        </label>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="row modal-footer">
-            <div class="col">
-                <button
-                    :disabled="!planChanged"
-                    class="btn btn-block btn-primary"
-                    @click="update()"
-                >
-                    Update
-                </button>
-            </div>
-            <div class="col">
-                <button class="btn btn-block btn-primary" @click="$modal.hide('plans-modal')">
+            <div class="modal-footer">
+                <button class="btn btn-danger mr-2" @click="$modal.hide('plans-modal')">
                     Cancel
                 </button>
-            </div>
-        </div>
-        <div class="row modal-footer">
-            <div class="col">
-                <h4 style="color:red;">
-                    Danger Zone
-                </h4>
-                <button class="btn btn-block btn-danger" @click="cancelSubscription()">
-                    Cancel Subscription
+                <button class="btn btn-primary" :disabled="!planChanged">
+                    Save
                 </button>
             </div>
-        </div>
+        </form>
     </div>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
+import 'pretty-checkbox/src/pretty-checkbox.scss';
+import PrettyCheck from 'pretty-checkbox-vue/check';
 
 export default {
     name: "PlansModal",
+    components: {
+        'p-check': PrettyCheck
+    },
     props: {
         planData: {
             type: Object,
@@ -105,26 +73,7 @@ export default {
     },
     data() {
         return {
-            billingFrequencies: {
-                pricingMonthly: {
-                    type:"pricing",
-                    title: "Monthly",
-                    price: "10",
-                    frequency: "monthly"
-                },
-                pricingAnual: {
-                    type:"pricing_anual",
-                    title: "Annually",
-                    price: "100",
-                    frequency: "yearly"
-                }
-            },
-            selectedFrequency: {
-                type: "pricing",
-                title: "Monthly",
-                price: "10",
-                frequency: "monthly"
-            },
+            payYearly: false,
             selectedPlan: {}
         }
     },
@@ -135,28 +84,13 @@ export default {
             isPaid: "Subscription/isPaid"
         }),
         planChanged() {
-            return this.selectedPlan != this.planData.stripe_plan
-                || this.selectedFrequency.frequency != this.planData.payment_style;
+            return this.selectedPlan != this.planData.stripe_plan;
         }
     },
     created() {
         this.selectedPlan = this.planData.stripe_plan;
     },
     methods: {
-        cancelSubscription() {
-            axios({
-                url: `/apps-plans/${plan.stripe_plan}`,
-                method: "DELETE"
-            }).then(() => {
-                this.$modal.hide("plans-modal");
-            }).catch((error) => {
-                this.$notify({
-                    title: "Error",
-                    text: error.response.data.errors.message,
-                    type: "error"
-                });
-            });
-        },
         update() {
             const appPlan = {
                 payment_style: this.selectedFrequency.frequency,
@@ -187,8 +121,177 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-.selected {
-    background-color: #b2b2b2;
+<style lang="scss">
+.plans-modal {
+    padding: 40px 0;
+    position: relative;
+
+    .close-modal {
+        position: absolute;
+        right: 25px;
+        top: 20px;
+        color: #A5A5A5;
+    }
+
+    .modal-header {
+        display: flex;
+        flex-direction: column;
+        padding: 0 40px;
+        border-bottom: 0;
+
+        h2 {
+            font-size: 36px;
+            margin-bottom: 5px;
+        }
+    }
+
+    .modal-body {
+        padding: 0;
+
+        .payment-frecuency {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            margin-bottom: 20px;
+            padding: 0 40px;
+
+            span:first-child {
+                margin-right: 10px;
+            }
+
+            span:last-child {
+                margin-left: 10px;
+            }
+
+            .payment-frecuency-switch {
+                width: 34px;
+                margin-right: 0;
+
+                .state:before {
+                    top: calc((0% - (100% - 1em)) - 15%);
+                }
+
+                input:checked ~ .state:before {
+                    background-color: transparent !important;
+                    border-color: #bdc3c7 !important;
+                }
+
+                .state label:after, input:checked ~ .state label:after {
+                    background-color: black !important;
+                }
+            }
+        }
+
+        .plans {
+            margin-bottom: 40px;
+
+            .plan {
+                padding: 22px 40px;
+                position: relative;
+                cursor: pointer;
+
+                input[type="radio"] {
+                    display: none;
+                }
+
+                label {
+                    display: flex;
+                    align-items: center;
+                    margin-bottom: 0;
+                    cursor: pointer;
+
+                    .radio-circle {
+                        width: 25px;
+                        height: 25px;
+                        background-color: white;
+                        border: 2px solid #BEC8D1;
+                        border-radius: 100%;
+                        margin-right: 25px;
+                    }
+                }
+
+                .plan-details {
+                    flex: 1;
+                    display: flex;
+                    justify-content: space-between;
+
+                    .plan-name, .plan-price {
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+
+                        h3, h5 {
+                            margin-bottom: 0;
+                            text-transform: capitalize;
+                        }
+
+                        h5 {
+                            font-size: 20px;
+                        }
+
+                        h3 {
+                            font-size: 27px;
+                        }
+                    }
+
+
+                    .monthly-reference-price {
+                        font-size: 14px;
+                        color: #A5A5A5;
+                    }
+                }
+
+                .plan-labels {
+                    width: 130px;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: flex-end;
+
+                    .current-plan {
+                        font-size: 11px;
+                        text-transform: uppercase;
+                        color: #A5A5A5;
+                        font-weight: 600;
+                    }
+
+                    .recommended-plan {
+                        font-size: 10px;
+                        text-transform: uppercase;
+                        background-color: #F0C922;
+                        padding: 5px 15px;
+                        color: white;
+                        border-radius: 3px;
+                    }
+                }
+
+                &.selected {
+                    background-color: #F7F7F7;
+
+                    label {
+                        .radio-circle {
+                            background-color: var(--secondary-color);
+                            border: 0;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+
+                            &:after {
+                                content: "";
+                                width: 11px;
+                                height: 11px;
+                                background-color: white;
+                                border-radius: 100%;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .modal-footer {
+        padding: 0 40px;
+        border-top: 0;
+    }
 }
 </style>
