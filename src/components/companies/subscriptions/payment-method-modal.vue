@@ -1,123 +1,109 @@
 <template>
     <div class="payment-method-modal">
-        <div class="row modal-header">
-            <div class="col d-flex align-items-center">
-                <h5>Update Payment Method</h5>
-                <a class="ml-auto" href="#" @click="$modal.hide('payment-method-modal')">x</a>
-            </div>
+        <a class="close-modal" href="#" @click="$modal.hide('payment-method-modal')">
+            <i class="fa fa-times" aria-hidden="true" />
+        </a>
+        <div class="modal-header">
+            <h2>Update Payment Method</h2>
         </div>
-        <div class="row modal-body">
-            <div class="col">
-                <div class="row m-b-20">
-                    <div class="col-12">
-                        <form>
-                            <card-networks :brand="cardBrand" class="mb-3" />
-                            <div class="add-credit-card-form credit-card-inputs">
-                                <div class="card-number">
-                                    <div class="form-group">
-                                        <label :class="{ 'text-danger': errors.first('cardNumber') }">
-                                            <span>Card Number</span>
-                                            <img v-tooltip="'Transactions are encrypted and secure.'" src="/img/padlock-icon.svg" alt="Padlock">
-                                        </label>
-                                        <card-number
-                                            ref="cardNumber"
-                                            :class="{ 'is-danger': errors.first('cardNumber') }"
-                                            :stripe="stripeKey"
-                                            :options="stripeOptions"
-                                            class="card-number form-control"
-                                            @change="handleChange('cardNumber', $event)"
-                                        />
-                                        <span v-show="errors.has('cardNumber')" class="text-danger mt-1">
-                                            {{ errors.first('cardNumber') }}
-                                        </span>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="form-group">
-                                        <label :class="{ 'text-danger': errors.first('cardExpiry') }" for="expiration">
-                                            <span>Expiration</span>
-                                        </label>
-                                        <card-expiry
-                                            ref="cardExpiry"
-                                            :class="{ 'is-danger': errors.first('cardExpiry') }"
-                                            :stripe="stripeKey"
-                                            :options="stripeOptions"
-                                            class="card-expiry form-control"
-                                            @change="handleChange('cardExpiry', $event)"
-                                        />
-                                        <span v-show="errors.has('cardExpiry')" class="text-danger mt-1">
-                                            {{ errors.first('cardExpiry') }}
-                                        </span>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="form-group">
-                                        <label :class="{ 'text-danger': errors.first('cardCvc') }" for="cvc">
-                                            <span class="mr-1">
-                                                CVC
-                                            </span>
-                                            <img
-                                                v-tooltip="'The security code, or CVV, refers to the extra 3 or 4 numbers on the back or front of your card.'"
-                                                class="mr-auto"
-                                                src="/img/help-icon.png"
-                                                alt="Help"
-                                            >
-                                        </label>
-                                        <card-cvc
-                                            ref="cardCvc"
-                                            :class="{ 'is-danger': errors.first('cardCvc') }"
-                                            :stripe="stripeKey"
-                                            :options="stripeOptions"
-                                            class="card-cvc form-control"
-                                            @change="handleChange('cardCvc', $event)"
-                                        />
-                                        <span v-show="errors.has('cardCvc')" class="text-danger mt-1">
-                                            {{ errors.first('cardCvc') }}
-                                        </span>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="form-group">
-                                        <label :class="{ 'text-danger': errors.first('postalCode') }" for="zip-code">
-                                            <span>Zip Code</span>
-                                        </label>
-                                        <postal-code
-                                            ref="postalCode"
-                                            :class="{ 'is-danger': errors.first('postalCode') }"
-                                            :stripe="stripeKey"
-                                            :options="stripeOptions"
-                                            class="card-postal-code form-control"
-                                            @change="handleChange('postalCode', $event)"
-                                        />
-                                        <span v-show="errors.has('postalCode')" class="text-danger mt-1">
-                                            {{ errors.first('postalCode') }}
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <span v-show="errors.has('stripe_errors')" class="text-danger">
-                                {{ errors.first('stripe_errors') }}
+        <div class="modal-body">
+            <form>
+                <card-networks :brand="cardBrand" class="mb-3" />
+                <div class="add-credit-card-form credit-card-inputs">
+                    <div class="card-number">
+                        <div class="form-group">
+                            <label :class="{ 'text-danger': errors.first('cardNumber') }">
+                                <span>Card Number</span>
+                                <img v-tooltip="'Transactions are encrypted and secure.'" src="/img/padlock-icon.svg" alt="Padlock">
+                            </label>
+                            <card-number
+                                ref="cardNumber"
+                                :class="{ 'is-danger': errors.first('cardNumber') }"
+                                :stripe="stripeKey"
+                                :options="stripeOptions"
+                                class="card-number form-control"
+                                @change="handleChange('cardNumber', $event)"
+                            />
+                            <span v-show="errors.has('cardNumber')" class="text-danger mt-1">
+                                {{ errors.first('cardNumber') }}
                             </span>
-                        </form>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="form-group">
+                            <label :class="{ 'text-danger': errors.first('cardExpiry') }" for="expiration">
+                                <span>Expiration</span>
+                            </label>
+                            <card-expiry
+                                ref="cardExpiry"
+                                :class="{ 'is-danger': errors.first('cardExpiry') }"
+                                :stripe="stripeKey"
+                                :options="stripeOptions"
+                                class="card-expiry form-control"
+                                @change="handleChange('cardExpiry', $event)"
+                            />
+                            <span v-show="errors.has('cardExpiry')" class="text-danger mt-1">
+                                {{ errors.first('cardExpiry') }}
+                            </span>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="form-group">
+                            <label :class="{ 'text-danger': errors.first('cardCvc') }" for="cvc">
+                                <span class="mr-1">
+                                    CVC
+                                </span>
+                                <img
+                                    v-tooltip="'The security code, or CVV, refers to the extra 3 or 4 numbers on the back or front of your card.'"
+                                    class="mr-auto"
+                                    src="/img/help-icon.png"
+                                    alt="Help"
+                                >
+                            </label>
+                            <card-cvc
+                                ref="cardCvc"
+                                :class="{ 'is-danger': errors.first('cardCvc') }"
+                                :stripe="stripeKey"
+                                :options="stripeOptions"
+                                class="card-cvc form-control"
+                                @change="handleChange('cardCvc', $event)"
+                            />
+                            <span v-show="errors.has('cardCvc')" class="text-danger mt-1">
+                                {{ errors.first('cardCvc') }}
+                            </span>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="form-group">
+                            <label :class="{ 'text-danger': errors.first('postalCode') }" for="zip-code">
+                                <span>Zip Code</span>
+                            </label>
+                            <postal-code
+                                ref="postalCode"
+                                :class="{ 'is-danger': errors.first('postalCode') }"
+                                :stripe="stripeKey"
+                                :options="stripeOptions"
+                                class="card-postal-code form-control"
+                                @change="handleChange('postalCode', $event)"
+                            />
+                            <span v-show="errors.has('postalCode')" class="text-danger mt-1">
+                                {{ errors.first('postalCode') }}
+                            </span>
+                        </div>
                     </div>
                 </div>
-            </div>
+                <span v-show="errors.has('stripe_errors')" class="text-danger">
+                    {{ errors.first('stripe_errors') }}
+                </span>
+            </form>
         </div>
-        <div class="row modal-footer">
-            <div class="col">
-                <button
-                    :disabled="!cardToken"
-                    class="btn btn-block btn-primary"
-                    @click="update()"
-                >
-                    Update
-                </button>
-            </div>
-            <div class="col">
-                <button class="btn btn-block btn-primary" @click="cancel()">
-                    Cancel
-                </button>
-            </div>
+        <div class="modal-footer">
+            <button class="btn btn-danger mr-2" @click="cancel()">
+                Cancel
+            </button>
+            <button class="btn btn-primary" :disabled="!cardToken" @click="update()">
+                Save
+            </button>
         </div>
     </div>
 </template>
@@ -258,6 +244,34 @@ export default {
 </script>
 
 <style lang="scss">
+.payment-method-modal {
+    padding: 40px;
+    position: relative;
+
+    .close-modal {
+        position: absolute;
+        right: 25px;
+        top: 20px;
+        color: #A5A5A5;
+    }
+
+    .modal-header, .modal-body, .modal-footer {
+        padding: 0;
+        border: 0;
+    }
+
+    .modal-header {
+        h2 {
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+    }
+
+    .modal-body {
+        margin: 20px 0;
+    }
+}
+
 .add-credit-card-form {
     display: flex;
     flex-wrap: wrap;

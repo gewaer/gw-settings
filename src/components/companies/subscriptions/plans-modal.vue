@@ -1,8 +1,8 @@
 <template>
     <div class="plans-modal">
-            <form @submit.prevent="update()">
+        <form @submit.prevent="update()">
             <a class="close-modal" href="#" @click="$modal.hide('plans-modal')">
-                <i class="fa fa-times" aria-hidden="true"/>
+                <i class="fa fa-times" aria-hidden="true" />
             </a>
             <div class="modal-header">
                 <h2>Select a new plan</h2>
@@ -10,7 +10,7 @@
             </div>
             <div class="modal-body">
                 <div class="payment-frecuency">
-                    <span :class="{ 'deactivated' : payYearly }">Monthly</span><p-check off-color="danger" class="p-switch p-fill payment-frecuency-switch" v-model="payYearly" /><span :class="{ 'deactivated' : !payYearly }">Yearly</span>
+                    <span :class="{ 'deactivated' : payYearly }">Monthly</span><p-check v-model="payYearly" off-color="danger" class="p-switch p-fill payment-frecuency-switch" /><span :class="{ 'deactivated' : !payYearly }">Yearly</span>
                 </div>
                 <div class="plans">
                     <div
@@ -19,7 +19,13 @@
                         :class="{ selected: selectedPlan == plan.stripe_plan }"
                         class="plan"
                     >
-                        <input type="radio" name="plans" :id="plan.name + plan.id" :value="plan.stripe_plan" v-model="selectedPlan">
+                        <input
+                            :id="plan.name + plan.id"
+                            v-model="selectedPlan"
+                            type="radio"
+                            name="plans"
+                            :value="plan.stripe_plan"
+                        >
                         <label :for="plan.name + plan.id">
                             <div class="radio-circle" />
                             <div class="plan-details">
@@ -53,13 +59,13 @@
 
 <script>
 import { mapGetters } from "vuex";
-import 'pretty-checkbox/src/pretty-checkbox.scss';
-import PrettyCheck from 'pretty-checkbox-vue/check';
+import "pretty-checkbox/src/pretty-checkbox.scss";
+import PrettyCheck from "pretty-checkbox-vue/check";
 
 export default {
     name: "PlansModal",
     components: {
-        'p-check': PrettyCheck
+        "p-check": PrettyCheck
     },
     props: {
         planData: {
