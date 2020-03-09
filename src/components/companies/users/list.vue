@@ -1,53 +1,49 @@
 <template>
     <container-template>
-        <tabs-menu slot="tab-menu" />
         <div slot="tab-content">
-            <h5>
-                Users
-                <router-link :to="{ name: 'settingsCompaniesUsersForm' }" class="btn btn-primary">
-                    New User Invite
-                </router-link>
-            </h5>
+            <h5>Company Settings</h5>
+            <tabs-menu slot="tab-menu" />
             <ul class="nav nav-tabs nav-horizontal">
                 <li class="nav-item">
                     <a
-                        :class="{ active: listToShow == 'usersList' }"
-                        @click.prevent="listToShow = 'usersList'"
+                        :class="{ active: show == 'active' }"
+                        @click.prevent="show = 'active'"
                     >
                         Users
                     </a>
                 </li>
                 <li class="nav-item">
                     <a
-                        :class="{ active: listToShow == 'newUsersList' }"
-                        @click.prevent="listToShow = 'newUsersList'"
+                        :class="{ active: show == 'invited' }"
+                        @click.prevent="show = 'invited'"
                     >
                         Invites
                     </a>
                 </li>
                 <li class="nav-item">
                     <a
-                        :class="{ active: listToShow == 'inactiveUsersList' }"
-                        @click.prevent="listToShow = 'inactiveUsersList'"
+                        :class="{ active: show == 'inactive' }"
+                        @click.prevent="show = 'inactive'"
                     >
                         Inactive
                     </a>
                 </li>
             </ul>
-            <div v-if="listToShow == 'usersList'" class="table-responsive">
-                <vuetable
-                    ref="vuetable"
-                    :append-params="appendParams.users"
-                    :fields="usersFields"
-                    :http-fetch="getTableData"
-                    api-url="/users"
-                    class="table table-hover table-condensed"
+            <div class="card">
+                <gw-browse
+                    ref="gwBrowse"
+                    :append-params="appendParams[show]"
+                    :create-resource-url="{ name: 'settingsCompaniesUsersForm' }"
+                    :http-options="{ baseURL, headers: { Authorization: token }}"
+                    :pagination-data="paginationData"
+                    :query-params="queryParams"
+                    :resource="resource"
+                    :show-bulk-actions="false"
+                    :show-search-filters="false"
+                    :show-title="false"
                     pagination-path=""
+                    @load-error="loadError"
                 >
-                    <template slot="fullname" slot-scope="props">
-                        <span>{{ props.rowData.firstname }} {{ props.rowData.lastname }}</span>
-                    </template>
-
                     <template slot="actions" slot-scope="props">
                         <div class="d-flex align-items-center justify-content-end">
                             <button class="btn btn-primary m-l-5" @click="editUser(props.rowData.id)">
@@ -57,50 +53,13 @@
                                 :class="{ 'disable-element': isCurrentUser(props.rowData.id) }"
                                 :disabled="isCurrentUser(props.rowData.id)"
                                 class="btn btn-danger m-l-5"
-                                @click="deleteConfirm(props.rowData.id)"
+                                @click="confirmDelete(props.rowData.id)"
                             >
                                 <i class="fa fa-trash" aria-hidden="true" />
                             </button>
                         </div>
                     </template>
-                </vuetable>
-            </div>
-            <div v-if="listToShow == 'newUsersList'" class="table-responsive">
-                <vuetable
-                    ref="vuetable"
-                    :append-params="appendParams.invites"
-                    :fields="usersInviteFields"
-                    :http-fetch="getTableData"
-                    api-url="/users-invite"
-                    class="table table-hover table-condensed"
-                    pagination-path=""
-                >
-                    <template slot="actions" slot-scope="props">
-                        <div class="d-flex align-items-center justify-content-end">
-                            <button
-                                class="btn btn-danger m-l-5"
-                                @click="deleteConfirm(props.rowData.id)"
-                            >
-                                <i class="fa fa-trash" aria-hidden="true" />
-                            </button>
-                        </div>
-                    </template>
-                </vuetable>
-            </div>
-            <div v-if="listToShow == 'inactiveUsersList'" class="table-responsive">
-                <vuetable
-                    ref="vuetable"
-                    :append-params="appendParams.inactive"
-                    :fields="userInactiveFields"
-                    :http-fetch="getTableData"
-                    api-url="/users"
-                    class="table table-hover table-condensed"
-                    pagination-path=""
-                >
-                    <template slot="fullname" slot-scope="props">
-                        <span>{{ props.rowData.firstname }} {{ props.rowData.lastname }}</span>
-                    </template>
-                </vuetable>
+                </gw-browse>
             </div>
         </div>
     </container-template>
@@ -131,91 +90,38 @@ export default {
                     relationships: "companies,roles",
                     q: "(user_active:0)"
                 },
-                invites: {
+                invited: {
                     format: "true",
                     relationships: "companies,roles",
                     q: "(is_deleted:0)"
                 },
-                users: {
+                active: {
                     format: "true",
                     relationships: "roles"
                 }
             },
-            userInactiveFields: [{
-                name: "fullname",
-                sortField: "firstname",
-                title: "Name"
-            }, {
-                name: "roles.0.name",
-                title:"Role",
-                sortField: "roles_id",
-                width: "30%"
-            }, {
-                name: "lastvisit",
-                title: "Last Visit",
-                sortField: "lastvisit",
-                width: "30%"
-            }],
-            usersFields: [{
-                name: "fullname",
-                sortField: "firstname",
-                title: "Name"
-            }, {
-                name: "roles.0.name",
-                title:"Role",
-                sortField: "roles_id",
-                width: "30%"
-            }, {
-                name: "lastvisit",
-                title: "Last Visit",
-                sortField: "lastvisit",
-                width: "30%"
-            }, {
-                name: "status",
-                sortField: "status",
-                width: "30%",
-                formatter(value) {
-                    return +value ? "Active" : "Inactive";
-                }
-            }, {
-                name: "actions",
-                title: "Actions",
-                titleClass: "table-actions",
-                dataClass: "table-actions"
-            }],
-            usersInviteFields:[
-                {
-                    name: "email",
-                    sortField: "email",
-                    title: "Email"
-                }, {
-                    name: "roles.0.name",
-                    title:"Role",
-                    sortField: "roles_id",
-                    width: "30%"
-                }, {
-                    name: "actions",
-                    title: "Actions",
-                    titleClass: "table-actions",
-                    dataClass: "table-actions"
-                }
-            ],
-            listToShow:"usersList"
+            show: "active"
         }
     },
     computed: {
         ...mapState({
             userData: state => state.User.data
-        })
+        }),
+        resource() {
+            return {
+                endpoint: "users",
+                name: "Users",
+                slug: `users-${this.show}`
+            }
+        }
     },
     watch: {
-        listToShow() {
-            this.$refs.vuetable.tableData = [];
-            this.$refs.vuetable.refresh();
+        show() {
+            this.$refs.gwBrowse.refresh();
         }
     },
     methods: {
-        deleteConfirm(usersId) {
+        confirmDelete(usersId) {
             this.basicActionsModal({
                 title: "Delete User",
                 message: "Are you sure you want to delete this user?",
@@ -255,12 +161,6 @@ export default {
                 params:{
                     id: usersId
                 }
-            });
-        },
-        getTableData(apiUrl, options) {
-            return axios({
-                url: apiUrl,
-                params: options.params
             });
         },
         isCurrentUser(usersId) {

@@ -1,22 +1,22 @@
 <template>
     <container-template>
-        <tabs-menu slot="tab-menu" />
         <div slot="tab-content">
-            <h5>
-                Branches
-                <router-link :to="{ name: 'settingsCompaniesBranchesForm' }" class="btn btn-primary">
-                    New Branch
-                </router-link>
-            </h5>
-            <div class="table-responsive">
-                <vuetable
-                    ref="Vuetable"
+            <h5>Company Settings</h5>
+            <tabs-menu slot="tab-menu" />
+            <div class="card">
+                <gw-browse
+                    ref="gwBrowse"
                     :append-params="appendParams"
-                    :fields="branchesFields"
-                    :http-fetch="getTableData"
-                    api-url="/companies-branches"
-                    class="table table-hover table-condensed"
+                    :create-resource-url="{ name: 'settingsCompaniesBranchesForm' }"
+                    :http-options="{ baseURL, headers: { Authorization: token }}"
+                    :pagination-data="paginationData"
+                    :query-params="queryParams"
+                    :resource="resource"
+                    :show-bulk-actions="false"
+                    :show-search-filters="false"
+                    :show-title="false"
                     pagination-path=""
+                    @load-error="loadError"
                 >
                     <template slot="actions" slot-scope="props">
                         <div class="d-flex align-items-center justify-content-end">
@@ -33,7 +33,7 @@
                             </button>
                         </div>
                     </template>
-                </vuetable>
+                </gw-browse>
             </div>
         </div>
     </container-template>
@@ -58,21 +58,10 @@ export default {
     ],
     data() {
         return {
-            branchesFields: [{
-                name: "name",
-                sortField: "name"
-            }, {
-                name: "actions",
-                title: "Actions",
-                titleClass: "table-actions",
-                dataClass: "table-actions"
-            }],
-            appendParams:{
-                format: "true",
-                q: "(is_deleted:0)"
-            },
-            isLoading: false,
-            selectedBranch: null
+            resource: {
+                name: "Branches",
+                slug: "companies-branches"
+            }
         }
     },
     computed: {

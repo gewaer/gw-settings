@@ -4,14 +4,8 @@
         <h4 class="section-title p-l-10">
             Settings
         </h4>
-        <div class="card flex-md-row p-0">
-            <slot name="tab-menu" />
-            <div class="tab-content bg-white">
-                <div class="tab-pane active">
-                    <slot name="tab-content" />
-                </div>
-            </div>
-        </div>
+        <slot name="tab-menu" />
+        <slot name="tab-content" />
     </div>
 </template>
 
@@ -19,8 +13,8 @@
 export default {
     name: "SettingsContainer",
     components: {
-        customFieldsTutorialModal: () => import(/* webpackChunkName: "custom-fields-tutorial-modal" */ "./components/modals/custom-fields-tutorial-modal"),
-    },
+        customFieldsTutorialModal: () => import(/* webpackChunkName: "custom-fields-tutorial-modal" */ "./components/modals/custom-fields-tutorial-modal")
+    }
     // mounted() {
     //     setTimeout(() => {
     //         this.$modal.show("custom-fields-tutorial-modal");

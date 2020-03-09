@@ -1,5 +1,5 @@
 <template>
-  <modal
+    <modal
         :adaptive="true"
         :scrollable="true"
         name="custom-fields-conf-modal"
@@ -8,7 +8,7 @@
         class="custom-fields-conf-modal"
     >
         <h4>Customize the Text Field</h4>
-        <form @submit.prevent="onSubmit" novalidate>
+        <form novalidate @submit.prevent="onSubmit">
             <div class="form-group form-group-default required">
                 <label>Name</label>
                 <input
@@ -26,8 +26,12 @@
                 >
             </div>
             <div class="d-flex justify-content-end mt-4">
-                <button @click="$modal.hide('custom-fields-conf-modal')" type="button" class="btn btn-danger mr-2">Cancel</button>
-                <button class="btn btn-primary">Save</button>
+                <button type="button" class="btn btn-danger mr-2" @click="$modal.hide('custom-fields-conf-modal')">
+                    Cancel
+                </button>
+                <button class="btn btn-primary">
+                    Save
+                </button>
             </div>
         </form>
     </modal>
@@ -38,7 +42,7 @@ export default {
     name: "CustomFieldConfModal",
     methods: {
         onSubmit() {
-            console.log("Submitted!")
+            // console.log("Submitted!")
         }
     }
 }

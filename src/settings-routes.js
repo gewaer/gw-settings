@@ -168,7 +168,11 @@ export default [
         name: "settingsCompaniesProfile",
         component: CompaniesProfile,
         meta: {
-            group: "settingsCompaniesProfile"
+            group: "settingsCompaniesProfile",
+            acl: {
+                resource: "settingsmenu",
+                action: "company-settings"
+            }
         }
     },
     {
@@ -176,7 +180,11 @@ export default [
         name: "settingsCompaniesBranchesList",
         component: CompaniesBranchesList,
         meta: {
-            group: "settingsCompaniesBranches"
+            group: "settingsCompaniesBranches",
+            acl: {
+                resource: "companybranches",
+                action: "list"
+            }
         }
     },
     {
@@ -200,7 +208,11 @@ export default [
         name: "settingsCompaniesUsersList",
         component: CompaniesUsersList,
         meta: {
-            group: "settingsCompaniesUsers"
+            group: "settingsCompaniesUsers",
+            acl: {
+                resource: "companyusers",
+                action: "list"
+            }
         }
     },
     {
@@ -231,7 +243,11 @@ export default [
         name: "settingsCompaniesRolesList",
         component: CompaniesRolesList,
         meta: {
-            group: "settingsCompaniesRoles"
+            group: "settingsCompaniesRoles",
+            acl: {
+                resource: "companyroles",
+                action: "list"
+            }
         }
     },
     {
@@ -255,7 +271,11 @@ export default [
         name: "settingsCompaniesSubscriptions",
         component: CompaniesSubscriptions,
         meta: {
-            group: "settingsCompaniesSubscriptions"
+            group: "settingsCompaniesSubscriptions",
+            acl: {
+                resource: "companysubscriptions",
+                action: "create"
+            }
         }
     },
     // ===== Settings Companies Manager Routes =====
@@ -264,7 +284,11 @@ export default [
         name: "settingsManagerList",
         component: ManagerList,
         meta: {
-            group: "settingsManager"
+            group: "settingsManager",
+            acl: {
+                resource: "companiesmanager",
+                action: "list"
+            }
         }
     },
     {

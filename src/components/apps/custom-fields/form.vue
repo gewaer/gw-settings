@@ -16,9 +16,9 @@
                             :group="{ name: 'customFields', pull: 'clone', put: false }"
                         >
                             <div
-                                class="col-6"
                                 v-for="customField in customFields"
                                 :key="customField.id"
+                                class="col-6"
                             >
                                 <div class="custom-field">
                                     {{ customField.name }}
@@ -38,15 +38,15 @@
                             @change="change"
                         >
                             <div
-                                class="col-6 d-flex"
                                 v-for="(customField, index) in selectedCustomFields"
                                 :key="customField.name + customField.id + (index + 1)"
+                                class="col-6 d-flex"
                             >
                                 <div class="custom-field flex-fill">
                                     {{ customField.name }}
                                     <i :class="customField.icon" />
                                 </div>
-                                <div @click="$modal.show('custom-fields-conf-modal')" class="edit-custom-field">
+                                <div class="edit-custom-field" @click="$modal.show('custom-fields-conf-modal')">
                                     <i class="fas fa-ellipsis-v" />
                                 </div>
                             </div>
@@ -57,50 +57,56 @@
             <div class="row">
                 <div class="col">
                     <div class="d-flex justify-content-end mt-4">
-                        <button type="button" class="btn btn-danger mr-2">Cancel</button>
-                        <button class="btn btn-primary">Save</button>
+                        <button type="button" class="btn btn-danger mr-2">
+                            Cancel
+                        </button>
+                        <button class="btn btn-primary">
+                            Save
+                        </button>
                     </div>
                 </div>
             </div>
             <!-- <div class="col">
                 <div class="custom-fields">
-                    <h5>
-                        {{ title }}
-                    </h5>
-                    <div class="row custom-fields-container">
-                        <div class="col-md-3">
-                            <fields-text
-                                ref="text"
-                                :class="{ 'selected': fieldsType == 'text' }"
-                                :field-data="fieldData"
-                                @schema="setSchema"
-                            />
-                            <fields-select
-                                ref="select"
-                                :class="{ 'selected': fieldsType == 'select' }"
-                                :field-data="fieldData"
-                                @schema="setSchema"
-                            />
-                            <fields-checkbox
-                                ref="checkbox"
-                                :class="{ 'selected': fieldsType == 'checkbox' }"
-                                :field-data="fieldData"
-                                @schema="setSchema"
-                            />
-                        </div>
-                        <div class="col-md-9">
-                            <custom-fields-form
-                                v-if="fieldsSchema"
-                                ref="customFields"
-                                :emit-values-on-update="true"
-                                :form-fields="fieldsSchema"
-                                :form-options="formOptions"
-                                class="d-flex h-100 flex-column"
-                                form-name="customFields"
-                                @formCancelled="formCancelled"
-                                @formSubmitted="formSubmitted"
-                                @formValuesUpdated="formValuesUpdated"
-                            />
+                    <h5>Custom Fields</h5>
+                    <tabs-menu slot="tab-menu" />
+                    <div class="card">
+                        <h6>{{ title }}</h6>
+                        <div class="row custom-fields-container">
+                            <div class="col-md-3">
+                                <fields-text
+                                    ref="text"
+                                    :class="{ 'selected': fieldsType == 'text' }"
+                                    :field-data="fieldData"
+                                    @schema="setSchema"
+                                />
+                                <fields-select
+                                    ref="select"
+                                    :class="{ 'selected': fieldsType == 'select' }"
+                                    :field-data="fieldData"
+                                    @schema="setSchema"
+                                />
+                                <fields-checkbox
+                                    ref="checkbox"
+                                    :class="{ 'selected': fieldsType == 'checkbox' }"
+                                    :field-data="fieldData"
+                                    @schema="setSchema"
+                                />
+                            </div>
+                            <div class="col-md-9">
+                                <custom-fields-form
+                                    v-if="fieldsSchema"
+                                    ref="customFields"
+                                    :emit-values-on-update="true"
+                                    :form-fields="fieldsSchema"
+                                    :form-options="formOptions"
+                                    class="d-flex h-100 flex-column"
+                                    form-name="customFields"
+                                    @formCancelled="formCancelled"
+                                    @formSubmitted="formSubmitted"
+                                    @formValuesUpdated="formValuesUpdated"
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -111,21 +117,21 @@
 
 <script>
 import ContainerTemplate from "../../../container";
-import FieldsCheckbox from "./fields/checkbox";
-import FieldsSelect from "./fields/select";
-import FieldsText from "./fields/text";
-import TabsMenu from "../tabs";
-import draggable from 'vuedraggable';
+// import FieldsCheckbox from "./fields/checkbox";
+// import FieldsSelect from "./fields/select";
+// import FieldsText from "./fields/text";
+// import TabsMenu from "../tabs";
+import draggable from "vuedraggable";
 import CustomFieldsConfModal from "./field-conf-modal";
 
 export default {
     name: "Form",
     components: {
         ContainerTemplate,
-        FieldsCheckbox,
-        FieldsSelect,
-        FieldsText,
-        TabsMenu,
+        // FieldsCheckbox,
+        // FieldsSelect,
+        // FieldsText,
+        // TabsMenu,
         draggable,
         CustomFieldsConfModal
     },
@@ -181,7 +187,7 @@ export default {
                     name: "Select",
                     icon: "fas fa-check-circle",
                     id: 10
-                },
+                }
             ],
             selectedCustomFields: [
                 {
@@ -314,17 +320,17 @@ export default {
         },
         change(event) {
             switch (Object.keys(event)[0]) {
-                case 'added':
+                case "added":
                     this.$modal.show("custom-fields-conf-modal");
                     break;
 
-                case 'moved':
+                case "moved":
                     break;
 
                 default:
                     break;
             }
-            console.log(event)
+            // console.log(event)
         }
     }
 };

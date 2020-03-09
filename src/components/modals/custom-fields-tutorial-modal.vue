@@ -27,22 +27,25 @@
                 <img src="/img/settings/custom-fields/step-3-edit-field.jpg" class="img-fluid">
             </tab-content>
             <template slot="footer" slot-scope="props">
-                <a href="javascript:void(0)" @click="$modal.hide('custom-fields-tutorial-modal')" class="skip">Skip and never show again</a>
+                <a href="javascript:void(0)" class="skip" @click="$modal.hide('custom-fields-tutorial-modal')">Skip and never show again</a>
                 <div class="wizard-right">
-                    <a href="javascript:void(0)"
+                    <a
                         v-if="props.activeTabIndex"
+                        href="javascript:void(0)"
                         @click="props.prevTab()"
                     >
                         BACK
                     </a>
-                    <a href="javascript:void(0)"
+                    <a
                         v-if="!props.isLastStep"
+                        href="javascript:void(0)"
                         @click="props.nextTab()"
                     >
                         NEXT
                     </a>
-                    <a href="javascript:void(0)"
+                    <a
                         v-else
+                        href="javascript:void(0)"
                         @click="$modal.hide('custom-fields-tutorial-modal')"
                     >
                         FINISH
@@ -65,12 +68,12 @@ export default {
     name: "CustomFieldsTutorialModal",
     components: {
         FormWizard: () => import(/* webpackChunkName: "form-wizard-form" */ "vue-form-wizard").then(({ FormWizard }) => FormWizard),
-        TabContent: () => import(/* webpackChunkName: "form-wizard-tab-content" */ "vue-form-wizard").then(({ TabContent }) => TabContent),
-        WizardButton: () => import(/* webpackChunkName: "form-wizard-wizard-button" */ "vue-form-wizard").then(({ WizardButton }) => WizardButton)
+        TabContent: () => import(/* webpackChunkName: "form-wizard-tab-content" */ "vue-form-wizard").then(({ TabContent }) => TabContent)
+        // WizardButton: () => import(/* webpackChunkName: "form-wizard-wizard-button" */ "vue-form-wizard").then(({ WizardButton }) => WizardButton)
     },
     data() {
         return {
-            currentTab: "0",
+            currentTab: "0"
         };
     }
 }

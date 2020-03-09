@@ -17,7 +17,7 @@ import XHRUpload from "@uppy/xhr-upload";
 import Dashboard from "@uppy/dashboard";
 import GoogleDrive from "@uppy/google-drive";
 import Url from "@uppy/url";
-import uuidv4 from "uuid/v4";
+import { v4 as uuidv4 } from "uuid";
 
 export default {
     props: {

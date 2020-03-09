@@ -32,9 +32,9 @@ import { mapState } from "vuex";
 import isURL from "is-url";
 import DashboardUploader from "./dashboard-file-uploader";
 
-import "@uppy/core/dist/style.css"
-import "@uppy/file-input/dist/style.css"
-import "@uppy/dashboard/dist/style.css"
+import "@uppy/core/dist/style.css";
+import "@uppy/file-input/dist/style.css";
+import "@uppy/dashboard/dist/style.css";
 
 export default {
     name: "ProfileUploader",
