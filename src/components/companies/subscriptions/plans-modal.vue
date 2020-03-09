@@ -1,7 +1,7 @@
 <template>
     <div class="plans-modal">
         <form @submit.prevent="update()">
-            <a class="close-modal" href="#" @click="$modal.hide('plans-modal')">
+            <a class="close-modal" href="#" @click.prevent="$modal.hide('plans-modal')">
                 <i class="fa fa-times" aria-hidden="true" />
             </a>
             <div class="modal-header">
@@ -10,7 +10,9 @@
             </div>
             <div class="modal-body">
                 <div class="payment-frecuency">
-                    <span :class="{ 'deactivated' : payYearly }">Monthly</span><p-check v-model="payYearly" off-color="danger" class="p-switch p-fill payment-frecuency-switch" /><span :class="{ 'deactivated' : !payYearly }">Yearly</span>
+                    <span :class="{ 'deactivated' : payYearly }">Monthly</span>
+                    <p-check v-model="payYearly" off-color="danger" class="p-switch p-fill payment-frecuency-switch" />
+                    <span :class="{ 'deactivated' : !payYearly }">Yearly</span>
                 </div>
                 <div class="plans">
                     <div
@@ -31,15 +33,22 @@
                             <div class="plan-details">
                                 <div class="plan-name">
                                     <h5>{{ plan.name }}</h5>
-                                    <div v-if="payYearly" class="monthly-reference-price">Monthly reference price {{ plan.pricing }}</div>
+                                    <div v-if="!payYearly" class="monthly-reference-price">
+                                        Monthly price {{ plan.pricing }}
+                                    </div>
+                                    <div v-else class="monthly-reference-price">
+                                        Monthly price {{ (plan.pricing_anual / 12).toFixed(2) }}
+                                    </div>
                                 </div>
                                 <div class="plan-price">
                                     <h3>{{ payYearly ? plan.pricing_anual : plan.pricing }}</h3>
                                 </div>
                             </div>
                             <div class="plan-labels">
-                                <span v-if="selectedPlan == plan.stripe_plan" class="current-plan">Current Plan</span>
-                                <span v-if="true" class="recommended-plan">Recommended</span>
+                                <span v-if="planData.stripe_plan == plan.stripe_plan" class="current-plan">
+                                    Current Plan
+                                </span>
+                                <span v-if="plan.stripe_plan == 'monthly-10-1'" class="recommended-plan">Recommended</span>
                             </div>
                         </label>
                     </div>
@@ -95,6 +104,7 @@ export default {
     },
     created() {
         this.selectedPlan = this.planData.stripe_plan;
+        this.payYearly = this.planData.payment_style == "yearly"
     },
     methods: {
         update() {

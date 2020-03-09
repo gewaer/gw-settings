@@ -1,6 +1,6 @@
 <template>
     <div class="payment-method-modal">
-        <a class="close-modal" href="#" @click="$modal.hide('payment-method-modal')">
+        <a class="close-modal" href="#" @click.prevent="$modal.hide('payment-method-modal')">
             <i class="fa fa-times" aria-hidden="true" />
         </a>
         <div class="modal-header">
