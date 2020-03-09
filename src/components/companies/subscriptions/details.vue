@@ -29,13 +29,14 @@
 <script>
 import { mapState } from "vuex";
 import _has from "lodash/has";
+import CreditcardNetworks from "./creditcard-networks";
 import PaymentMethodModal from "./payment-method-modal";
 import PlansModal from "./plans-modal";
 
 export default {
     name: "SubscriptionDetails",
     components: {
-        creditcardNetworks: () => import(/* webpackChunkName: "creditcard-networks"*/ "./creditcard-networks")
+        CreditcardNetworks
     },
     data() {
         return {

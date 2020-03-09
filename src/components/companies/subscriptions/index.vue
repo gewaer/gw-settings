@@ -13,13 +13,14 @@
 
 <script>
 import ContainerTemplate from "../../../container";
+import SubscriptionDetails from "./details";
 import TabsMenu from "../tabs";
 
 export default {
     name: "Subscriptions",
     components: {
         ContainerTemplate,
-        subscriptionDetails: () => import(/* webpackChunkName: "subscription-details"*/ "./details"),
+        SubscriptionDetails,
         TabsMenu
     }
 }
