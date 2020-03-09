@@ -214,18 +214,26 @@ export default {
     .profile-image-container {
         display: flex;
         flex-direction: column;
-        width: 160px;
-        margin: 0 auto;
-        margin-bottom: 15px;
+        width: 180px;
+        margin: 0 20px;
 
         .profile-image {
-            width: 160px;
-            height: 160px;
+            width: 180px;
+            height: 180px;
             overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
             border: 1px solid rgba(230, 230, 230, 0.7);
+            margin-bottom: 20px;
+            border-radius: 100%;
+        }
+
+        span {
+            font-size: 10px;
+            color: #B3C1CB;
+            text-align: center;
+            margin-top: 10px;
         }
 
         label {

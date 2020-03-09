@@ -42,7 +42,7 @@ module.exports = {
             capIsNew: false
         }],
         "newline-per-chained-call": 0,
-        "no-console": process.env.NODE_ENV === "production" ? "error" : "off",
+        "no-console": ["error", { allow: ["error", "warn"] }],
         "no-debugger": process.env.NODE_ENV === "production" ? "error" : "off",
         "no-multi-str": 0,
         "no-fallthrough": 0,
