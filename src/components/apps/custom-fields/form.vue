@@ -1,258 +1,197 @@
 <template>
     <container-template>
-        <!-- <tabs-menu slot="tab-menu" /> -->
-        <div slot="tab-content" class=" custom-fields-settings">
-            <custom-fields-conf-modal />
-            <h5>{{ title }}</h5>
-            <div class="row">
-                <div class="col-4">
-                    <div class="custom-fields-picker">
-                        <h4>New Fields</h4>
-                        <p>Drag and drop the fields you want to add them to the module.</p>
-                        <p>Edit their options after you add them.</p>
-                        <draggable
-                            class="custom-fields-draggable row"
-                            :list="customFields"
-                            :group="{ name: 'customFields', pull: 'clone', put: false }"
-                        >
-                            <div
-                                v-for="customField in customFields"
-                                :key="customField.id"
-                                class="col-6"
+        <tabs-menu slot="tab-menu" />
+        <div slot="tab-content" class="custom-fields-settings">
+            <template v-if="module">
+                <edit-field-modal @update-field="updateField" />
+                <h5>{{ module.name }}</h5>
+                <div class="row">
+                    <div class="col-4">
+                        <div class="custom-fields-picker">
+                            <h4>Add a Field</h4>
+                            <p>Drag and drop the fields you want to add them to the module.</p>
+                            <p>Edit their options after you add them.</p>
+                            <draggable
+                                :clone="setField"
+                                :group="{ name: 'fieldTypes', pull: 'clone', put: false }"
+                                :list="fieldTypes"
+                                :sort="false"
+                                class="custom-fields-draggable row"
                             >
-                                <div class="custom-field">
-                                    {{ customField.name }}
-                                    <i :class="customField.icon" />
+                                <div
+                                    v-for="type in fieldTypes"
+                                    :key="type.id"
+                                    class="col-6"
+                                >
+                                    <div class="custom-field">
+                                        {{ type.name | capitalize }}
+                                        <i :class="type.icon" />
+                                    </div>
                                 </div>
-                            </div>
-                        </draggable>
+                            </draggable>
+                        </div>
                     </div>
-                </div>
-                <div class="col">
-                    <div class="selected-custom-fields">
-                        <h4>Current Fields</h4>
-                        <draggable
-                            class="row h-100 align-content-start"
-                            :list="selectedCustomFields"
-                            group="customFields"
-                            @change="change"
-                        >
-                            <div
-                                v-for="(customField, index) in selectedCustomFields"
-                                :key="customField.name + customField.id + (index + 1)"
-                                class="col-6 d-flex"
+                    <div class="col">
+                        <div class="selected-custom-fields">
+                            <h4>Current Fields</h4>
+                            <draggable
+                                :list="customFields"
+                                :group="{ name: 'fieldTypes' }"
+                                class="row h-100 align-content-start"
+                                @change="change"
                             >
-                                <div class="custom-field flex-fill">
-                                    {{ customField.name }}
-                                    <i :class="customField.icon" />
+                                <div
+                                    v-for="(field, index) in customFields"
+                                    :key="field.name + field.id + (index + 1)"
+                                    class="col-6 d-flex"
+                                >
+                                    <div class="custom-field flex-fill">
+                                        {{ field.label | capitalize }}
+                                        <i :class="fieldIcons[field.fields_type_id]" />
+                                    </div>
+                                    <div class="edit-custom-field" @click="editField(field, index)">
+                                        <i class="fas fa-ellipsis-v" />
+                                    </div>
                                 </div>
-                                <div class="edit-custom-field" @click="$modal.show('custom-fields-conf-modal')">
-                                    <i class="fas fa-ellipsis-v" />
-                                </div>
-                            </div>
-                        </draggable>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <div class="d-flex justify-content-end mt-4">
-                        <button type="button" class="btn btn-danger mr-2">
-                            Cancel
-                        </button>
-                        <button class="btn btn-primary">
-                            Save
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <!-- <div class="col">
-                <div class="custom-fields">
-                    <h5>Custom Fields</h5>
-                    <tabs-menu slot="tab-menu" />
-                    <div class="card">
-                        <h6>{{ title }}</h6>
-                        <div class="row custom-fields-container">
-                            <div class="col-md-3">
-                                <fields-text
-                                    ref="text"
-                                    :class="{ 'selected': fieldsType == 'text' }"
-                                    :field-data="fieldData"
-                                    @schema="setSchema"
-                                />
-                                <fields-select
-                                    ref="select"
-                                    :class="{ 'selected': fieldsType == 'select' }"
-                                    :field-data="fieldData"
-                                    @schema="setSchema"
-                                />
-                                <fields-checkbox
-                                    ref="checkbox"
-                                    :class="{ 'selected': fieldsType == 'checkbox' }"
-                                    :field-data="fieldData"
-                                    @schema="setSchema"
-                                />
-                            </div>
-                            <div class="col-md-9">
-                                <custom-fields-form
-                                    v-if="fieldsSchema"
-                                    ref="customFields"
-                                    :emit-values-on-update="true"
-                                    :form-fields="fieldsSchema"
-                                    :form-options="formOptions"
-                                    class="d-flex h-100 flex-column"
-                                    form-name="customFields"
-                                    @formCancelled="formCancelled"
-                                    @formSubmitted="formSubmitted"
-                                    @formValuesUpdated="formValuesUpdated"
-                                />
-                            </div>
+                            </draggable>
                         </div>
                     </div>
                 </div>
-            </div> -->
+                <div class="row">
+                    <div class="col">
+                        <div class="d-flex justify-content-end mt-4">
+                            <button
+                                type="button"
+                                class="btn btn-danger mr-2"
+                                @click="cancel()"
+                            >
+                                Cancel
+                            </button>
+                            <button class="btn btn-primary">
+                                Save
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </template>
         </div>
     </container-template>
 </template>
 
 <script>
+import { mapState } from "vuex";
+import { v4 as uuidv4 } from "uuid";
+import _capitalize from "lodash/capitalize";
+import _range from "lodash/range";
+import _zipObject from "lodash/zipObject";
 import ContainerTemplate from "../../../container";
-// import FieldsCheckbox from "./fields/checkbox";
-// import FieldsSelect from "./fields/select";
-// import FieldsText from "./fields/text";
-// import TabsMenu from "../tabs";
+import EditFieldModal from "./edit-field-modal";
 import draggable from "vuedraggable";
-import CustomFieldsConfModal from "./field-conf-modal";
+import TabsMenu from "../tabs";
+import fieldSchemas from "./fields-schemas";
 
 export default {
     name: "Form",
     components: {
         ContainerTemplate,
-        // FieldsCheckbox,
-        // FieldsSelect,
-        // FieldsText,
-        // TabsMenu,
         draggable,
-        CustomFieldsConfModal
+        EditFieldModal,
+        TabsMenu
+    },
+    filters: {
+        capitalize(value) {
+            return _capitalize(value);
+        }
     },
     data() {
         return {
-            customFields: [
-                {
-                    name: "Text",
-                    icon: "fas fa-font",
-                    id: 1
-                },
-                {
-                    name: "WYSIWYG",
-                    icon: "fas fa-quote-right",
-                    id: 2
-                },
-                {
-                    name: "DateTime",
-                    icon: "fas fa-clock",
-                    id: 3
-                },
-                {
-                    name: "Calendar",
-                    icon: "fas fa-calendar-alt",
-                    id: 4
-                },
-                {
-                    name: "Image",
-                    icon: "fas fa-file-image",
-                    id: 5
-                },
-                {
-                    name: "File",
-                    icon: "fas fa-file-alt",
-                    id: 6
-                },
-                {
-                    name: "Status",
-                    icon: "fas fa-flag",
-                    id: 7
-                },
-                {
-                    name: "Toggle",
-                    icon: "fas fa-toggle-on",
-                    id: 8
-                },
-                {
-                    name: "Language",
-                    icon: "fas fa-language",
-                    id: 9
-                },
-                {
-                    name: "Select",
-                    icon: "fas fa-check-circle",
-                    id: 10
-                }
-            ],
-            selectedCustomFields: [
-                {
-                    name: "Text",
-                    icon: "fas fa-font",
-                    id: 1
-                },
-                {
-                    name: "WYSIWYG",
-                    icon: "fas fa-quote-right",
-                    id: 2
-                }
-            ],
-            // formData: {
-            //     name: ""
-            // },
-            // fieldData: null,
-            // fieldsSchema: [],
-            // fieldsType: null,
-            // fieldsTypeId: null,
-            // formOptions: {
-            //     actionsWrapperClass: "d-flex justify-content-end mt-auto",
-            //     buttons: {
-            //         cancel: {
-            //             class: "btn btn-danger m-r-10",
-            //             text: "Cancel"
-            //         },
-            //         submit: {
-            //             class: "btn btn-primary",
-            //             text: "Save"
-            //         }
-            //     }
-            // },
-            // selectedCustomField: "text-field",
-            selectedModule: {}
-        };
+            fieldIcons: {},
+            fieldReference: {},
+            fieldTracks: {},
+            fieldTypes: [],
+            customFields: [],
+            module: null
+        }
     },
     computed: {
-        isEditing() {
-            return !!this.$route.params.id;
-        },
-        title() {
-            return this.selectedModule.name;
-        }
+        ...mapState({
+            appId: state => state.Application.data.id,
+            companyId: state => state.Company.data.id,
+            userId: state => state.User.data.id
+        })
     },
     created() {
-        this.getModules();
-
-        if (this.isEditing) {
-            this.getCustomFieldData();
-        }
+        this.getFieldTypes();
+        this.getModuleData();
     },
     methods: {
-        formCancelled() {
+        cancel() {
             this.$router.push({ name: "settingsAppsCustomFieldsList" });
         },
-        formSubmitted({ values }) {
+        change(event) {
+            switch (Object.keys(event)[0]) {
+                case "added":
+                    this.editField(event.added.element, event.added.newIndex);
+                    break;
+                case "moved":
+                    break;
+                default:
+                    break;
+            }
+        },
+        editField(field, index) {
+            const type = this.fieldReference[field.fields_type_id];
+            const schema = fieldSchemas(type, field);
+
+            this.$modal.show("edit-field-modal", {
+                schema,
+                type,
+                field,
+                index
+            });
+        },
+        async getFieldTypes() {
+            await axios({
+                url: `/custom-fields-types`
+            }).then(({ data }) => {
+                const fieldNames = data.map(f => f.name);
+                this.fieldTypes = data;
+                this.fieldIcons = _zipObject(data.map(f => f.id), data.map(f => f.icon));
+                this.fieldReference = _zipObject(data.map(f => f.id), fieldNames);
+                this.fieldTracks = _zipObject(fieldNames, _range(1, data.length + 1, 0));
+            })
+        },
+        getModuleData() {
+            axios({
+                url: `/custom-fields-modules/${this.$route.params.moduleId}?relationships=fields`
+            }).then(({ data }) => {
+                this.customFields = data.fields;
+                delete data.fields;
+                this.module = data;
+            })
+        },
+        setField(field) {
+            const newField = {
+                users_id: this.userId,
+                companies_id: this.companyId,
+                apps_id: this.appId,
+                name: "",
+                label: `${_capitalize(field.name)} ${this.fieldTracks[field.name]}`,
+                custom_fields_modules_id: this.module.id,
+                fields_type_id: field.id,
+                attributes: {}
+            }
+
+            this.fieldTracks[field.name]++;
+
+            return newField;
+        },
+        updateField(values, field, index) {
             const data = {
-                name: Math.random().toString(36).substr(2, 4) + "_" + Math.random().toString(36).substr(2, 4),
-                custom_fields_modules_id: this.selectedModule.id,
-                fields_type_id: this.fieldsTypeId,
+                ...field,
+                name: field.id && field.name || uuidv4(),
                 attributes: {}
             };
-            const url = "/custom-fields" + (this.isEditing ? `/${this.$route.params.id}` : "");
-            const method = this.isEditing ? "PUT" : "POST";
 
             Object.keys(values).forEach((key) => {
                 if (key.startsWith("attributes:")) {
@@ -266,74 +205,22 @@ export default {
                 }
             });
 
+            const url = "/custom-fields" + (data.id ? `/${data.id}` : "");
+            const method = data.id ? "PUT" : "POST";
+
+            // Temporary
             axios({
                 url,
                 method,
                 data
-            }).then(() => {
-                this.formCancelled();
-            });
-        },
-        formValuesUpdated(values) {
-            // While not the best solution due to design. It's something that can be worked with.
-            if (this.fieldsType == "select" && values.values) {
-                const options = values.values.split("\n").map(option => option.trim());
-
-                this.$refs.customFields.$refs.control[2].$children[0].options = options;
-            }
-        },
-        getCustomFieldData() {
-            axios({
-                url: `/custom-fields/${this.$route.params.id}`
-            }).then(async({ data }) => {
-                if (data.type.name == "select") {
-                    data.values = data.values.reduce((valuesArray, value) => {
-                        valuesArray[+value.value] = value.label;
-                        return valuesArray;
-                    }, []).join("\n");
-                }
-
-                this.fieldsType = data.type.name;
-                this.fieldsTypeId = data.fieldsTypeId;
-                await (this.fieldData = data);
-                this.$refs[this.fieldsType].sendSchema();
-            });
-        },
-        getModules() {
-            axios({
-                url: "/custom-fields-modules"
             }).then(({ data }) => {
-                let preSelectedModule = null;
-                preSelectedModule = data.find(module => module.name == this.$route.params.module);
-
-                if (preSelectedModule) {
-                    this.selectedModule = preSelectedModule;
-                }
+                this.$set(this.customFields, index, data);
+                // this.customFields[index] = data;
+                this.$modal.hide("edit-field-modal");
             });
-        },
-        save() {},
-        async setSchema(schema, type, typeId) {
-            await (this.fieldsSchema = []);
-            this.fieldsSchema = schema;
-            this.fieldsType = type;
-            this.fieldsTypeId = typeId;
-        },
-        change(event) {
-            switch (Object.keys(event)[0]) {
-                case "added":
-                    this.$modal.show("custom-fields-conf-modal");
-                    break;
-
-                case "moved":
-                    break;
-
-                default:
-                    break;
-            }
-            // console.log(event)
         }
     }
-};
+}
 </script>
 
 <style lang="scss" scoped>
@@ -378,13 +265,11 @@ export default {
     .form-control {
         height: 43px;
     }
-
 }
 </style>
 
 <style lang="scss">
 .custom-fields-settings {
-
     h5 {
         text-transform: capitalize;
         margin-top: 0 !important;
