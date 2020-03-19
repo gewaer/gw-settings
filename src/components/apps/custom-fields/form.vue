@@ -8,7 +8,7 @@
                 <div class="row">
                     <div class="col-4">
                         <div class="custom-fields-picker">
-                            <h4>Add a Field</h4>
+                            <h4>remove a Field</h4>
                             <p>Drag and drop the fields you want to add them to the module.</p>
                             <p>Edit their options after you add them.</p>
                             <draggable
@@ -38,7 +38,7 @@
                                 :list="customFields"
                                 :group="{ name: 'fieldTypes' }"
                                 class="row h-100 align-content-start"
-                                @change="change"
+                                @add="add"
                             >
                                 <div
                                     v-for="(field, index) in customFields"
@@ -82,6 +82,7 @@
 import { mapState } from "vuex";
 import { v4 as uuidv4 } from "uuid";
 import _capitalize from "lodash/capitalize";
+import _clone from "lodash/clone";
 import _range from "lodash/range";
 import _zipObject from "lodash/zipObject";
 import ContainerTemplate from "../../../container";
@@ -125,6 +126,9 @@ export default {
         this.getModuleData();
     },
     methods: {
+        add(event) {
+            this.editField(event.item._underlying_vm_, event.newIndex);
+        },
         cancel() {
             this.$router.push({ name: "settingsAppsCustomFieldsList" });
         },
@@ -140,13 +144,22 @@ export default {
             }
         },
         editField(field, index) {
-            const type = this.fieldReference[field.fields_type_id];
-            const schema = fieldSchemas(type, field);
+            const fieldData = _clone(field);
+            const type = this.fieldReference[fieldData.fields_type_id];
+
+            if (["select"].includes(type) && fieldData.values) {
+                fieldData.values = fieldData.values.reduce((valuesArray, value) => {
+                    valuesArray[+value.value] = value.label;
+                    return valuesArray;
+                }, []).join("\n");
+            }
+
+            const schema = fieldSchemas(type, fieldData);
 
             this.$modal.show("edit-field-modal", {
                 schema,
                 type,
-                field,
+                field: fieldData,
                 index
             });
         },
@@ -163,12 +176,12 @@ export default {
         },
         getModuleData() {
             axios({
-                url: `/custom-fields-modules/${this.$route.params.moduleId}?relationships=fields`
+                url: `/custom-fields-modules/${this.$route.params.moduleId}`
             }).then(({ data }) => {
-                this.customFields = data.fields;
+                this.customFields = data.custom_fields;
                 delete data.fields;
                 this.module = data;
-            })
+            }).catch(() => {})
         },
         setField(field) {
             const newField = {
@@ -186,7 +199,7 @@ export default {
 
             return newField;
         },
-        updateField(values, field, index) {
+        updateField(values, field, type, index) {
             const data = {
                 ...field,
                 name: field.id && field.name || uuidv4(),
@@ -197,7 +210,7 @@ export default {
                 if (key.startsWith("attributes:")) {
                     data.attributes[key.split(":")[1]] = values[key];
                 } else {
-                    if (this.fieldsType == "select" && key == "values") {
+                    if (type == "select" && key == "values") {
                         data[key] = values[key].split("\n");
                     } else {
                         data[key] = values[key];
@@ -215,7 +228,6 @@ export default {
                 data
             }).then(({ data }) => {
                 this.$set(this.customFields, index, data);
-                // this.customFields[index] = data;
                 this.$modal.hide("edit-field-modal");
             });
         }

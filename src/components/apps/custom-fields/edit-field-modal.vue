@@ -56,7 +56,7 @@ export default {
             this.fieldsType = event.params.type;
         },
         submit({ values }) {
-            this.$emit("update-field", values, this.fieldData, this.fieldIndex);
+            this.$emit("update-field", values, this.fieldData, this.fieldsType, this.fieldIndex);
         },
         updated(values) {
             // While not the best solution due to design. It's something that can be worked with.
