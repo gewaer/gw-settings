@@ -203,7 +203,7 @@ export default {
             const data = {
                 ...field,
                 name: field.id && field.name || uuidv4(),
-                attributes: {}
+                attributes: field.attributes || ""
             };
 
             Object.keys(values).forEach((key) => {
