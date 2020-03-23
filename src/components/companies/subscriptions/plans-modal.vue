@@ -109,13 +109,13 @@ export default {
     methods: {
         update() {
             const appPlan = {
-                payment_style: this.selectedFrequency.frequency,
+                payment_style: this.payYearly ? "yearly" : "monthly",
                 stripe_plan: this.selectedPlan,
                 stripe_id: this.planData.stripe_id
             };
 
             axios({
-                url: `/apps-plans/${appPlan.stripe_plan}/method`,
+                url: `/apps-plans/${appPlan.stripe_plan}`,
                 method: "PUT",
                 data: appPlan
             }).then(() => {
