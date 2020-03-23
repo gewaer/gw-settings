@@ -76,16 +76,8 @@ export default [
         }
     },
     {
-        path: "/settings/apps/custom-fields/:module/add",
+        path: "/settings/apps/custom-fields/:moduleId",
         name: "settingsAppsCustomFieldsForm",
-        component: AppsCustomFieldsForm,
-        meta: {
-            group: "settingsAppsCustomFields"
-        }
-    },
-    {
-        path: "/settings/apps/custom-fields/:module/edit/:id",
-        name: "settingsAppsCustomFieldsFormEdit",
         component: AppsCustomFieldsForm,
         meta: {
             group: "settingsAppsCustomFields"

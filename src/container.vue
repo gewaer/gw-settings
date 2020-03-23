@@ -1,5 +1,6 @@
 <template>
     <div class="apps-settings">
+        <custom-fields-tutorial-modal />
         <h4 class="section-title p-l-10">
             Settings
         </h4>
@@ -10,7 +11,15 @@
 
 <script>
 export default {
-    name: "SettingsContainer"
+    name: "SettingsContainer",
+    components: {
+        customFieldsTutorialModal: () => import(/* webpackChunkName: "custom-fields-tutorial-modal" */ "./components/modals/custom-fields-tutorial-modal")
+    }
+    // mounted() {
+    //     setTimeout(() => {
+    //         this.$modal.show("custom-fields-tutorial-modal");
+    //     }, 1000);
+    // }
 };
 </script>
 
