@@ -1,9 +1,6 @@
 <template>
     <div class="apps-settings">
         <custom-fields-tutorial-modal />
-        <h4 class="section-title p-l-10">
-            Settings
-        </h4>
         <slot name="tab-menu" />
         <slot name="tab-content" />
     </div>

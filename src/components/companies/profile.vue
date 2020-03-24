@@ -1,8 +1,8 @@
 <template>
     <container-template>
-        <tabs-menu slot="tab-menu" />
         <template slot="tab-content">
-            <!-- <h5>Company Profile</h5> -->
+            <h5>Company Settings</h5>
+            <tabs-menu slot="tab-menu" />
             <div class="row company-general-information">
                 <div class="col-12 col-md-auto">
                     <div class="card h-100 mb-0 d-flex align-items-center justify-content-center">

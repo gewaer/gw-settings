@@ -1,75 +1,78 @@
 <template>
     <container-template>
-        <tabs-menu slot="tab-menu" />
         <div slot="tab-content" class="custom-fields-settings">
+            <h5>Apps settings</h5>
+            <tabs-menu slot="tab-menu" />
             <template v-if="module">
-                <edit-field-modal @update-field="updateField" />
-                <h5>{{ module.name }}</h5>
-                <div class="row">
-                    <div class="col-4">
-                        <div class="custom-fields-picker">
-                            <h4>remove a Field</h4>
-                            <p>Drag and drop the fields you want to add them to the module.</p>
-                            <p>Edit their options after you add them.</p>
-                            <draggable
-                                :clone="setField"
-                                :group="{ name: 'fieldTypes', pull: 'clone', put: false }"
-                                :list="fieldTypes"
-                                :sort="false"
-                                class="custom-fields-draggable row"
-                            >
-                                <div
-                                    v-for="type in fieldTypes"
-                                    :key="type.id"
-                                    class="col-6"
+                <div class="card">
+                    <edit-field-modal @update-field="updateField" />
+                    <h5>{{ module.name }}</h5>
+                    <div class="row">
+                        <div class="col-4">
+                            <div class="custom-fields-picker">
+                                <h4>remove a Field</h4>
+                                <p>Drag and drop the fields you want to add them to the module.</p>
+                                <p>Edit their options after you add them.</p>
+                                <draggable
+                                    :clone="setField"
+                                    :group="{ name: 'fieldTypes', pull: 'clone', put: false }"
+                                    :list="fieldTypes"
+                                    :sort="false"
+                                    class="custom-fields-draggable row"
                                 >
-                                    <div class="custom-field">
-                                        {{ type.name | capitalize }}
-                                        <i :class="type.icon" />
+                                    <div
+                                        v-for="type in fieldTypes"
+                                        :key="type.id"
+                                        class="col-6"
+                                    >
+                                        <div class="custom-field">
+                                            {{ type.name | capitalize }}
+                                            <i :class="type.icon" />
+                                        </div>
                                     </div>
-                                </div>
-                            </draggable>
+                                </draggable>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="selected-custom-fields">
+                                <h4>Current Fields</h4>
+                                <draggable
+                                    :list="customFields"
+                                    :group="{ name: 'fieldTypes' }"
+                                    class="row h-100 align-content-start"
+                                    @add="add"
+                                >
+                                    <div
+                                        v-for="(field, index) in customFields"
+                                        :key="field.name + field.id + (index + 1)"
+                                        class="col-6 d-flex"
+                                    >
+                                        <div class="custom-field flex-fill">
+                                            {{ field.label | capitalize }}
+                                            <i :class="fieldIcons[field.fields_type_id]" />
+                                        </div>
+                                        <div class="edit-custom-field" @click="editField(field, index)">
+                                            <i class="fas fa-ellipsis-v" />
+                                        </div>
+                                    </div>
+                                </draggable>
+                            </div>
                         </div>
                     </div>
-                    <div class="col">
-                        <div class="selected-custom-fields">
-                            <h4>Current Fields</h4>
-                            <draggable
-                                :list="customFields"
-                                :group="{ name: 'fieldTypes' }"
-                                class="row h-100 align-content-start"
-                                @add="add"
-                            >
-                                <div
-                                    v-for="(field, index) in customFields"
-                                    :key="field.name + field.id + (index + 1)"
-                                    class="col-6 d-flex"
+                    <div class="row">
+                        <div class="col">
+                            <div class="d-flex justify-content-end mt-4">
+                                <button
+                                    type="button"
+                                    class="btn btn-danger mr-2"
+                                    @click="cancel()"
                                 >
-                                    <div class="custom-field flex-fill">
-                                        {{ field.label | capitalize }}
-                                        <i :class="fieldIcons[field.fields_type_id]" />
-                                    </div>
-                                    <div class="edit-custom-field" @click="editField(field, index)">
-                                        <i class="fas fa-ellipsis-v" />
-                                    </div>
-                                </div>
-                            </draggable>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <div class="d-flex justify-content-end mt-4">
-                            <button
-                                type="button"
-                                class="btn btn-danger mr-2"
-                                @click="cancel()"
-                            >
-                                Cancel
-                            </button>
-                            <button class="btn btn-primary">
-                                Save
-                            </button>
+                                    Cancel
+                                </button>
+                                <button class="btn btn-primary">
+                                    Save
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>

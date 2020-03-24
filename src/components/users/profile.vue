@@ -197,7 +197,7 @@ export default {
                         },
                         wrapperAttributes: {
                             class: {
-                                "form-group": true,
+                                "form-group": true
                             }
                         },
                         validations: {

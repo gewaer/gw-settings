@@ -1,7 +1,7 @@
 <template>
     <container-template>
         <div slot="tab-content" class="company-general-information">
-            <h5>Companies</h5>
+            <h5>Companies Manager</h5>
             <div class="card">
                 <div class="row">
                     <div class="col-12 m-b-20">
