@@ -10,7 +10,7 @@ export default {
                 format: "true",
                 q: "(is_deleted:0)"
             },
-            baseURL: process.env.VUE_APP_BASE_API_URL,
+            baseURL: axios.defaults.baseURL,
             isLoading: false,
             queryParams: {
                 sort: "sort",

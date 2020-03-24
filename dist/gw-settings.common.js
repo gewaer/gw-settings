@@ -44346,7 +44346,7 @@ var gw_browse_umd_min_default = /*#__PURE__*/__webpack_require__.n(gw_browse_umd
         format: "true",
         q: "(is_deleted:0)"
       },
-      baseURL: Object({"NODE_ENV":"production","BASE_URL":"/"}).VUE_APP_BASE_API_URL,
+      baseURL: axios.defaults.baseURL,
       isLoading: false,
       queryParams: {
         sort: "sort",
