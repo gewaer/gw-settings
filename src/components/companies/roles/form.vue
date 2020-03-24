@@ -6,7 +6,7 @@
             <div class="card">
                 <div class="row">
                     <div class="col">
-                        <h6>
+                        <h6 class="d-flex align-items-center justify-content-between">
                             Create a new Role
                             <button v-if="!isEditing" class="btn btn-primary" @click="cloneRole()">
                                 Clone role
@@ -17,7 +17,7 @@
                 <!-- Role Form-->
                 <form class="row" role="form">
                     <div class="col">
-                        <div class="form-group form-group-default required">
+                        <div class="form-group required">
                             <label>Name role</label>
                             <input
                                 v-model="roleData.name"
@@ -30,7 +30,7 @@
                         </div>
                     </div>
                     <div class="col">
-                        <div class="form-group form-group-default">
+                        <div class="form-group">
                             <label>Description</label>
                             <input
                                 v-model="roleData.description"

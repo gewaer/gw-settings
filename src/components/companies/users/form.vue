@@ -10,7 +10,7 @@
                 <div class="row m-b-20 user-general-information">
                     <div class="col-12 col-md-6">
                         <template v-if="isEditing">
-                            <div class="form-group form-group-default required">
+                            <div class="form-group required">
                                 <label>First name</label>
                                 <input
                                     v-model="userData.firstname"
@@ -22,7 +22,7 @@
                                 >
                                 <span class="text-danger">{{ errors.first("firstname") }}</span>
                             </div>
-                            <div class="form-group form-group-default required">
+                            <div class="form-group required">
                                 <label>Last name</label>
                                 <input
                                     v-model="userData.lastname"
@@ -34,7 +34,7 @@
                                 >
                                 <span class="text-danger">{{ errors.first("lastname") }}</span>
                             </div>
-                            <div class="form-group form-group-default">
+                            <div class="form-group">
                                 <label>Cell phone</label>
                                 <input
                                     v-model="userData.cell_phone_number"
@@ -47,7 +47,7 @@
                                 <span class="text-danger">{{ errors.first("phone") }}</span>
                             </div>
                         </template>
-                        <div class="form-group form-group-default required">
+                        <div class="form-group required">
                             <label>Email</label>
                             <input
                                 v-model="userData.email"

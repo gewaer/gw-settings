@@ -1,9 +1,6 @@
 <template>
     <div class="apps-settings">
         <custom-fields-tutorial-modal />
-        <h4 class="section-title p-l-10">
-            Settings
-        </h4>
         <slot name="tab-menu" />
         <slot name="tab-content" />
     </div>
@@ -33,6 +30,25 @@ export default {
 
     /deep/ .disable-element {
         pointer-events: none;
+    }
+}
+</style>
+
+<style lang="scss">
+.apps-settings {
+    .card {
+        padding: 40px !important;
+    }
+
+    h5 {
+        color: #383752 !important;
+        border-bottom: 0 !important;
+        font-size: 28px !important;
+    }
+
+    .section-title {
+        color: #9594AF;
+        font-weight: 400;
     }
 }
 </style>

@@ -1,7 +1,8 @@
 <template>
     <container-template>
-        <tabs-menu slot="tab-menu" />
         <div slot="tab-content">
+            <h5>Apps settings</h5>
+            <tabs-menu slot="tab-menu" />
             <div class="card">
                 <gw-browse
                     ref="gwBrowse"

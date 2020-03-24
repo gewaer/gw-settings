@@ -1,12 +1,15 @@
 <template>
     <container-template>
-        <tabs-menu slot="tab-menu" />
-        <div slot="tab-content" class="row subscription-manager">
-            <div class="col-12 col-lg col-xl-4">
-                <span class="title">Your plan subscription</span>
-                <subscription-details />
+        <div slot="tab-content">
+            <h5>Company Settings</h5>
+            <tabs-menu slot="tab-menu" />
+            <div class="row subscription-manager">
+                <div class="col-12 col-lg col-xl-4">
+                    <span class="title">Your plan subscription</span>
+                    <subscription-details />
+                </div>
+                <div class="col-12 col-lg" />
             </div>
-            <div class="col-12 col-lg" />
         </div>
     </container-template>
 </template>

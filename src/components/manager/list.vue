@@ -1,7 +1,7 @@
 <template>
     <container-template>
         <div slot="tab-content">
-            <h5>Companies</h5>
+            <h5>Companies Manager</h5>
             <div class="card">
                 <gw-browse
                     ref="gwBrowse"
