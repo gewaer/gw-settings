@@ -6,7 +6,7 @@
             <div class="card">
                 <div class="row">
                     <div class="col">
-                        <h6>
+                        <h6 class="d-flex align-items-center justify-content-between">
                             Create a new Role
                             <button v-if="!isEditing" class="btn btn-primary" @click="cloneRole()">
                                 Clone role

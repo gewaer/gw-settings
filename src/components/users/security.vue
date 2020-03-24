@@ -47,6 +47,13 @@
                             <span class="text-danger">{{ errors.first("confirm-new-password") }}</span>
                         </div>
                     </div>
+                    <div class="col-12 col-md-6">
+                        <div class="password-rules">
+                            <img src="/img/settings/exclamation.svg" alt="Exclamation icon">
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vitae sem mattis, mattis metus sit amet, tincidunt justo.</p>
+                            <p>Ut hendrerit, est in sodales rhoncus, quam sapien malesuada arcu, vitae tincidunt odio orci porttitor ligula.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="d-flex justify-content-end mt-4">
@@ -121,3 +128,22 @@ export default {
     }
 };
 </script>
+
+<style lang="scss">
+.password-rules {
+    display: flex;
+    flex-direction: column;
+    padding: 0 40px;
+    opacity: .7;
+
+    img {
+        margin-bottom: 30px;
+    }
+
+    p {
+        font-size: 16px;
+        font-family: "Roboto", sans-serif;
+        color: #A5A5A5;
+    }
+}
+</style>
