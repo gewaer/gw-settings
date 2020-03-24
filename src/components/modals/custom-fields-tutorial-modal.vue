@@ -63,12 +63,13 @@
 </template>
 
 <script>
+import { FormWizard, TabContent } from "vue-form-wizard";
 
 export default {
     name: "CustomFieldsTutorialModal",
     components: {
-        FormWizard: () => import(/* webpackChunkName: "form-wizard-form" */ "vue-form-wizard").then(({ FormWizard }) => FormWizard),
-        TabContent: () => import(/* webpackChunkName: "form-wizard-tab-content" */ "vue-form-wizard").then(({ TabContent }) => TabContent)
+        FormWizard,
+        TabContent
         // WizardButton: () => import(/* webpackChunkName: "form-wizard-wizard-button" */ "vue-form-wizard").then(({ WizardButton }) => WizardButton)
     },
     data() {

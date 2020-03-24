@@ -10,10 +10,12 @@
 </template>
 
 <script>
+import CustomFieldsTutorialModal from "./components/modals/custom-fields-tutorial-modal";
+
 export default {
     name: "SettingsContainer",
     components: {
-        customFieldsTutorialModal: () => import(/* webpackChunkName: "custom-fields-tutorial-modal" */ "./components/modals/custom-fields-tutorial-modal")
+        CustomFieldsTutorialModal
     }
     // mounted() {
     //     setTimeout(() => {
