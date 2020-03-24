@@ -8,7 +8,7 @@
                         <h6>{{ title }}</h6>
                         <div class="row">
                             <div class="col-12 col-md">
-                                <div class="form-group form-group-default required">
+                                <div class="form-group required">
                                     <label>Name</label>
                                     <input
                                         v-model="companyData.name"
@@ -19,7 +19,7 @@
                                     >
                                     <span class="text-danger"> {{ errors.first('name') }}</span>
                                 </div>
-                                <div class="form-group form-group-default required">
+                                <div class="form-group required">
                                     <label>Address</label>
                                     <input
                                         v-model="companyData.address"
@@ -31,7 +31,7 @@
                                     >
                                     <span class="text-danger"> {{ errors.first('company-address') }}</span>
                                 </div>
-                                <div class="form-group form-group-default required">
+                                <div class="form-group required">
                                     <label>Zip Code</label>
                                     <input
                                         v-model="companyData.zipcode"
@@ -43,7 +43,7 @@
                                     >
                                     <span class="text-danger"> {{ errors.first('zipcode') }}</span>
                                 </div>
-                                <div class="form-group form-group-default">
+                                <div class="form-group">
                                     <label>Email</label>
                                     <input
                                         v-model="companyData.email"
@@ -54,7 +54,7 @@
                                     >
                                     <span class="text-danger"> {{ errors.first('email') }}</span>
                                 </div>
-                                <div class="form-group form-group-default required">
+                                <div class="form-group required">
                                     <label>Phone</label>
                                     <input
                                         v-model="companyData.phone"
@@ -69,26 +69,30 @@
                             </div>
                             <div class="col-12 col-md m-b-20">
                                 <div class="col-12 col-md">
-                                    <label>Language </label>
-                                    <multiselect
-                                        v-if="initializeComplete"
-                                        v-model="selectedLanguage"
-                                        :options="languages"
-                                        :show-labels="false"
-                                        label="name"
-                                        track-by="id"
-                                        @input="setLanguage"
-                                    />
+                                    <div class="form-group">
+                                        <label>Language </label>
+                                        <multiselect
+                                            v-if="initializeComplete"
+                                            v-model="selectedLanguage"
+                                            :options="languages"
+                                            :show-labels="false"
+                                            label="name"
+                                            track-by="id"
+                                            @input="setLanguage"
+                                        />
+                                    </div>
                                 </div>
                                 <div class="col-12 col-md">
-                                    <label>Timezone</label>
-                                    <multiselect
-                                        v-if="initializeComplete"
-                                        v-model="companyData.timezone"
-                                        :max-height="175"
-                                        :options="timezones"
-                                        :show-labels="false"
-                                    />
+                                    <div class="form-group">
+                                        <label>Timezone</label>
+                                        <multiselect
+                                            v-if="initializeComplete"
+                                            v-model="companyData.timezone"
+                                            :max-height="175"
+                                            :options="timezones"
+                                            :show-labels="false"
+                                        />
+                                    </div>
                                 </div>
                             </div>
                         </div>

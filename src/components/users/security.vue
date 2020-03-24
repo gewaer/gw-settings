@@ -6,7 +6,7 @@
             <div class="card h-100 mb-0">
                 <div class="row user-general-information">
                     <div class="col-12 col-md-6">
-                        <div class="form-group form-group-default required">
+                        <div class="form-group required">
                             <label>Current password</label>
                             <input
                                 v-model="currentPassword"
@@ -20,7 +20,7 @@
                             >
                             <span class="text-danger">{{ errors.first("password") }}</span>
                         </div>
-                        <div class="form-group form-group-default required">
+                        <div class="form-group required">
                             <label>New password</label>
                             <input
                                 v-model="newPassword"
@@ -33,7 +33,7 @@
                             >
                             <span class="text-danger">{{ errors.first("new-password") }}</span>
                         </div>
-                        <div class="form-group form-group-default required">
+                        <div class="form-group required">
                             <label>Confirm new password</label>
                             <input
                                 v-model="confirmNewPassword"

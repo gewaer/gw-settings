@@ -1,6 +1,6 @@
 <template>
     <div class="subscription-details">
-        <div class="card">
+        <div class="card" style="padding: 0 !important;">
             <div class="details-top">
                 <h1 class="title">
                     <span>Monthly</span>
@@ -111,7 +111,7 @@ export default {
 <style lang="scss">
 .subscription-details {
     .card {
-        padding: 0;
+        padding: 0 !important;
 
         .details-top {
             padding: 25px;

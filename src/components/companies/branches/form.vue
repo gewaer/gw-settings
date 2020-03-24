@@ -9,7 +9,7 @@
                         <h6> {{ title }}</h6>
                         <div class="row">
                             <div class="col-12 col-md-6">
-                                <div class="form-group form-group-default required">
+                                <div class="form-group required">
                                     <label>Name</label>
                                     <input
                                         v-model="branchData.name"
@@ -22,7 +22,7 @@
                                         {{ errors.first("name") }}
                                     </span>
                                 </div>
-                                <div class="form-group form-group-default required">
+                                <div class="form-group required">
                                     <label>Address</label>
                                     <input
                                         v-model="branchData.address"
@@ -36,7 +36,7 @@
                                         {{ errors.first("branch-address") }}
                                     </span>
                                 </div>
-                                <div class="form-group form-group-default required">
+                                <div class="form-group required">
                                     <label>Zip Code</label>
                                     <input
                                         v-model="branchData.zipcode"
@@ -50,7 +50,7 @@
                                         {{ errors.first("zipcode") }}
                                     </span>
                                 </div>
-                                <div class="form-group form-group-default required">
+                                <div class="form-group required">
                                     <label>Email</label>
                                     <input
                                         v-model="branchData.email"
@@ -63,7 +63,7 @@
                                         {{ errors.first("email") }}
                                     </span>
                                 </div>
-                                <div class="form-group form-group-default required">
+                                <div class="form-group required">
                                     <label>Phone</label>
                                     <input
                                         v-model="branchData.phone"

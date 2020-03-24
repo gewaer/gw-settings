@@ -118,7 +118,6 @@ export default {
                         wrapperAttributes: {
                             class: {
                                 "form-group": true,
-                                "form-group-default": true,
                                 required: true
                             }
                         },
@@ -160,7 +159,6 @@ export default {
                         wrapperAttributes: {
                             class: {
                                 "form-group": true,
-                                "form-group-default": true,
                                 required: true
                             }
                         },
@@ -200,7 +198,6 @@ export default {
                         wrapperAttributes: {
                             class: {
                                 "form-group": true,
-                                "form-group-default": true
                             }
                         },
                         validations: {
@@ -244,7 +241,6 @@ export default {
                         wrapperAttributes: {
                             class: {
                                 "form-group": true,
-                                "form-group-default": true,
                                 required: true
                             }
                         },
@@ -325,7 +321,7 @@ export default {
         width: 180px;
         margin: 0 20px;
 
-        .profile-image {
+        /deep/ .profile-image {
             width: 180px;
             height: 180px;
             overflow: hidden;
@@ -334,7 +330,7 @@ export default {
             justify-content: center;
             border: 1px solid rgba(230, 230, 230, 0.7);
             margin-bottom: 20px;
-            border-radius: 100%;
+            border-radius: 100% !important;
         }
 
         span {
