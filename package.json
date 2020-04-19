@@ -1,6 +1,6 @@
 {
   "name": "@gewaer/gw-settings",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "description": "Base settings component for the Gewaer platform.",
   "main": "./dist/gw-settings.umd.min.js",
   "files": [
