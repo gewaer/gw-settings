@@ -9,13 +9,13 @@
                         :class="{ active: show == 'active' }"
                         @click.prevent="show = 'active'"
                     >
-                        Users
+                        Active
                     </a>
                 </li>
                 <li class="nav-item">
                     <a
-                        :class="{ active: show == 'invited' }"
-                        @click.prevent="show = 'invited'"
+                        :class="{ active: show == 'invite' }"
+                        @click.prevent="show = 'invite'"
                     >
                         Invites
                     </a>
@@ -88,16 +88,17 @@ export default {
                 inactive: {
                     format: "true",
                     relationships: "companies,roles",
-                    q: "(user_active:0)"
+                    q: "(user_active:0,is_deleted:0)"
                 },
-                invited: {
+                invite: {
                     format: "true",
                     relationships: "companies,roles",
                     q: "(is_deleted:0)"
                 },
                 active: {
                     format: "true",
-                    relationships: "roles"
+                    relationships: "roles",
+                    q: "(user_active:1,is_deleted:0)"
                 }
             },
             show: "active"
@@ -108,8 +109,10 @@ export default {
             userData: state => state.User.data
         }),
         resource() {
+            const endpoint = this.show == "invite" ? "users-invite" : "users";
+
             return {
-                endpoint: "users",
+                endpoint,
                 name: "Users",
                 slug: `users-${this.show}`
             }

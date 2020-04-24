@@ -136,13 +136,13 @@
                                 </div>
                             </div>
                         </div>
+                        <div v-if="$can('update', 'companyprofile')" class="d-flex justify-content-end mt-2">
+                            <button :disabled="isLoading || !hasChanged" class="btn btn-primary" @click="update()">
+                                Save
+                            </button>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div v-if="$can('update', 'companyprofile')" class="d-flex justify-content-end mt-2">
-                <button :disabled="isLoading || !hasChanged" class="btn btn-primary" @click="update()">
-                    Save
-                </button>
             </div>
         </template>
     </container-template>
