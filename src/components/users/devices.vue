@@ -11,6 +11,7 @@
                         :fields="branchesFields"
                         :http-fetch="getTableData"
                         :transform="transformData"
+                        no-data-template="No external device connected"
                         track-by="id"
                         api-url="/devices"
                         class="table table-hover table-condensed"
@@ -39,12 +40,14 @@ import generalMixins from "../../mixins/general";
 import listMixins from "../../mixins/listMixins";
 import ContainerTemplate from "../../container";
 import TabsMenu from "./tabs";
+import Vuetable from "vuetable-2"
 
 export default {
     name: "UserDevices",
     components: {
         ContainerTemplate,
-        TabsMenu
+        TabsMenu,
+        Vuetable
     },
     mixins: [
         generalMixins,
