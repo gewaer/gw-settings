@@ -6,17 +6,23 @@
             </a>
             <div class="modal-header">
                 <h2>Select a new plan</h2>
-                <p>Please select one of the plans bellow</p>
+                <p>Please select one of the plans below</p>
             </div>
             <div class="modal-body">
                 <div class="payment-frecuency">
-                    <span :class="{ 'deactivated' : payYearly }">Monthly</span>
-                    <p-check v-model="payYearly" off-color="danger" class="p-switch p-fill payment-frecuency-switch" />
-                    <span :class="{ 'deactivated' : !payYearly }">Yearly</span>
+                    <span :class="{ 'deactivated' : isPaidYearly }">Monthly</span>
+                    <p-check
+                        v-model="payYearly"
+                        class="p-switch p-fill payment-frecuency-switch"
+                        false-value="monthly"
+                        off-color="danger"
+                        true-value="yearly"
+                    />
+                    <span :class="{ 'deactivated' : !isPaidYearly }">Yearly</span>
                 </div>
                 <div class="plans">
                     <div
-                        v-for="plan in plans"
+                        v-for="plan in plansList"
                         :key="plan.stripe_plan"
                         :class="{ selected: selectedPlan == plan.stripe_plan }"
                         class="plan"
@@ -24,16 +30,16 @@
                         <input
                             :id="plan.name + plan.id"
                             v-model="selectedPlan"
-                            type="radio"
-                            name="plans"
                             :value="plan.stripe_plan"
+                            name="plans"
+                            type="radio"
                         >
                         <label :for="plan.name + plan.id">
                             <div class="radio-circle" />
                             <div class="plan-details">
                                 <div class="plan-name">
                                     <h5>{{ plan.name }}</h5>
-                                    <div v-if="!payYearly" class="monthly-reference-price">
+                                    <div v-if="!isPaidYearly" class="monthly-reference-price">
                                         Monthly price {{ plan.pricing }}
                                     </div>
                                     <div v-else class="monthly-reference-price">
@@ -41,14 +47,14 @@
                                     </div>
                                 </div>
                                 <div class="plan-price">
-                                    <h3>{{ payYearly ? plan.pricing_anual : plan.pricing }}</h3>
+                                    <h3>{{ isPaidYearly ? plan.pricing_anual : plan.pricing }}</h3>
                                 </div>
                             </div>
                             <div class="plan-labels">
                                 <span v-if="planData.stripe_plan == plan.stripe_plan" class="current-plan">
                                     Current Plan
                                 </span>
-                                <span v-if="plan.stripe_plan == 'monthly-10-1'" class="recommended-plan">Recommended</span>
+                                <span v-if="plan.stripe_plan == 'monthly-10-1' && planData.stripe_plan != plan.stripe_plan" class="recommended-plan">Recommended</span>
                             </div>
                         </label>
                     </div>
@@ -67,7 +73,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapActions } from "vuex";
 import "pretty-checkbox/src/pretty-checkbox.scss";
 import PrettyCheck from "pretty-checkbox-vue/check";
 
@@ -88,28 +94,32 @@ export default {
     },
     data() {
         return {
-            payYearly: false,
+            payYearly: "monthly",
             selectedPlan: {}
         }
     },
     computed: {
-        ...mapGetters({
-            isActive: "Subscription/isActive",
-            isCancelled: "Subscription/isCancelled",
-            isPaid: "Subscription/isPaid"
-        }),
+        isPaidYearly() {
+            return this.payYearly == "yearly";
+        },
         planChanged() {
             return this.selectedPlan != this.planData.stripe_plan;
+        },
+        plansList() {
+            return this.plans.filter(plan => plan.payment_ìnterval == this.payYearly);
         }
     },
     created() {
         this.selectedPlan = this.planData.stripe_plan;
-        this.payYearly = this.planData.payment_style == "yearly"
+        this.payYearly = this.planData.payment_style;
     },
     methods: {
+        ...mapActions({
+            updateSubscriptionData: "Subscription/setData"
+        }),
         update() {
             const appPlan = {
-                payment_style: this.payYearly ? "yearly" : "monthly",
+                payment_style: this.payYearly,
                 stripe_plan: this.selectedPlan,
                 stripe_id: this.planData.stripe_id
             };
@@ -118,12 +128,20 @@ export default {
                 url: `/apps-plans/${appPlan.stripe_plan}`,
                 method: "PUT",
                 data: appPlan
-            }).then(() => {
+            }).then(({ data }) => {
                 this.$notify({
                     title: "Success",
                     text: "Payment Informatión updated successfully.",
                     type: "success"
                 });
+
+                const subscriptionData = {
+                    ...this.$store.state.Subscription.data,
+                    stripe_plan: data.stripe_plan
+                };
+
+                this.updateSubscriptionData(subscriptionData);
+
                 this.$modal.hide("plans-modal");
             }).catch((error) => {
                 this.$notify({

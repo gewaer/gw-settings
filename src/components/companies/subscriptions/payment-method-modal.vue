@@ -109,7 +109,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapActions, mapState } from "vuex";
 import { CardNumber, CardExpiry, CardCvc, PostalCode, createToken } from "vue-stripe-elements-plus";
 import CardNetworks from "./creditcard-networks";
 import { VTooltip } from "v-tooltip";
@@ -169,6 +169,10 @@ export default {
         }
     },
     methods: {
+        ...mapActions({
+            getPaymentData: "Subscription/getPaymentData",
+            setPaymentData: "Subscription/setPaymentData"
+        }),
         cancel() {
             Object.keys(this.isComplete).forEach((key) => {
                 this.$refs[key].clear();
@@ -221,12 +225,16 @@ export default {
                 url: `/apps-plans/${this.planData.stripe_plan}/method`,
                 method: "PUT",
                 data: appPlan
-            }).then(() => {
+            }).then(async() => {
                 this.$notify({
                     title: "Success",
                     text: "Payment Informatión updated successfully.",
                     type: "success"
                 });
+
+                const { data: paymentData } = await this.getPaymentData();
+                this.setPaymentData(paymentData);
+
                 this.cancel();
             }).catch((error) => {
                 this.$notify({
