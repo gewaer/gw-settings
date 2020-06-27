@@ -13,35 +13,38 @@ export default {
         const vvFields = this.removeIgnoreUnsavedFields();
         const formFields = pickBy(vvFields, field => field.changed);
 
-        if (!isEmpty(formFields)) {
-            this.$modal.show(ModalsUnsavedChanges, {
-                buttons: [{
-                    title: "Discard",
-                    handler: () => {
-                        this.$modal.hide("unsaved-changes");
-                        next();
-                    }
-                }, {
-                    title: "Cancel",
-                    class: "btn-primary",
-                    handler: () => {
-                        this.$modal.hide("unsaved-changes");
-                        next(false);
-                    }
-                }],
-                fields: formFields
-            }, {
-                adaptive: true,
-                clickToClose: false,
-                height: "auto",
-                name: "unsaved-changes",
-                scrollable: true
-            });
-        } else {
-            next();
-        }
+        this.checkForUnsavedChanges(formFields, next);
     },
     methods: {
+        checkForUnsavedChanges(formFields, next) {
+            if (!isEmpty(formFields)) {
+                this.$modal.show(ModalsUnsavedChanges, {
+                    buttons: [{
+                        title: "Discard",
+                        handler: () => {
+                            this.$modal.hide("unsaved-changes");
+                            next();
+                        }
+                    }, {
+                        title: "Cancel",
+                        class: "btn-primary",
+                        handler: () => {
+                            this.$modal.hide("unsaved-changes");
+                            next(false);
+                        }
+                    }],
+                    fields: formFields
+                }, {
+                    adaptive: true,
+                    clickToClose: false,
+                    height: "auto",
+                    name: "unsaved-changes",
+                    scrollable: true
+                });
+            } else {
+                next();
+            }
+        },
         removeIgnoreUnsavedFields() {
             const vvFields = {};
 

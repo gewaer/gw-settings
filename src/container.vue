@@ -1,22 +1,24 @@
 <template>
     <div class="apps-settings">
-        <h4 class="section-title p-l-10">
-            Settings
-        </h4>
-        <div class="card flex-md-row p-0">
-            <slot name="tab-menu" />
-            <div class="tab-content bg-white">
-                <div class="tab-pane active">
-                    <slot name="tab-content" />
-                </div>
-            </div>
-        </div>
+        <custom-fields-tutorial-modal />
+        <slot name="tab-menu" />
+        <slot name="tab-content" />
     </div>
 </template>
 
 <script>
+import CustomFieldsTutorialModal from "./components/modals/custom-fields-tutorial-modal";
+
 export default {
-    name: "SettingsContainer"
+    name: "SettingsContainer",
+    components: {
+        CustomFieldsTutorialModal
+    }
+    // mounted() {
+    //     setTimeout(() => {
+    //         this.$modal.show("custom-fields-tutorial-modal");
+    //     }, 1000);
+    // }
 };
 </script>
 
@@ -28,6 +30,25 @@ export default {
 
     /deep/ .disable-element {
         pointer-events: none;
+    }
+}
+</style>
+
+<style lang="scss">
+.apps-settings {
+    .card {
+        padding: 40px !important;
+    }
+
+    h5 {
+        color: #383752 !important;
+        border-bottom: 0 !important;
+        font-size: 28px !important;
+    }
+
+    .section-title {
+        color: #9594AF;
+        font-weight: 400;
     }
 }
 </style>

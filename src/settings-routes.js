@@ -46,7 +46,7 @@ export default [
     //     name: "settingsUsersSocial",
     //     component: () => import(/* webpackChunkName: "settings-users-social" */ "./components/users/social"),
     //     meta: {
-    //         requiresAuth: true
+    //         requiresAuth: true,
     //     }
     // },
     {
@@ -76,16 +76,8 @@ export default [
         }
     },
     {
-        path: "/settings/apps/custom-fields/:module/add",
+        path: "/settings/apps/custom-fields/:moduleId",
         name: "settingsAppsCustomFieldsForm",
-        component: AppsCustomFieldsForm,
-        meta: {
-            group: "settingsAppsCustomFields"
-        }
-    },
-    {
-        path: "/settings/apps/custom-fields/:module/edit/:id",
-        name: "settingsAppsCustomFieldsFormEdit",
         component: AppsCustomFieldsForm,
         meta: {
             group: "settingsAppsCustomFields"
@@ -168,7 +160,11 @@ export default [
         name: "settingsCompaniesProfile",
         component: CompaniesProfile,
         meta: {
-            group: "settingsCompaniesProfile"
+            group: "settingsCompaniesProfile",
+            acl: {
+                resource: "settingsmenu",
+                action: "company-settings"
+            }
         }
     },
     {
@@ -176,7 +172,11 @@ export default [
         name: "settingsCompaniesBranchesList",
         component: CompaniesBranchesList,
         meta: {
-            group: "settingsCompaniesBranches"
+            group: "settingsCompaniesBranches",
+            acl: {
+                resource: "companybranches",
+                action: "list"
+            }
         }
     },
     {
@@ -184,7 +184,11 @@ export default [
         name: "settingsCompaniesBranchesForm",
         component: CompaniesBranchesForm,
         meta: {
-            group: "settingsCompaniesBranches"
+            group: "settingsCompaniesBranches",
+            acl: {
+                resource: "companybranches",
+                action: "create"
+            }
         }
     },
     {
@@ -192,7 +196,11 @@ export default [
         name: "settingsCompaniesBranchesFormEdit",
         component: CompaniesBranchesForm,
         meta: {
-            group: "settingsCompaniesBranches"
+            group: "settingsCompaniesBranches",
+            acl: {
+                resource: "companybranches",
+                action: "update"
+            }
         }
     },
     {
@@ -200,7 +208,11 @@ export default [
         name: "settingsCompaniesUsersList",
         component: CompaniesUsersList,
         meta: {
-            group: "settingsCompaniesUsers"
+            group: "settingsCompaniesUsers",
+            acl: {
+                resource: "companyusers",
+                action: "list"
+            }
         }
     },
     {
@@ -208,7 +220,11 @@ export default [
         name: "settingsCompaniesUsersForm",
         component: CompaniesUsersForm,
         meta: {
-            group: "settingsCompaniesUsers"
+            group: "settingsCompaniesUsers",
+            acl: {
+                resource: "companyusers",
+                action: "create"
+            }
         }
     },
     {
@@ -216,7 +232,11 @@ export default [
         name: "settingsCompaniesUsersFormEdit",
         component: CompaniesUsersForm,
         meta: {
-            group: "settingsCompaniesUsers"
+            group: "settingsCompaniesUsers",
+            acl: {
+                resource: "companyusers",
+                action: "update"
+            }
         }
     },
     {
@@ -231,7 +251,11 @@ export default [
         name: "settingsCompaniesRolesList",
         component: CompaniesRolesList,
         meta: {
-            group: "settingsCompaniesRoles"
+            group: "settingsCompaniesRoles",
+            acl: {
+                resource: "companyroles",
+                action: "list"
+            }
         }
     },
     {
@@ -239,7 +263,11 @@ export default [
         name: "settingsCompaniesRolesForm",
         component: CompaniesRolesForm,
         meta: {
-            group: "settingsCompaniesRoles"
+            group: "settingsCompaniesRoles",
+            acl: {
+                resource: "companyroles",
+                action: "create"
+            }
         }
     },
     {
@@ -247,7 +275,11 @@ export default [
         name: "settingsCompaniesRolesFormEdit",
         component: CompaniesRolesForm,
         meta: {
-            group: "settingsCompaniesRoles"
+            group: "settingsCompaniesRoles",
+            acl: {
+                resource: "companyroles",
+                action: "update"
+            }
         }
     },
     {
@@ -255,7 +287,11 @@ export default [
         name: "settingsCompaniesSubscriptions",
         component: CompaniesSubscriptions,
         meta: {
-            group: "settingsCompaniesSubscriptions"
+            group: "settingsCompaniesSubscriptions",
+            acl: {
+                resource: "companysubscriptions",
+                action: "create"
+            }
         }
     },
     // ===== Settings Companies Manager Routes =====
@@ -264,7 +300,11 @@ export default [
         name: "settingsManagerList",
         component: ManagerList,
         meta: {
-            group: "settingsManager"
+            group: "settingsManager",
+            acl: {
+                resource: "companiesmanager",
+                action: "list"
+            }
         }
     },
     {
@@ -272,7 +312,11 @@ export default [
         name: "settingsManagerForm",
         component: ManagerForm,
         meta: {
-            group: "settingsManager"
+            group: "settingsManager",
+            acl: {
+                resource: "companiesmanager",
+                action: "create"
+            }
         }
     },
     {
@@ -280,7 +324,11 @@ export default [
         name: "settingsManagerFormEdit",
         component: ManagerForm,
         meta: {
-            group: "settingsManager"
+            group: "settingsManager",
+            acl: {
+                resource: "companiesmanager",
+                action: "update"
+            }
         }
     }
 ]

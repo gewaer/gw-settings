@@ -1,132 +1,130 @@
 <template>
     <container-template>
-        <tabs-menu slot="tab-menu" />
         <div slot="tab-content">
-            <h5 class="form-title">
-                {{ title }}
-            </h5>
-            <div class="row user-general-information">
-                <div class="col-12 m-b-20">
-                    <div class="row">
-                        <div class="col-12 col-md-6">
-                            <template v-if="isEditing">
-                                <div class="form-group form-group-default required">
-                                    <label>First name</label>
-                                    <input
-                                        v-model="userData.firstname"
-                                        v-validate="'required:true|min:2|alpha_spaces'"
-                                        class="form-control"
-                                        type="text"
-                                        name="firstname"
-                                        data-vv-as="First Name"
-                                    >
-                                    <span class="text-danger">{{ errors.first("firstname") }}</span>
-                                </div>
-                                <div class="form-group form-group-default required">
-                                    <label>Last name</label>
-                                    <input
-                                        v-model="userData.lastname"
-                                        v-validate="'required:true|min:2|alpha_spaces'"
-                                        data-vv-as="Last Name"
-                                        name="lastname"
-                                        class="form-control"
-                                        type="text"
-                                    >
-                                    <span class="text-danger">{{ errors.first("lastname") }}</span>
-                                </div>
-                                <div class="form-group form-group-default">
-                                    <label>Cell phone</label>
-                                    <input
-                                        v-model="userData.cell_phone_number"
-                                        v-validate="'min:2|numeric'"
-                                        data-vv-as="Cell phone"
-                                        class="form-control"
-                                        name="phone"
-                                        type="text"
-                                    >
-                                    <span class="text-danger">{{ errors.first("phone") }}</span>
-                                </div>
-                            </template>
-                            <div class="form-group form-group-default required">
-                                <label>Email</label>
+            <h5>Company Settings</h5>
+            <tabs-menu slot="tab-menu" />
+            <div class="card">
+                <h6 class="form-title">
+                    {{ title }}
+                </h6>
+                <div class="row m-b-20 user-general-information">
+                    <div class="col-12 col-md-6">
+                        <template v-if="isEditing">
+                            <div class="form-group required">
+                                <label>First name</label>
                                 <input
-                                    v-model="userData.email"
-                                    v-validate="'required:true|email'"
-                                    data-vv-as="Email"
-                                    data-vv-name="email"
+                                    v-model="userData.firstname"
+                                    v-validate="'required:true|min:2|alpha_spaces'"
                                     class="form-control"
                                     type="text"
-                                    name="email"
+                                    name="firstname"
+                                    data-vv-as="First Name"
                                 >
-                                <span class="text-danger">{{ errors.first("email") }}</span>
+                                <span class="text-danger">{{ errors.first("firstname") }}</span>
                             </div>
+                            <div class="form-group required">
+                                <label>Last name</label>
+                                <input
+                                    v-model="userData.lastname"
+                                    v-validate="'required:true|min:2|alpha_spaces'"
+                                    data-vv-as="Last Name"
+                                    name="lastname"
+                                    class="form-control"
+                                    type="text"
+                                >
+                                <span class="text-danger">{{ errors.first("lastname") }}</span>
+                            </div>
+                            <div class="form-group">
+                                <label>Cell phone</label>
+                                <input
+                                    v-model="userData.cell_phone_number"
+                                    v-validate="'min:2|numeric'"
+                                    data-vv-as="Cell phone"
+                                    class="form-control"
+                                    name="phone"
+                                    type="text"
+                                >
+                                <span class="text-danger">{{ errors.first("phone") }}</span>
+                            </div>
+                        </template>
+                        <div class="form-group required">
+                            <label>Email</label>
+                            <input
+                                v-model="userData.email"
+                                v-validate="'required:true|email'"
+                                data-vv-as="Email"
+                                data-vv-name="email"
+                                class="form-control"
+                                type="text"
+                                name="email"
+                            >
+                            <span class="text-danger">{{ errors.first("email") }}</span>
                         </div>
+                    </div>
 
-                        <div class="col-12 col-md-6 m-b-20">
-                            <div class="col-12 col-md">
-                                <template v-if="isEditing">
-                                    <div class="form-group">
-                                        <label>Language</label>
-                                        <multiselect
-                                            v-if="initializeComplete"
-                                            v-model="selectedLanguage"
-                                            :options="languages"
-                                            :show-labels="false"
-                                            label="name"
-                                            name="language"
-                                            track-by="id"
-                                            @input="setLanguage"
-                                        />
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Timezone</label>
-                                        <multiselect
-                                            v-if="initializeComplete"
-                                            v-model="userData.timezone"
-                                            :show-labels="false"
-                                            :max-height="175"
-                                            :options="timezones"
-                                            name="timezone"
-                                        />
-                                    </div>
-                                </template>
+                    <div class="col-12 col-md-6 m-b-20">
+                        <div class="col-12 col-md">
+                            <template v-if="isEditing">
                                 <div class="form-group">
-                                    <label>Role
-                                        <span class="multiseletc-required">*</span>
-                                    </label>
+                                    <label>Language</label>
                                     <multiselect
                                         v-if="initializeComplete"
-                                        v-model="selectedRole"
-                                        v-validate="'required:true'"
-                                        :max-height="175"
-                                        :options="roles"
+                                        v-model="selectedLanguage"
+                                        :options="languages"
                                         :show-labels="false"
-                                        data-vv-as="role"
-                                        data-vv-name="role"
-                                        name="role"
                                         label="name"
+                                        name="language"
                                         track-by="id"
-                                        @input="setRole"
+                                        @input="setLanguage"
                                     />
-                                    <span class="text-danger">{{ errors.first("role") }}</span>
                                 </div>
+                                <div class="form-group">
+                                    <label>Timezone</label>
+                                    <multiselect
+                                        v-if="initializeComplete"
+                                        v-model="userData.timezone"
+                                        :show-labels="false"
+                                        :max-height="175"
+                                        :options="timezones"
+                                        name="timezone"
+                                    />
+                                </div>
+                            </template>
+                            <div class="form-group">
+                                <label>Role
+                                    <span class="multiseletc-required">*</span>
+                                </label>
+                                <multiselect
+                                    v-if="initializeComplete"
+                                    v-model="selectedRole"
+                                    v-validate="'required:true'"
+                                    :max-height="175"
+                                    :options="roles"
+                                    :show-labels="false"
+                                    data-vv-as="role"
+                                    data-vv-name="role"
+                                    name="role"
+                                    label="name"
+                                    track-by="id"
+                                    @input="setRole"
+                                />
+                                <span class="text-danger">{{ errors.first("role") }}</span>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <div class="col-12 col-xl d-flex justify-content-end mt-2">
-                    <button :disabled="isLoading" class="btn btn-danger mr-2" @click="cancel()">
-                        Cancel
-                    </button>
-                    <button
-                        :disabled="isLoading || !hasChanged"
-                        class="btn btn-primary"
-                        @click="confirmAction()"
-                    >
-                        {{ isEditing ? "Save" : "Invite" }}
-                    </button>
-                </div>
+            </div>
+            <div class="d-flex justify-content-end mt-4">
+                <button :disabled="isLoading" class="btn btn-danger mr-2" @click="cancel()">
+                    Cancel
+                </button>
+                <button
+                    :disabled="isLoading || !hasChanged"
+                    class="btn btn-primary"
+                    @click="confirmAction()"
+                >
+                    {{ isEditing ? "Save" : "Invite" }}
+                </button>
             </div>
         </div>
     </container-template>
@@ -271,7 +269,6 @@ export default {
 
 <style lang="scss">
 .user-general-information {
-    margin: 20px;
     .profile-image-container {
         display: flex;
         flex-direction: column;
@@ -280,8 +277,8 @@ export default {
         margin-bottom: 15px;
 
         .profile-image {
-            width: 160px;
-            height: 160px;
+            width: 180px;
+            height: 180px;
             overflow: hidden;
             display: flex;
             align-items: center;

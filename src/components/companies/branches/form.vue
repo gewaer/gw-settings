@@ -1,89 +1,94 @@
 <template>
     <container-template>
-        <tabs-menu slot="tab-menu" />
-        <div slot="tab-content" class="row branch-general-information">
-            <div class="col-12 m-b-20">
-                <h5> {{ title }}</h5>
-                <div class="row">
-                    <div class="col-12 col-md-6">
-                        <div class="form-group form-group-default required">
-                            <label>Name</label>
-                            <input
-                                v-model="branchData.name"
-                                v-validate="'required:true|min:2'"
-                                class="form-control"
-                                type="text"
-                                name="name"
-                            >
-                            <span class="text-danger">
-                                {{ errors.first("name") }}
-                            </span>
-                        </div>
-                        <div class="form-group form-group-default required">
-                            <label>Address</label>
-                            <input
-                                v-model="branchData.address"
-                                v-validate="'required:true|min:2'"
-                                class="form-control"
-                                type="text"
-                                data-vv-as="branch address"
-                                name="branch-address"
-                            >
-                            <span class="text-danger">
-                                {{ errors.first("branch-address") }}
-                            </span>
-                        </div>
-                        <div class="form-group form-group-default required">
-                            <label>Zip Code</label>
-                            <input
-                                v-model="branchData.zipcode"
-                                v-validate="'required:true|numeric|min:2'"
-                                class="form-control"
-                                type="text"
-                                data-vv-as="zip code"
-                                name="zipcode"
-                            >
-                            <span class="text-danger">
-                                {{ errors.first("zipcode") }}
-                            </span>
-                        </div>
-                        <div class="form-group form-group-default required">
-                            <label>Email</label>
-                            <input
-                                v-model="branchData.email"
-                                v-validate="'required|email'"
-                                class="form-control"
-                                name="email"
-                                type="email"
-                            >
-                            <span class="text-danger">
-                                {{ errors.first("email") }}
-                            </span>
-                        </div>
-                        <div class="form-group form-group-default required">
-                            <label>Phone</label>
-                            <input
-                                v-model="branchData.phone"
-                                v-validate="'required|numeric'"
-                                class="form-control"
-                                data-vv-as="phone number"
-                                name="phone"
-                                type="tel"
-                            >
-                            <span class="text-danger">
-                                {{ errors.first("phone") }}
-                            </span>
+        <div slot="tab-content" class="branch-general-information">
+            <h5>Company Settings</h5>
+            <tabs-menu slot="tab-menu" />
+            <div class="row">
+                <div class="col-12 m-b-20">
+                    <div class="card mb-0">
+                        <h6> {{ title }}</h6>
+                        <div class="row">
+                            <div class="col-12 col-md-6">
+                                <div class="form-group required">
+                                    <label>Name</label>
+                                    <input
+                                        v-model="branchData.name"
+                                        v-validate="'required:true|min:2'"
+                                        class="form-control"
+                                        type="text"
+                                        name="name"
+                                    >
+                                    <span class="text-danger">
+                                        {{ errors.first("name") }}
+                                    </span>
+                                </div>
+                                <div class="form-group required">
+                                    <label>Address</label>
+                                    <input
+                                        v-model="branchData.address"
+                                        v-validate="'required:true|min:2'"
+                                        class="form-control"
+                                        type="text"
+                                        data-vv-as="branch address"
+                                        name="branch-address"
+                                    >
+                                    <span class="text-danger">
+                                        {{ errors.first("branch-address") }}
+                                    </span>
+                                </div>
+                                <div class="form-group required">
+                                    <label>Zip Code</label>
+                                    <input
+                                        v-model="branchData.zipcode"
+                                        v-validate="'required:true|numeric|min:2'"
+                                        class="form-control"
+                                        type="text"
+                                        data-vv-as="zip code"
+                                        name="zipcode"
+                                    >
+                                    <span class="text-danger">
+                                        {{ errors.first("zipcode") }}
+                                    </span>
+                                </div>
+                                <div class="form-group required">
+                                    <label>Email</label>
+                                    <input
+                                        v-model="branchData.email"
+                                        v-validate="'required|email'"
+                                        class="form-control"
+                                        name="email"
+                                        type="email"
+                                    >
+                                    <span class="text-danger">
+                                        {{ errors.first("email") }}
+                                    </span>
+                                </div>
+                                <div class="form-group required">
+                                    <label>Phone</label>
+                                    <input
+                                        v-model="branchData.phone"
+                                        v-validate="'required|numeric'"
+                                        class="form-control"
+                                        data-vv-as="phone number"
+                                        name="phone"
+                                        type="tel"
+                                    >
+                                    <span class="text-danger">
+                                        {{ errors.first("phone") }}
+                                    </span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-12 col-xl d-flex justify-content-end mt-2">
-                <button :disabled="isLoading" class="btn btn-danger mr-2" @click="cancel()">
-                    Cancel
-                </button>
-                <button :disabled="isLoading || !hasChanged" class="btn btn-primary" @click="save()">
-                    Save
-                </button>
+                <div class="col-12 col-xl d-flex justify-content-end mt-4">
+                    <button :disabled="isLoading" class="btn btn-danger mr-2" @click="cancel()">
+                        Cancel
+                    </button>
+                    <button :disabled="isLoading || !hasChanged" class="btn btn-primary" @click="save()">
+                        Save
+                    </button>
+                </div>
             </div>
         </div>
     </container-template>
@@ -179,7 +184,6 @@ export default {
 
 <style lang="scss">
 .branch-general-information {
-    margin: 20px 15px;
     .profile-image-container {
         display: flex;
         flex-direction: column;

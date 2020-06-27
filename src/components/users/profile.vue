@@ -1,29 +1,31 @@
 <template>
     <container-template>
-        <tabs-menu slot="tab-menu" />
         <template slot="tab-content">
-            <h5>General Information</h5>
+            <h5>User Settings</h5>
+            <tabs-menu slot="tab-menu" />
             <div class="row user-general-information">
-                <div class="col-12 col-xl">
-                    <div class="row">
-                        <div class="col-12 col-md-auto">
-                            <div class="profile-image-container">
-                                <profile-uploader
-                                    v-if="userData.id"
-                                    :avatar-url="avatarUrl"
-                                    endpoint="/filesystem"
-                                    @uploaded="updateProfile"
-                                />
-                            </div>
-                        </div>
-                        <div class="col-12 col-xl">
-                            <custom-fields-form
-                                :form-fields="fieldsSchema"
-                                :form-name="'generalInformation'"
-                                :form-options="formOptions"
-                                @formSubmitted="formSubmitted"
+                <div class="col-12 col-md-auto">
+                    <div class="card h-100 mb-0 d-flex align-items-center justify-content-center">
+                        <div class="profile-image-container">
+                            <profile-uploader
+                                v-if="userData.id"
+                                :avatar-url="avatarUrl"
+                                endpoint="/filesystem"
+                                @uploaded="updateProfile"
                             />
+                            <span class="formats">Supported formats JPG, JPEG, and PNG. More than 5mb will not be accepted.</span>
                         </div>
+                    </div>
+                </div>
+                <div class="col-12 col-xl">
+                    <div class="card h-100 mb-0">
+                        <custom-fields-form
+                            ref="profileForm"
+                            :form-fields="fieldsSchema"
+                            :form-name="'generalInformation'"
+                            :form-options="formOptions"
+                            @formSubmitted="formSubmitted"
+                        />
                     </div>
                 </div>
             </div>
@@ -88,6 +90,10 @@ export default {
     created() {
         this.initialize();
     },
+    beforeRouteLeave(to, from, next) {
+        const formFields = this.$refs.profileForm.getChangedFields();
+        this.checkForUnsavedChanges(formFields, next);
+    },
     methods: {
         async initialize() {
             await this.$store.dispatch("Application/getSettingsLists");
@@ -112,7 +118,6 @@ export default {
                         wrapperAttributes: {
                             class: {
                                 "form-group": true,
-                                "form-group-default": true,
                                 required: true
                             }
                         },
@@ -154,7 +159,6 @@ export default {
                         wrapperAttributes: {
                             class: {
                                 "form-group": true,
-                                "form-group-default": true,
                                 required: true
                             }
                         },
@@ -193,8 +197,7 @@ export default {
                         },
                         wrapperAttributes: {
                             class: {
-                                "form-group": true,
-                                "form-group-default": true
+                                "form-group": true
                             }
                         },
                         validations: {
@@ -238,7 +241,6 @@ export default {
                         wrapperAttributes: {
                             class: {
                                 "form-group": true,
-                                "form-group-default": true,
                                 required: true
                             }
                         },
@@ -316,18 +318,26 @@ export default {
     .profile-image-container {
         display: flex;
         flex-direction: column;
-        width: 160px;
-        margin: 0 auto;
-        margin-bottom: 15px;
+        width: 180px;
+        margin: 0 20px;
 
-        .profile-image {
-            width: 160px;
-            height: 160px;
+        /deep/ .profile-image {
+            width: 180px;
+            height: 180px;
             overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
             border: 1px solid rgba(230, 230, 230, 0.7);
+            margin-bottom: 20px;
+            border-radius: 100% !important;
+        }
+
+        span {
+            font-size: 10px;
+            color: #B3C1CB;
+            text-align: center;
+            margin-top: 10px;
         }
 
         label {

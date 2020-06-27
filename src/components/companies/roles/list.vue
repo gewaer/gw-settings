@@ -1,23 +1,22 @@
 <template>
     <container-template>
-        <tabs-menu slot="tab-menu" />
         <div slot="tab-content">
-            <h5>
-                Roles
-                <router-link :to="{ name: 'settingsCompaniesRolesForm' }" class="btn btn-primary">
-                    New Role
-                </router-link>
-            </h5>
-            <span style="width:30%">{{ 'name' | capitalize }}</span>
-            <div class="table-responsive">
-                <vuetable
-                    ref="Vuetable"
-                    :append-params="{format: 'true'}"
-                    :fields="rolesFields"
-                    :http-fetch="getTableData"
-                    api-url="/roles"
-                    class="table table-hover table-condensed"
+            <h5>Company Settings</h5>
+            <tabs-menu slot="tab-menu" />
+            <div class="card">
+                <gw-browse
+                    ref="gwBrowse"
+                    :append-params="appendParams"
+                    :create-resource-url="{ name: 'settingsCompaniesRolesForm' }"
+                    :http-options="{ baseURL, headers: { Authorization: token }}"
+                    :pagination-data="paginationData"
+                    :query-params="queryParams"
+                    :resource="resource"
+                    :show-bulk-actions="false"
+                    :show-search-filters="false"
+                    :show-title="false"
                     pagination-path=""
+                    @load-error="loadError"
                 >
                     <template slot="actions" slot-scope="props">
                         <div class="d-flex align-items-center justify-content-end">
@@ -32,7 +31,7 @@
                             </button>
                         </div>
                     </template>
-                </vuetable>
+                </gw-browse>
             </div>
         </div>
     </container-template>
@@ -56,19 +55,10 @@ export default {
     ],
     data() {
         return {
-            rolesFields: [{
-                name: "name",
-                title: "Name"
-            }, {
-                name: "description"
-            }, {
-                name: "users"
-            }, {
-                name: "actions",
-                title: "Actions",
-                titleClass: "table-actions",
-                dataClass: "table-actions"
-            }]
+            resource: {
+                name: "Roles",
+                slug: "roles"
+            }
         }
     },
     methods: {

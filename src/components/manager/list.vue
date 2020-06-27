@@ -1,28 +1,22 @@
 <template>
     <container-template>
         <div slot="tab-content">
-            <h5>
-                Companies
-                <router-link :to="{ name: 'settingsManagerForm' }" class="btn btn-primary">
-                    New Company
-                </router-link>
-            </h5>
-            <div class="table-responsive">
-                <vuetable
-                    ref="Vuetable"
+            <h5>Companies Manager</h5>
+            <div class="card">
+                <gw-browse
+                    ref="gwBrowse"
                     :append-params="appendParams"
-                    :fields="companiesFields"
-                    :http-fetch="getTableData"
-                    api-url="/companies"
-                    class="table table-hover table-condensed"
+                    :create-resource-url="{ name: 'settingsManagerForm' }"
+                    :http-options="{ baseURL, headers: { Authorization: token }}"
+                    :pagination-data="paginationData"
+                    :query-params="queryParams"
+                    :resource="resource"
+                    :show-bulk-actions="false"
+                    :show-search-filters="false"
+                    :show-title="false"
                     pagination-path=""
+                    @load-error="loadError"
                 >
-                    <img
-                        slot="profile-image"
-                        slot-scope="props"
-                        :src="props.rowData.logo && props.rowData.logo.url"
-                        height="25px"
-                    >
                     <template slot="actions" slot-scope="props">
                         <div class="d-flex align-items-center justify-content-end">
                             <button class="btn btn-primary m-l-5" @click="editCompany(props.rowData.id)">
@@ -38,9 +32,8 @@
                             </button>
                         </div>
                     </template>
-                </vuetable>
+                </gw-browse>
             </div>
-
             <modal
                 :draggable="true"
                 :adaptive="true"
@@ -56,6 +49,7 @@
 <script>
 import { mapState } from "vuex";
 import generalMixins from "../../mixins/general";
+import listMixins from "../../mixins/listMixins";
 import ContainerTemplate from "../../container";
 
 export default {
@@ -64,24 +58,11 @@ export default {
         ContainerTemplate
     },
     mixins: [
-        generalMixins
+        generalMixins,
+        listMixins
     ],
     data() {
         return {
-            companiesFields: [{
-                name: "profile-image",
-                title: "Logo",
-                width: "30%"
-            }, {
-                name: "name",
-                sortField: "name",
-                width: "30%"
-            }, {
-                name: "actions",
-                title: "Actions",
-                titleClass: "table-actions",
-                dataClass: "table-actions"
-            }],
             appendParams:{
                 format: "true",
                 relationships: "hasActivities,logo",
@@ -89,6 +70,10 @@ export default {
             },
             isEditable: true,
             isLoading: false,
+            resource: {
+                name: "Companies",
+                slug: "companies"
+            },
             selectedCompany: null
         }
     },
@@ -157,12 +142,6 @@ export default {
                 params: {
                     id: companyId
                 }
-            });
-        },
-        getTableData(apiUrl, options) {
-            return axios({
-                url: apiUrl,
-                params: options.params
             });
         },
         isCurrentCompany(companyId) {

@@ -1,102 +1,111 @@
 <template>
     <container-template>
-        <div slot="tab-content" class="row company-general-information">
-            <div class="col-12 m-b-20">
-                <h5>{{ title }}</h5>
+        <div slot="tab-content" class="company-general-information">
+            <h5>Companies Manager</h5>
+            <div class="card">
                 <div class="row">
-                    <div class="col-12 col-md">
-                        <div class="form-group form-group-default required">
-                            <label>Name</label>
-                            <input
-                                v-model="companyData.name"
-                                v-validate="'required:true|min:2|alpha_spaces'"
-                                class="form-control"
-                                type="text"
-                                name="name"
-                            >
-                            <span class="text-danger"> {{ errors.first('name') }}</span>
-                        </div>
-                        <div class="form-group form-group-default required">
-                            <label>Address</label>
-                            <input
-                                v-model="companyData.address"
-                                v-validate="'required:true|min:2'"
-                                class="form-control"
-                                type="text"
-                                data-vv-as="company address"
-                                name="company-address"
-                            >
-                            <span class="text-danger"> {{ errors.first('company-address') }}</span>
-                        </div>
-                        <div class="form-group form-group-default required">
-                            <label>Zip Code</label>
-                            <input
-                                v-model="companyData.zipcode"
-                                v-validate="'required:true|numeric|min:2'"
-                                class="form-control"
-                                type="text"
-                                data-vv-as="zip code"
-                                name="zipcode"
-                            >
-                            <span class="text-danger"> {{ errors.first('zipcode') }}</span>
-                        </div>
-                        <div class="form-group form-group-default">
-                            <label>Email</label>
-                            <input
-                                v-model="companyData.email"
-                                v-validate="'required|email'"
-                                class="form-control"
-                                name="email"
-                                type="email"
-                            >
-                            <span class="text-danger"> {{ errors.first('email') }}</span>
-                        </div>
-                        <div class="form-group form-group-default required">
-                            <label>Phone</label>
-                            <input
-                                v-model="companyData.phone"
-                                v-validate="'required|numeric'"
-                                class="form-control"
-                                data-vv-as="phone number"
-                                name="phone"
-                                type="tel"
-                            >
-                            <span class="text-danger"> {{ errors.first('phone') }}</span>
+                    <div class="col-12 m-b-20">
+                        <h6>{{ title }}</h6>
+                        <div class="row">
+                            <div class="col-12 col-md">
+                                <div class="form-group required">
+                                    <label>Name</label>
+                                    <input
+                                        v-model="companyData.name"
+                                        v-validate="'required:true|min:2|alpha_spaces'"
+                                        class="form-control"
+                                        type="text"
+                                        name="name"
+                                    >
+                                    <span class="text-danger"> {{ errors.first('name') }}</span>
+                                </div>
+                                <div class="form-group required">
+                                    <label>Address</label>
+                                    <input
+                                        v-model="companyData.address"
+                                        v-validate="'required:true|min:2'"
+                                        class="form-control"
+                                        type="text"
+                                        data-vv-as="company address"
+                                        name="company-address"
+                                    >
+                                    <span class="text-danger"> {{ errors.first('company-address') }}</span>
+                                </div>
+                                <div class="form-group required">
+                                    <label>Zip Code</label>
+                                    <input
+                                        v-model="companyData.zipcode"
+                                        v-validate="'required:true|numeric|min:2'"
+                                        class="form-control"
+                                        type="text"
+                                        data-vv-as="zip code"
+                                        name="zipcode"
+                                    >
+                                    <span class="text-danger"> {{ errors.first('zipcode') }}</span>
+                                </div>
+                                <div class="form-group">
+                                    <label>Email</label>
+                                    <input
+                                        v-model="companyData.email"
+                                        v-validate="'required|email'"
+                                        class="form-control"
+                                        name="email"
+                                        type="email"
+                                    >
+                                    <span class="text-danger"> {{ errors.first('email') }}</span>
+                                </div>
+                                <div class="form-group required">
+                                    <label>Phone</label>
+                                    <input
+                                        v-model="companyData.phone"
+                                        v-validate="'required|numeric'"
+                                        class="form-control"
+                                        data-vv-as="phone number"
+                                        name="phone"
+                                        type="tel"
+                                    >
+                                    <span class="text-danger"> {{ errors.first('phone') }}</span>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md m-b-20">
+                                <div class="col-12 col-md">
+                                    <div class="form-group">
+                                        <label>Language </label>
+                                        <multiselect
+                                            v-if="initializeComplete"
+                                            v-model="selectedLanguage"
+                                            :options="languages"
+                                            :show-labels="false"
+                                            label="name"
+                                            track-by="id"
+                                            @input="setLanguage"
+                                        />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md">
+                                    <div class="form-group">
+                                        <label>Timezone</label>
+                                        <multiselect
+                                            v-if="initializeComplete"
+                                            v-model="companyData.timezone"
+                                            :max-height="175"
+                                            :options="timezones"
+                                            :show-labels="false"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-12 col-md m-b-20">
-                        <div class="col-12 col-md">
-                            <label>Language </label>
-                            <multiselect
-                                v-if="initializeComplete"
-                                v-model="selectedLanguage"
-                                :options="languages"
-                                :show-labels="false"
-                                label="name"
-                                track-by="id"
-                                @input="setLanguage"
-                            />
-                        </div>
-                        <div class="col-12 col-md">
-                            <label>Timezone</label>
-                            <multiselect
-                                v-if="initializeComplete"
-                                v-model="companyData.timezone"
-                                :max-height="175"
-                                :options="timezones"
-                                :show-labels="false"
-                            />
-                        </div>
+                    <div class="col-12 col-xl d-flex justify-content-end mt-2">
+                        <button :disabled="isLoading" class="btn btn-danger mr-2" @click="cancel()">
+                            Cancel
+                        </button>
+                        <button :disabled="isLoading || !hasChanged" class="btn btn-primary" @click="save()">
+                            Save
+                        </button>
                     </div>
                 </div>
-            </div>
-            <div class="col-12 col-xl d-flex justify-content-end mt-2">
-                <button :disabled="isLoading" class="btn btn-danger mr-2" @click="cancel()">
-                    Cancel
-                </button>
-                <button :disabled="isLoading || !hasChanged" class="btn btn-primary" @click="save()">
-                    Save
-                </button>
             </div>
         </div>
     </container-template>
@@ -209,18 +218,26 @@ export default {
     .profile-image-container {
         display: flex;
         flex-direction: column;
-        width: 160px;
-        margin: 0 auto;
-        margin-bottom: 15px;
+        width: 180px;
+        margin: 0 20px;
 
         .profile-image {
-            width: 160px;
-            height: 160px;
+            width: 180px;
+            height: 180px;
             overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
             border: 1px solid rgba(230, 230, 230, 0.7);
+            margin-bottom: 20px;
+            border-radius: 100%;
+        }
+
+        span {
+            font-size: 10px;
+            color: #B3C1CB;
+            text-align: center;
+            margin-top: 10px;
         }
 
         label {
