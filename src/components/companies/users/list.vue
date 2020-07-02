@@ -32,7 +32,7 @@
             <div class="card">
                 <gw-browse
                     ref="gwBrowse"
-                    :append-params="appendParams[show]"
+                    :append-params="currentParams"
                     :create-resource-url="{ name: 'settingsCompaniesUsersForm' }"
                     :http-options="{ baseURL, headers: { Authorization: token }}"
                     :pagination-data="paginationData"
@@ -101,6 +101,7 @@ export default {
                     q: "(user_active:1,is_deleted:0)"
                 }
             },
+            currentParams: {},
             show: "active"
         }
     },
@@ -119,13 +120,13 @@ export default {
         }
     },
     watch: {
-        show(...values) {
-            if (!values.includes("invite")) {
-                this.$nextTick(() => {
-                    this.$refs.gwBrowse.refresh();
-                })
-            }
+        async show() {
+            await (this.currentParams = this.appendParams[this.show]);
+            this.$refs.gwBrowse.refresh();
         }
+    },
+    created() {
+        this.currentParams = this.appendParams.active;
     },
     methods: {
         confirmDelete(usersId) {

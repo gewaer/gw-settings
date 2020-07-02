@@ -68,7 +68,7 @@ export default {
             },
             resource: {
                 name: "devices",
-                slug: "devices",
+                slug: "devices"
             },
             defaultImage: "https://mctekk.com/images/logo-o.svg",
             isEditable: true,

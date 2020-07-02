@@ -1,24 +1,27 @@
 <template>
-    <div class="subscription-details">
+    <div v-if="selectedPlan" class="subscription-details">
         <div class="card" style="padding: 0 !important;">
             <div class="details-top">
                 <h1 class="title">
-                    <span>Monthly</span>
+                    <span>{{ planFrequencyTitle }}</span>
                     <a href="#" @click.prevent="updatePlan()">Change</a>
                 </h1>
                 <div class="price">
-                    <span>1 Seat subscription</span>
-                    $10.00
+                    <span>{{ selectedPlan.description }}</span>
+                    ${{ planPricing }}
                 </div>
                 <div class="renewal-info">
-                    <span>Your plan will be automatically renewed on Dec 10, 2019. It will be charged as one payment of $10.00 ($10.00/month).</span>
+                    <span>
+                        Your plan will be automatically renewed on {{ subscriptionData.next_due_payment | formatDate }}.
+                        It will be charged as one payment of ${{ planPricing }} (${{ planMonthlyPricing }}/month).
+                    </span>
                 </div>
             </div>
             <div class="details-bottom">
                 <span class="title">Payment</span>
-                <creditcard-networks brand="visa" />
+                <creditcard-networks :brand="cardBrand" />
                 <div class="credit-card-details">
-                    <span>Credit card ending in <strong>900</strong></span>
+                    <span>Credit card ending in <strong>{{ paymentData.payment_ending_numbers }}</strong></span>
                     <a href="#" @click.prevent="updatePaymentMethod()">Update</a>
                 </div>
             </div>
@@ -28,7 +31,8 @@
 
 <script>
 import { mapState } from "vuex";
-import _has from "lodash/has";
+import moment from "moment";
+import _upperFirst from "lodash/upperFirst";
 import CreditcardNetworks from "./creditcard-networks";
 import PaymentMethodModal from "./payment-method-modal";
 import PlansModal from "./plans-modal";
@@ -38,9 +42,13 @@ export default {
     components: {
         CreditcardNetworks
     },
+    filters: {
+        formatDate(value) {
+            return moment(value).format("MMM D, YYYY");
+        }
+    },
     data() {
         return {
-            plans: [],
             planData: {
                 payment_style: "monthly",
                 stripe_plan: "",
@@ -50,37 +58,39 @@ export default {
     },
     computed: {
         ...mapState({
-            defaultCompany: state => state.Company.data
-        })
+            paymentData: state => state.Subscription.paymentData,
+            plans: state => state.Subscription.plans,
+            subscriptionData: state => state.Subscription.data
+        }),
+        cardBrand() {
+            return (this.paymentData.payment_methods_brand || "").toLowerCase();
+        },
+        planPricing() {
+            return this.planFrequency == "monthly" ? this.selectedPlan.pricing : this.selectedPlan.pricing;
+        },
+        planMonthlyPricing() {
+            return this.planFrequency == "monthly" ? this.planPricing : (this.planPricing / 12).toFixed(2);
+        },
+        planFrequency() {
+            return this.selectedPlan.payment_ìnterval;
+        },
+        planFrequencyTitle() {
+            return _upperFirst(this.planFrequency);
+        },
+        selectedPlan() {
+            return this.plans.find(plan => plan.stripe_plan == this.subscriptionData.stripe_plan);
+        }
     },
     created() {
-        this.initialize();
+        this.handleAppPlans();
     },
     methods: {
-        initialize() {
-            this.getPlans();
-        },
-        getPlans() {
-            axios({
-                url: "/apps-plans?relationships=settings"
-            }).then((response) => {
-                this.handleAppPlans(response);
-            }).catch((error) => {
-                this.$notify({
-                    title: "Error",
-                    text: error.response.data.errors.message,
-                    type: "error"
-                });
-            });
-        },
-        handleAppPlans(response) {
-            if (_has(this.defaultCompany, "subscription")) {
-                this.planData.stripe_plan = this.defaultCompany.subscription.stripe_plan;
-                this.planData.stripe_id = this.defaultCompany.subscription.stripe_id;
-                // TODO get the payment frecuency
+        handleAppPlans() {
+            if (this.subscriptionData) {
+                this.planData.payment_style = this.selectedPlan.payment_ìnterval;
+                this.planData.stripe_plan = this.subscriptionData.stripe_plan;
+                this.planData.stripe_id = this.subscriptionData.stripe_id;
             }
-
-            this.plans = response.data;
         },
         updatePaymentMethod() {
             this.$modal.show(PaymentMethodModal, {
