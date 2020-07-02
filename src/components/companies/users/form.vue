@@ -110,6 +110,23 @@
                                 />
                                 <span class="text-danger">{{ errors.first("role") }}</span>
                             </div>
+
+                            <div class="form-group">
+                                <label> Status </label>
+                                <div>
+                                    <label for="user_active">
+                                        <input 
+                                          type="checkbox" 
+                                          name="user_active" 
+                                          v-model="userData.user_active" 
+                                          id="user_active"
+                                          data-vv-as="status"
+                                          data-vv-name="status"
+                                        >
+                                        <span> Active </span>
+                                    </label>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -119,7 +136,7 @@
                     Cancel
                 </button>
                 <button
-                    :disabled="isLoading || !hasChanged"
+                    :disabled="isLoading"
                     class="btn btn-primary"
                     @click="confirmAction()"
                 >
@@ -207,6 +224,7 @@ export default {
             await axios({
                 url: `/users/${this.$route.params.id}`
             }).then(({ data }) => {
+                data.user_active = !!+data.user_active;
                 this.userData = data;
             });
         },
@@ -215,7 +233,7 @@ export default {
         },
         setRole(value) {
             this.userData.roles_id = value.id;
-        },
+        },    
         save() {
             if (this.isLoading) {
                 return;
@@ -231,6 +249,7 @@ export default {
                 data.append("role_id", this.selectedRole.id);
             } else {
                 data = this.userData;
+                data.user_active = +data.user_active;
             }
 
             this.sendRequest(url, method, data);

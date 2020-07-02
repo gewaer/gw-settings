@@ -119,8 +119,12 @@ export default {
         }
     },
     watch: {
-        show() {
-            this.$refs.gwBrowse.refresh();
+        show(...values) {
+            if (!values.includes("invite")) {
+                this.$nextTick(() => {
+                    this.$refs.gwBrowse.refresh();
+                })
+            }
         }
     },
     methods: {
