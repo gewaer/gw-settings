@@ -112,14 +112,13 @@
                             </div>
 
                             <div class="form-group">
-                                <label> Status </label>
+                                <label>Status</label>
                                 <div>
-                                    <label for="user_active">
+                                    <label>
                                         <input 
                                           type="checkbox" 
                                           name="user_active" 
                                           v-model="userData.user_active" 
-                                          id="user_active"
                                           data-vv-as="status"
                                           data-vv-name="status"
                                         >
@@ -224,7 +223,7 @@ export default {
             await axios({
                 url: `/users/${this.$route.params.id}`
             }).then(({ data }) => {
-                data.user_active = !!+data.user_active;
+                data.user_active = Boolean(Number(data.user_active));
                 this.userData = data;
             });
         },
@@ -233,7 +232,7 @@ export default {
         },
         setRole(value) {
             this.userData.roles_id = value.id;
-        },    
+        },
         save() {
             if (this.isLoading) {
                 return;
@@ -249,7 +248,7 @@ export default {
                 data.append("role_id", this.selectedRole.id);
             } else {
                 data = this.userData;
-                data.user_active = +data.user_active;
+                data.user_active = Number(data.user_active);
             }
 
             this.sendRequest(url, method, data);
