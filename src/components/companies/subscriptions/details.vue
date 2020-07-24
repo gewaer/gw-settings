@@ -24,6 +24,11 @@
                     <span>Credit card ending in <strong>{{ paymentData.payment_ending_numbers }}</strong></span>
                     <a href="#" @click.prevent="updatePaymentMethod()">Update</a>
                 </div>
+                <div class=" mt-2">
+                    <button class="btn btn-outline-danger" @click="cancelSubscription">
+                        Cancel Subscription
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -114,6 +119,9 @@ export default {
                 name: "plans-modal",
                 scrollable: true
             });
+        },
+        cancelSubscription() {
+            
         }
     }
 }
