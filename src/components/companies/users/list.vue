@@ -197,8 +197,8 @@ export default {
         },
         sendInvite(usersId) {
             axios({
-                url: `/${this.endpoint}/${usersId}`,
-                method: "PUT"
+                url: `/${this.endpoint}/${usersId}/resend`,
+                method: "POST"
             }).then(() => {
                 this.$notify({
                     group: null,
