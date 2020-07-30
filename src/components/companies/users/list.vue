@@ -47,14 +47,6 @@
                     <template slot="actions" slot-scope="props">
                         <div class="d-flex align-items-center justify-content-end">
                             <button 
-                                v-if="isInvite"
-                                class="btn btn-primary m-l-5" 
-                                title="copy to clipboard"
-                                @click="copyInviteHash(props.rowData.invite_hash)"
-                            >
-                                <i class="fa fa-copy" aria-hidden="true" />
-                            </button>
-                            <button 
                                 v-if="isInvite" 
                                 class="btn btn-primary m-l-5" 
                                 title="resend"
@@ -214,26 +206,7 @@ export default {
                     type: "error"
                 });
             })
-        },
-
-        copyInviteHash(inviteHash) {
-            if (!navigator.clipboard) {
-                const textArea = document.createElement("textarea")
-                textArea.value = this.inviteLinkBase + inviteHash;
-                document.body.appendChild(textArea);
-                textArea.select();
-                document.execCommand("copy");
-                textArea.remove();
-            } else {
-                navigator.clipboard.writeText(this.inviteLinkBase + inviteHash);
-            }
-            this.$notify({
-                group: null,
-                title: "",
-                text: "copied to clipboard",
-                type: "success"
-            });
-        },  
+        }, 
 
         isCurrentUser(usersId) {
             return usersId == this.userData.id;
