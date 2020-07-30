@@ -46,7 +46,15 @@
                 >
                     <template slot="actions" slot-scope="props">
                         <div class="d-flex align-items-center justify-content-end">
-                            <button class="btn btn-primary m-l-5" @click="editUser(props.rowData.id)">
+                            <button 
+                                v-if="isInvite" 
+                                class="btn btn-primary m-l-5" 
+                                title="resend"
+                                @click="sendInvite(props.rowData.id)"
+                            >
+                                <i class="fa fa-send" aria-hidden="true" />
+                            </button>
+                            <button v-else class="btn btn-primary m-l-5" @click="editUser(props.rowData.id)">
                                 <i class="fa fa-edit" aria-hidden="true" />
                             </button>
                             <button
@@ -84,6 +92,7 @@ export default {
     ],
     data() {
         return {
+            inviteLinkBase: `${location.origin}/users/link/`,
             appendParams: {
                 inactive: {
                     format: "true",
@@ -109,14 +118,20 @@ export default {
         ...mapState({
             userData: state => state.User.data
         }),
+        endpoint() {
+            return this.show == "invite" ? "users-invite" : "users";
+        },
+
         resource() {
-            const endpoint = this.show == "invite" ? "users-invite" : "users";
 
             return {
-                endpoint,
+                endpoint: this.endpoint,
                 name: "Users",
                 slug: `users-${this.show}`
             }
+        },
+        isInvite() {
+            return this.show == "invite";
         }
     },
     watch: {
@@ -143,7 +158,7 @@ export default {
             }
 
             axios({
-                url: `/users/${usersId}`,
+                url: `/${this.endpoint}/${usersId}`,
                 method: "DELETE"
             }).then(() => {
                 this.$notify({
@@ -152,6 +167,7 @@ export default {
                     text: "The user has been deleted",
                     type: "success"
                 });
+                this.$refs.gwBrowse.refresh();
             }).catch((error) => {
                 this.$notify({
                     group: null,
@@ -171,6 +187,26 @@ export default {
                 }
             });
         },
+        sendInvite(usersId) {
+            axios({
+                url: `/${this.endpoint}/${usersId}/resend`,
+                method: "POST"
+            }).then(() => {
+                this.$notify({
+                    group: null,
+                    title: "Invitation sent",
+                    text: "A new invitation link has been sent to the user.",
+                    type: "success"
+                });
+            }).catch((error) => {
+                this.$notify({
+                    group: null,
+                    title: "Error",
+                    text: error.response.data.errors.message,
+                    type: "error"
+                });
+            })
+        }, 
         isCurrentUser(usersId) {
             return usersId == this.userData.id;
         }
