@@ -195,7 +195,7 @@ export default {
                 this.$notify({
                     group: null,
                     title: "Invitation sent",
-                    text: "The invite has been sent",
+                    text: "A new invitation link has been sent to the user.",
                     type: "success"
                 });
             }).catch((error) => {
@@ -207,7 +207,6 @@ export default {
                 });
             })
         }, 
-
         isCurrentUser(usersId) {
             return usersId == this.userData.id;
         }
