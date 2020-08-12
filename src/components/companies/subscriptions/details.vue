@@ -25,7 +25,7 @@
                     <a href="#" @click.prevent="updatePaymentMethod()">Update</a>
                 </div>
                 <div class=" mt-2">
-                    <button class="btn btn-outline-danger" @click="cancelSubscription">
+                    <button class="btn btn-outline-danger" @click="cancelSubscription()">
                         Cancel Subscription
                     </button>
                 </div>
@@ -123,7 +123,6 @@ export default {
                 scrollable: true
             });
         },
-
         cancelSubscription() {
             if (confirm("Are you sure you want to cancel your subscription?")) {
                 axios({
