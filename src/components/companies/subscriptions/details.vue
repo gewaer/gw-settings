@@ -24,13 +24,18 @@
                     <span>Credit card ending in <strong>{{ paymentData.payment_ending_numbers }}</strong></span>
                     <a href="#" @click.prevent="updatePaymentMethod()">Update</a>
                 </div>
+                <div class=" mt-2">
+                    <button class="btn btn-outline-danger" @click="cancelSubscription()">
+                        Cancel Subscription
+                    </button>
+                </div>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 import moment from "moment";
 import _upperFirst from "lodash/upperFirst";
 import CreditcardNetworks from "./creditcard-networks";
@@ -61,6 +66,9 @@ export default {
             paymentData: state => state.Subscription.paymentData,
             plans: state => state.Subscription.plans,
             subscriptionData: state => state.Subscription.data
+        }),
+        ...mapActions({
+            updateSubscriptionData: "Subscription/setData"
         }),
         cardBrand() {
             return (this.paymentData.payment_methods_brand || "").toLowerCase();
@@ -114,6 +122,28 @@ export default {
                 name: "plans-modal",
                 scrollable: true
             });
+        },
+        cancelSubscription() {
+            if (confirm("Are you sure you want to cancel your subscription?")) {
+                axios({
+                    url: `/apps-plans/${this.planData.stripe_plan}s`,
+                    method: "DELETE"
+                }).then(() => {
+                    this.$notify({
+                        title: "Success",
+                        text: "Your subscription has been canceled",
+                        type: "success"
+                    });
+
+                    this.updateSubscriptionData({});
+                }).catch((error) => {
+                    this.$notify({
+                        title: "Error",
+                        text: error.response.data.errors.message,
+                        type: "error"
+                    });
+                })
+            }
         }
     }
 }
