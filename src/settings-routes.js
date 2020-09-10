@@ -5,6 +5,8 @@ import UsersSecurity from "./components/users/security";
 import UsersDevices from "./components/users/devices";
 import AppsCustomFieldsList from "./components/apps/custom-fields/list";
 import AppsCustomFieldsForm from "./components/apps/custom-fields/form";
+import AppsFormCreatorList from "./components/apps/form-creator/list";
+import AppsFormCreatorCrud from "./components/apps/form-creator/form";
 // import AppsEmailTemplatesList from "./components/apps/email-templates/list";
 // import AppsEmailTemplatesForm from "./components/apps/email-templates/form";
 // import AppsWebhooksList from "./components/apps/webhooks/list";
@@ -81,6 +83,22 @@ export default [
         component: AppsCustomFieldsForm,
         meta: {
             group: "settingsAppsCustomFields"
+        }
+    },
+    {
+        path: "/settings/apps/form-creator",
+        name: "settingsAppsFormCreatorList",
+        component: AppsFormCreatorList,
+        meta: {
+            group: "settingsAppsFormCreator"
+        }
+    },
+    {
+        path: "/settings/apps/form-creator/:moduleId",
+        name: "settingsAppsFormCreatorCrud",
+        component: AppsFormCreatorCrud,
+        meta: {
+            group: "settingsAppsFormCreator"
         }
     },
     // {
