@@ -25,7 +25,7 @@
                     <a href="#" @click.prevent="updatePaymentMethod()">Update</a>
                 </div>
                 <div class=" mt-2">
-                    <button class="btn btn-outline-danger" @click.prevent="confirmCancelSubscription">
+                    <button type="button" class="btn btn-outline-danger" @click="confirmCancelSubscription">
                         Cancel Subscription
                     </button>
                 </div>
@@ -133,13 +133,13 @@ export default {
                         class: "btn-success",
                         title: "Yes",
                         handler: () => {
-                            this.cancelSubscription()
+                            this.cancelSubscription();
                         }
                     }, {
                         class: "btn-danger",
                         title: "No",
                         handler: () => {
-                            this.$modal.hide("basic-modal")
+                            this.$modal.hide("basic-modal");
                         }
                     }
                 ]
@@ -164,7 +164,7 @@ export default {
                     type: "error"
                 });
             }).finally(() => {
-                this.$modal.hide("basic-modal")
+                this.$modal.hide("basic-modal");
             })
         }
     }
