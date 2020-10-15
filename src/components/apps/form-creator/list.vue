@@ -19,7 +19,7 @@
                 >
                     <template slot="actions" slot-scope="props">
                         <div class="d-flex align-items-center justify-content-end">
-                            <button class="btn btn-primary m-l-5" @click="editCustomFields(props.rowData.id)">
+                            <button class="btn btn-primary m-l-5" @click="editCustomFields(props.rowData)">
                                 <i class="fa fa-edit" aria-hidden="true" />
                             </button>
                         </div>
@@ -55,11 +55,14 @@ export default {
         }
     },
     methods: {
-        editCustomFields(moduleId) {
+        editCustomFields(module) {
             this.$router.push({
                 name: "settingsAppsFormCreatorCrud",
                 params: {
-                    moduleId
+                    moduleId: module.id
+                },
+                query: {
+                    name: module.name
                 }
             });
         }

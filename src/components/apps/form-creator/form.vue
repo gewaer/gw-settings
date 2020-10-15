@@ -48,11 +48,14 @@
                                         :key="field.field + (index + 1)"
                                         class="col-6 d-flex"
                                     >
-                                        <div class="custom-field flex-fill">
+                                        <div
+                                            :class="{ 'system-field': field.system_field }"
+                                            class="custom-field flex-fill"
+                                        >
                                             {{ field.label | capitalize }}
                                             <i :class="fieldIcons[field.fields_type_id]" />
                                         </div>
-                                        <div class="edit-custom-field" @click="editField(field, index)">
+                                        <div v-if="!field.system_field" class="edit-custom-field" @click="editField(field, index)">
                                             <i class="fas fa-ellipsis-v" />
                                         </div>
                                     </div>
@@ -200,7 +203,7 @@ export default {
         },
         async getFormData() {
             await axios({
-                url: "/custom-forms/users"
+                url: `/custom-forms/${this.$route.query.name}`
             }).then(response => {
                 this.formData = response.data;
 
@@ -229,8 +232,10 @@ export default {
             const promises = [];
 
             this.formSchema.forEach((field, index) => {
-                const customFieldData = this.setCustomFieldData(field);
-                promises.push(this.saveCustomField(customFieldData, index));
+                if (!field.system_field) {
+                    const customFieldData = this.setCustomFieldData(field);
+                    promises.push(this.saveCustomField(customFieldData, index));
+                }
             });
 
             await Promise.all(promises);
@@ -376,6 +381,10 @@ export default {
         padding: 10px 15px;
         font-size: 14px;
         cursor: all-scroll;
+
+        &.system-field {
+            background-color: #e4e4e4;
+        }
     }
 
     .custom-fields-picker {
