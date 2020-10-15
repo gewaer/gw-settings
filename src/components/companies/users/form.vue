@@ -110,6 +110,22 @@
                                 />
                                 <span class="text-danger">{{ errors.first("role") }}</span>
                             </div>
+
+                            <div class="form-group">
+                                <label>Status</label>
+                                <div>
+                                    <label>
+                                        <input 
+                                            v-model="userData.user_active" 
+                                            type="checkbox" 
+                                            name="user_active" 
+                                            data-vv-as="status"
+                                            data-vv-name="status"
+                                        >
+                                        <span> Active </span>
+                                    </label>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -119,7 +135,7 @@
                     Cancel
                 </button>
                 <button
-                    :disabled="isLoading || !hasChanged"
+                    :disabled="isLoading"
                     class="btn btn-primary"
                     @click="confirmAction()"
                 >
@@ -207,6 +223,7 @@ export default {
             await axios({
                 url: `/users/${this.$route.params.id}`
             }).then(({ data }) => {
+                data.user_active = Boolean(Number(data.user_active));
                 this.userData = data;
             });
         },
@@ -231,6 +248,7 @@ export default {
                 data.append("role_id", this.selectedRole.id);
             } else {
                 data = this.userData;
+                data.user_active = Number(data.user_active);
             }
 
             this.sendRequest(url, method, data);
