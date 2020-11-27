@@ -16,7 +16,7 @@
             :form-options="formOptions"
             class="d-flex h-100 flex-column"
             form-name="customFields"
-            @formCancelled="$modal.hide('form-example-modal')"
+            @form-cancelled="$modal.hide('form-example-modal')"
         />
     </modal>
 </template>
