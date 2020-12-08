@@ -25,7 +25,7 @@
                     <a href="#" @click.prevent="updatePaymentMethod()">Update</a>
                 </div>
                 <div class=" mt-2">
-                    <button class="btn btn-outline-danger" @click="cancelSubscription()">
+                    <button type="button" class="btn btn-outline-danger" @click="confirmCancelSubscription">
                         Cancel Subscription
                     </button>
                 </div>
@@ -123,27 +123,49 @@ export default {
                 scrollable: true
             });
         },
-        cancelSubscription() {
-            if (confirm("Are you sure you want to cancel your subscription?")) {
-                axios({
-                    url: `/apps-plans/${this.planData.stripe_plan}s`,
-                    method: "DELETE"
-                }).then(() => {
-                    this.$notify({
-                        title: "Success",
-                        text: "Your subscription has been canceled",
-                        type: "success"
-                    });
 
-                    this.updateSubscriptionData({});
-                }).catch((error) => {
-                    this.$notify({
-                        title: "Error",
-                        text: error.response.data.errors.message,
-                        type: "error"
-                    });
-                })
-            }
+        confirmCancelSubscription() {
+            this.$modal.show("basic-modal", {
+                title: "Are you sure?",
+                message: "Are you sure you want to cancel your subscription?",
+                buttons: [
+                    {
+                        class: "btn-success",
+                        title: "Yes",
+                        handler: () => {
+                            this.cancelSubscription();
+                        }
+                    }, {
+                        class: "btn-danger",
+                        title: "No",
+                        handler: () => {
+                            this.$modal.hide("basic-modal");
+                        }
+                    }
+                ]
+            });
+        },
+
+        cancelSubscription() {
+            axios({
+                url: `/apps-plans/${this.planData.stripe_id}`,
+                method: "DELETE"
+            }).then(() => {
+                this.$notify({
+                    title: "Success",
+                    text: "Your subscription has been canceled",
+                    type: "success"
+                });
+                this.updateSubscriptionData({});
+            }).catch((error) => {
+                this.$notify({
+                    title: "Error",
+                    text: error.response.data.errors.message,
+                    type: "error"
+                });
+            }).finally(() => {
+                this.$modal.hide("basic-modal");
+            })
         }
     }
 }

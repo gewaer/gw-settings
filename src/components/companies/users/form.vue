@@ -116,11 +116,11 @@
                                 <div>
                                     <label>
                                         <input 
-                                          type="checkbox" 
-                                          name="user_active" 
-                                          v-model="userData.user_active" 
-                                          data-vv-as="status"
-                                          data-vv-name="status"
+                                            v-model="userData.user_active" 
+                                            type="checkbox" 
+                                            name="user_active" 
+                                            data-vv-as="status"
+                                            data-vv-name="status"
                                         >
                                         <span> Active </span>
                                     </label>

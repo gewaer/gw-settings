@@ -8,6 +8,14 @@
                 Custom Fields
             </router-link>
         </li>
+        <li class="nav-item">
+            <router-link
+                :to="{ name: 'settingsAppsFormCreatorList' }"
+                :class="{ active: $route.meta.group == 'settingsAppsFormCreator' }"
+            >
+                Form Creator
+            </router-link>
+        </li>
         <!-- <li class="nav-item">
             <router-link
                 :to="{ name: 'settingsAppsImportList' }"

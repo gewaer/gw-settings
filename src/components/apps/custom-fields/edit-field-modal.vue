@@ -17,9 +17,9 @@
             :form-options="formOptions"
             class="d-flex h-100 flex-column"
             form-name="customFields"
-            @formCancelled="$modal.hide('edit-field-modal')"
-            @formSubmitted="submit"
-            @formValuesUpdated="updated"
+            @form-cancelled="$modal.hide('edit-field-modal')"
+            @form-submitted="submit"
+            @form-values-updated="updated"
         />
     </modal>
 </template>

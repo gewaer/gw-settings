@@ -24,7 +24,7 @@
                             :form-fields="fieldsSchema"
                             :form-name="'generalInformation'"
                             :form-options="formOptions"
-                            @formSubmitted="formSubmitted"
+                            @form-submitted="formSubmitted"
                         />
                     </div>
                 </div>
