@@ -273,6 +273,7 @@ export default {
                     text: "Company information has been updated successfully!",
                     type: "success"
                 });
+                this.clearChangedFields();
             }).catch((error) => {
                 this.$notify({
                     title: "Error",

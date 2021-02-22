@@ -115,10 +115,10 @@
                                 <label>Status</label>
                                 <div>
                                     <label>
-                                        <input 
-                                            v-model="userData.user_active" 
-                                            type="checkbox" 
-                                            name="user_active" 
+                                        <input
+                                            v-model="userData.user_active"
+                                            type="checkbox"
+                                            name="user_active"
                                             data-vv-as="status"
                                             data-vv-name="status"
                                         >
