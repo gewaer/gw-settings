@@ -326,6 +326,7 @@ export default {
                 this.userData[field] = data.values[field];
             });
 
+            this.clearChangedFields();
             this.update();
         }
     }

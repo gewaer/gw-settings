@@ -61,6 +61,11 @@ export default {
             });
 
             return vvFields;
+        },
+        clearChangedFields() {
+            this.$validator._base.fields.items.forEach(item => {
+                item.flags.changed = false
+            });
         }
     }
 }
