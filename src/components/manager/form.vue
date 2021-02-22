@@ -205,6 +205,7 @@ export default {
                     text: error.response.data.errors.message,
                     type: "error"
                 });
+
             }).finally(() => {
                 this.isLoading = false;
             });

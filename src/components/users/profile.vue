@@ -24,7 +24,7 @@
                             :form-fields="fieldsSchema"
                             :form-name="'generalInformation'"
                             :form-options="formOptions"
-                            @formSubmitted="formSubmitted"
+                            @form-submitted="formSubmitted"
                         />
                     </div>
                 </div>
@@ -186,8 +186,8 @@ export default {
                 ],
                 [
                     {
-                        field: "phone",
-                        label: "Phone",
+                        field: "cell_phone_number",
+                        label: "Cell Phone",
                         type: "text",
                         value: this.userData.cell_phone_number,
                         attributes: {
@@ -228,6 +228,25 @@ export default {
                     }
                 ],
                 [
+                    {
+                        field: "phone_number",
+                        label: "Phone",
+                        type: "text",
+                        value: this.userData.phone_number,
+                        attributes: {
+                            class: {
+                                "form-control": true
+                            }
+                        },
+                        wrapperAttributes: {
+                            class: {
+                                "form-group": true
+                            }
+                        },
+                        validations: {
+                            numeric: true
+                        }
+                    },
                     {
                         field: "email",
                         label: "Email",
@@ -307,6 +326,7 @@ export default {
                 this.userData[field] = data.values[field];
             });
 
+            this.clearChangedFields();
             this.update();
         }
     }
