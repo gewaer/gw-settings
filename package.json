@@ -27,7 +27,7 @@
     "lint"
   ],
   "dependencies": {
-    "@gewaer/gw-browse": "git+ssh://git@github.com/Gewaer/gw-browse.git",
+    "@gewaer/gw-browse": "git+ssh://git@github.com/gewaer/gw-browse.git#v0.2.8",
     "@uppy/core": "^1.8.2",
     "@uppy/dashboard": "^1.6.2",
     "@uppy/file-input": "^1.4.5",
