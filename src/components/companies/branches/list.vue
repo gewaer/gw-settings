@@ -60,6 +60,7 @@ export default {
         return {
             resource: {
                 name: "Branches",
+                title: "Branches",
                 slug: "companies-branches"
             }
         }

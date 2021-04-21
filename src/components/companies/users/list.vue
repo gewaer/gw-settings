@@ -125,6 +125,7 @@ export default {
             return {
                 endpoint: this.endpoint,
                 name: "Users",
+                title: "Users",
                 slug: `users-${this.show}`
             }
         },
