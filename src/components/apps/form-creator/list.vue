@@ -46,13 +46,12 @@ export default {
     mixins: [
         listMixins
     ],
-    computed: {
-        resource() {
-            return {
-                name: "Custom Fields Modules",
-                slug: "custom-fields-modules"
-            }
-        }
+    data() {
+        return {
+            name: "Custom Fields Modules",
+            title: "Custom Fields Modules",
+            slug: "custom-fields-modules"
+        };
     },
     methods: {
         editCustomFields(module) {

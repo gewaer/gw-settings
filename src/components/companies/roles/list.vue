@@ -57,6 +57,7 @@ export default {
         return {
             resource: {
                 name: "Roles",
+                title: "Roles",
                 slug: "roles"
             }
         }

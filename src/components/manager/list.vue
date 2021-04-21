@@ -72,6 +72,7 @@ export default {
             isLoading: false,
             resource: {
                 name: "Companies",
+                title: "Companies",
                 slug: "companies"
             },
             selectedCompany: null
