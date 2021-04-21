@@ -46,9 +46,9 @@
                 >
                     <template slot="actions" slot-scope="props">
                         <div class="d-flex align-items-center justify-content-end">
-                            <button 
-                                v-if="isInvite" 
-                                class="btn btn-primary m-l-5" 
+                            <button
+                                v-if="isInvite"
+                                class="btn btn-primary m-l-5"
                                 title="resend"
                                 @click="sendInvite(props.rowData.id)"
                             >
@@ -121,9 +121,7 @@ export default {
         endpoint() {
             return this.show == "invite" ? "users-invite" : "users";
         },
-
         resource() {
-
             return {
                 endpoint: this.endpoint,
                 name: "Users",
@@ -175,9 +173,7 @@ export default {
                     text: error.response.data.errors.message,
                     type: "error"
                 });
-            }).finally(() => {
-
-            })
+            });
         },
         editUser(usersId) {
             this.$router.push({
@@ -205,8 +201,8 @@ export default {
                     text: error.response.data.errors.message,
                     type: "error"
                 });
-            })
-        }, 
+            });
+        },
         isCurrentUser(usersId) {
             return usersId == this.userData.id;
         }
