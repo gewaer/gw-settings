@@ -107,6 +107,7 @@ export default {
                     text: "Your password has been changed!",
                     type: "success"
                 });
+                this.clearChangedFields();
             }).catch((error) => {
                 this.$notify({
                     group: null,
