@@ -187,7 +187,7 @@ var DefaultStore = /*#__PURE__*/function () {
   return DefaultStore;
 }();
 
-DefaultStore.VERSION = "1.2.6";
+DefaultStore.VERSION = "1.2.5";
 
 module.exports = function defaultStore() {
   return new DefaultStore();
@@ -412,34 +412,34 @@ function PanelTopBar(props) {
   }
 
   return h("div", {
-    className: "uppy-DashboardContent-bar"
+    class: "uppy-DashboardContent-bar"
   }, !props.isAllComplete && !props.hideCancelButton ? h("button", {
-    className: "uppy-DashboardContent-back",
+    class: "uppy-DashboardContent-back",
     type: "button",
-    onClick: props.cancelAll
+    onclick: props.cancelAll
   }, props.i18n('cancel')) : h("div", null), h("div", {
-    className: "uppy-DashboardContent-title",
+    class: "uppy-DashboardContent-title",
     role: "heading",
     "aria-level": "1"
   }, h(UploadStatus, props)), allowNewUpload ? h("button", {
-    className: "uppy-DashboardContent-addMore",
+    class: "uppy-DashboardContent-addMore",
     type: "button",
     "aria-label": props.i18n('addMoreFiles'),
     title: props.i18n('addMoreFiles'),
-    onClick: function onClick() {
+    onclick: function onclick() {
       return props.toggleAddFilesPanel(true);
     }
   }, h("svg", {
     "aria-hidden": "true",
     focusable: "false",
-    className: "uppy-c-icon",
+    class: "uppy-c-icon",
     width: "15",
     height: "15",
     viewBox: "0 0 15 15"
   }, h("path", {
     d: "M8 6.5h6a.5.5 0 0 1 .5.5v.5a.5.5 0 0 1-.5.5H8v6a.5.5 0 0 1-.5.5H7a.5.5 0 0 1-.5-.5V8h-6a.5.5 0 0 1-.5-.5V7a.5.5 0 0 1 .5-.5h6v-6A.5.5 0 0 1 7 0h.5a.5.5 0 0 1 .5.5v6z"
   })), h("span", {
-    className: "uppy-DashboardContent-addMoreCaption"
+    class: "uppy-DashboardContent-addMoreCaption"
   }, props.i18n('addMore'))) : h("div", null));
 }
 
@@ -458,26 +458,26 @@ var classNames = __webpack_require__("4d26");
 function EditorPanel(props) {
   var file = this.props.files[this.props.fileCardFor];
   return h("div", {
-    className: classNames('uppy-DashboardContent-panel', props.className),
+    class: classNames('uppy-DashboardContent-panel', props.className),
     role: "tabpanel",
     "data-uppy-panelType": "FileEditor",
     id: "uppy-DashboardContent-panel--editor"
   }, h("div", {
-    className: "uppy-DashboardContent-bar"
+    class: "uppy-DashboardContent-bar"
   }, h("div", {
-    className: "uppy-DashboardContent-title",
+    class: "uppy-DashboardContent-title",
     role: "heading",
     "aria-level": "1"
   }, props.i18nArray('editing', {
     file: h("span", {
-      className: "uppy-DashboardContent-titleFile"
+      class: "uppy-DashboardContent-titleFile"
     }, file.meta ? file.meta.name : file.name)
   })), h("button", {
-    className: "uppy-DashboardContent-back",
+    class: "uppy-DashboardContent-back",
     type: "button",
-    onClick: props.hideAllPanels
+    onclick: props.hideAllPanels
   }, props.i18n('done'))), h("div", {
-    className: "uppy-DashboardContent-panelBody"
+    class: "uppy-DashboardContent-panelBody"
   }, props.editors.map(function (target) {
     return props.getPlugin(target.id).render(props.state);
   })));
@@ -826,9 +826,8 @@ module.exports = Object.setPrototypeOf || ('__proto__' in {} ? function () {
 /***/ "057f":
 /***/ (function(module, exports, __webpack_require__) {
 
-/* eslint-disable es/no-object-getownpropertynames -- safe */
 var toIndexedObject = __webpack_require__("fc6a");
-var $getOwnPropertyNames = __webpack_require__("241c").f;
+var nativeGetOwnPropertyNames = __webpack_require__("241c").f;
 
 var toString = {}.toString;
 
@@ -837,7 +836,7 @@ var windowNames = typeof window == 'object' && window && Object.getOwnPropertyNa
 
 var getWindowNames = function (it) {
   try {
-    return $getOwnPropertyNames(it);
+    return nativeGetOwnPropertyNames(it);
   } catch (error) {
     return windowNames.slice();
   }
@@ -847,7 +846,7 @@ var getWindowNames = function (it) {
 module.exports.f = function getOwnPropertyNames(it) {
   return windowNames && toString.call(it) == '[object Window]'
     ? getWindowNames(it)
-    : $getOwnPropertyNames(toIndexedObject(it));
+    : nativeGetOwnPropertyNames(toIndexedObject(it));
 };
 
 
@@ -969,16 +968,15 @@ var toPrimitive = __webpack_require__("c04e");
 var has = __webpack_require__("5135");
 var IE8_DOM_DEFINE = __webpack_require__("0cfb");
 
-// eslint-disable-next-line es/no-object-getownpropertydescriptor -- safe
-var $getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor;
+var nativeGetOwnPropertyDescriptor = Object.getOwnPropertyDescriptor;
 
 // `Object.getOwnPropertyDescriptor` method
 // https://tc39.es/ecma262/#sec-object.getownpropertydescriptor
-exports.f = DESCRIPTORS ? $getOwnPropertyDescriptor : function getOwnPropertyDescriptor(O, P) {
+exports.f = DESCRIPTORS ? nativeGetOwnPropertyDescriptor : function getOwnPropertyDescriptor(O, P) {
   O = toIndexedObject(O);
   P = toPrimitive(P, true);
   if (IE8_DOM_DEFINE) try {
-    return $getOwnPropertyDescriptor(O, P);
+    return nativeGetOwnPropertyDescriptor(O, P);
   } catch (error) { /* empty */ }
   if (has(O, P)) return createPropertyDescriptor(!propertyIsEnumerableModule.f.call(O, P), O[P]);
 };
@@ -1069,29 +1067,29 @@ function EditButton(_ref) {
       metaFields = _ref.metaFields,
       canEditFile = _ref.canEditFile,
       i18n = _ref.i18n,
-      _onClick = _ref.onClick;
+      onClick = _ref.onClick;
 
   if (!uploadInProgressOrComplete && metaFields && metaFields.length > 0 || !uploadInProgressOrComplete && canEditFile(file)) {
     return h("button", {
-      className: "uppy-u-reset uppy-Dashboard-Item-action uppy-Dashboard-Item-action--edit",
+      class: "uppy-u-reset uppy-Dashboard-Item-action uppy-Dashboard-Item-action--edit",
       type: "button",
-      "aria-label": i18n('editFile') + " " + file.meta.name,
+      "aria-label": i18n('editFile') + ' ' + file.meta.name,
       title: i18n('editFile'),
-      onClick: function onClick() {
-        return _onClick();
+      onclick: function onclick() {
+        return onClick();
       }
     }, h("svg", {
       "aria-hidden": "true",
       focusable: "false",
-      className: "uppy-c-icon",
+      class: "uppy-c-icon",
       width: "14",
       height: "14",
       viewBox: "0 0 14 14"
     }, h("g", {
-      fillRule: "evenodd"
+      "fill-rule": "evenodd"
     }, h("path", {
       d: "M1.5 10.793h2.793A1 1 0 0 0 5 10.5L11.5 4a1 1 0 0 0 0-1.414L9.707.793a1 1 0 0 0-1.414 0l-6.5 6.5A1 1 0 0 0 1.5 8v2.793zm1-1V8L9 1.5l1.793 1.793-6.5 6.5H2.5z",
-      fillRule: "nonzero"
+      "fill-rule": "nonzero"
     }), h("rect", {
       x: "1",
       y: "12.293",
@@ -1099,7 +1097,7 @@ function EditButton(_ref) {
       height: "1",
       rx: ".5"
     }), h("path", {
-      fillRule: "nonzero",
+      "fill-rule": "nonzero",
       d: "M6.793 2.5L9.5 5.207l.707-.707L7.5 1.793z"
     }))));
   }
@@ -1109,19 +1107,19 @@ function EditButton(_ref) {
 
 function RemoveButton(_ref2) {
   var i18n = _ref2.i18n,
-      _onClick2 = _ref2.onClick;
+      onClick = _ref2.onClick;
   return h("button", {
-    className: "uppy-u-reset uppy-Dashboard-Item-action uppy-Dashboard-Item-action--remove",
+    class: "uppy-u-reset uppy-Dashboard-Item-action uppy-Dashboard-Item-action--remove",
     type: "button",
     "aria-label": i18n('removeFile'),
     title: i18n('removeFile'),
-    onClick: function onClick() {
-      return _onClick2();
+    onclick: function onclick() {
+      return onClick();
     }
   }, h("svg", {
     "aria-hidden": "true",
     focusable: "false",
-    className: "uppy-c-icon",
+    class: "uppy-c-icon",
     width: "18",
     height: "18",
     viewBox: "0 0 18 18"
@@ -1147,17 +1145,17 @@ var copyLinkToClipboard = function copyLinkToClipboard(event, props) {
 
 function CopyLinkButton(props) {
   return h("button", {
-    className: "uppy-u-reset uppy-Dashboard-Item-action uppy-Dashboard-Item-action--copyLink",
+    class: "uppy-u-reset uppy-Dashboard-Item-action uppy-Dashboard-Item-action--copyLink",
     type: "button",
     "aria-label": props.i18n('copyLink'),
     title: props.i18n('copyLink'),
-    onClick: function onClick(event) {
+    onclick: function onclick(event) {
       return copyLinkToClipboard(event, props);
     }
   }, h("svg", {
     "aria-hidden": "true",
     focusable: "false",
-    className: "uppy-c-icon",
+    class: "uppy-c-icon",
     width: "14",
     height: "14",
     viewBox: "0 0 14 12"
@@ -1427,13 +1425,13 @@ function iconImage() {
     viewBox: "0 0 25 25"
   }, h("g", {
     fill: "#686DE0",
-    fillRule: "evenodd"
+    "fill-rule": "evenodd"
   }, h("path", {
     d: "M5 7v10h15V7H5zm0-1h15a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1z",
-    fillRule: "nonzero"
+    "fill-rule": "nonzero"
   }), h("path", {
     d: "M6.35 17.172l4.994-5.026a.5.5 0 0 1 .707 0l2.16 2.16 3.505-3.505a.5.5 0 0 1 .707 0l2.336 2.31-.707.72-1.983-1.97-3.505 3.505a.5.5 0 0 1-.707 0l-2.16-2.159-3.938 3.939-1.409.026z",
-    fillRule: "nonzero"
+    "fill-rule": "nonzero"
   }), h("circle", {
     cx: "7.5",
     cy: "9.5",
@@ -1445,14 +1443,14 @@ function iconAudio() {
   return h("svg", {
     "aria-hidden": "true",
     focusable: "false",
-    className: "uppy-c-icon",
+    class: "uppy-c-icon",
     width: "25",
     height: "25",
     viewBox: "0 0 25 25"
   }, h("path", {
     d: "M9.5 18.64c0 1.14-1.145 2-2.5 2s-2.5-.86-2.5-2c0-1.14 1.145-2 2.5-2 .557 0 1.079.145 1.5.396V7.25a.5.5 0 0 1 .379-.485l9-2.25A.5.5 0 0 1 18.5 5v11.64c0 1.14-1.145 2-2.5 2s-2.5-.86-2.5-2c0-1.14 1.145-2 2.5-2 .557 0 1.079.145 1.5.396V8.67l-8 2v7.97zm8-11v-2l-8 2v2l8-2zM7 19.64c.855 0 1.5-.484 1.5-1s-.645-1-1.5-1-1.5.484-1.5 1 .645 1 1.5 1zm9-2c.855 0 1.5-.484 1.5-1s-.645-1-1.5-1-1.5.484-1.5 1 .645 1 1.5 1z",
     fill: "#049BCF",
-    fillRule: "nonzero"
+    "fill-rule": "nonzero"
   }));
 }
 
@@ -1460,14 +1458,14 @@ function iconVideo() {
   return h("svg", {
     "aria-hidden": "true",
     focusable: "false",
-    className: "uppy-c-icon",
+    class: "uppy-c-icon",
     width: "25",
     height: "25",
     viewBox: "0 0 25 25"
   }, h("path", {
     d: "M16 11.834l4.486-2.691A1 1 0 0 1 22 10v6a1 1 0 0 1-1.514.857L16 14.167V17a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v2.834zM15 9H5v8h10V9zm1 4l5 3v-6l-5 3z",
     fill: "#19AF67",
-    fillRule: "nonzero"
+    "fill-rule": "nonzero"
   }));
 }
 
@@ -1475,14 +1473,14 @@ function iconPDF() {
   return h("svg", {
     "aria-hidden": "true",
     focusable: "false",
-    className: "uppy-c-icon",
+    class: "uppy-c-icon",
     width: "25",
     height: "25",
     viewBox: "0 0 25 25"
   }, h("path", {
     d: "M9.766 8.295c-.691-1.843-.539-3.401.747-3.726 1.643-.414 2.505.938 2.39 3.299-.039.79-.194 1.662-.537 3.148.324.49.66.967 1.055 1.51.17.231.382.488.629.757 1.866-.128 3.653.114 4.918.655 1.487.635 2.192 1.685 1.614 2.84-.566 1.133-1.839 1.084-3.416.249-1.141-.604-2.457-1.634-3.51-2.707a13.467 13.467 0 0 0-2.238.426c-1.392 4.051-4.534 6.453-5.707 4.572-.986-1.58 1.38-4.206 4.914-5.375.097-.322.185-.656.264-1.001.08-.353.306-1.31.407-1.737-.678-1.059-1.2-2.031-1.53-2.91zm2.098 4.87c-.033.144-.068.287-.104.427l.033-.01-.012.038a14.065 14.065 0 0 1 1.02-.197l-.032-.033.052-.004a7.902 7.902 0 0 1-.208-.271c-.197-.27-.38-.526-.555-.775l-.006.028-.002-.003c-.076.323-.148.632-.186.8zm5.77 2.978c1.143.605 1.832.632 2.054.187.26-.519-.087-1.034-1.113-1.473-.911-.39-2.175-.608-3.55-.608.845.766 1.787 1.459 2.609 1.894zM6.559 18.789c.14.223.693.16 1.425-.413.827-.648 1.61-1.747 2.208-3.206-2.563 1.064-4.102 2.867-3.633 3.62zm5.345-10.97c.088-1.793-.351-2.48-1.146-2.28-.473.119-.564 1.05-.056 2.405.213.566.52 1.188.908 1.859.18-.858.268-1.453.294-1.984z",
     fill: "#E2514A",
-    fillRule: "nonzero"
+    "fill-rule": "nonzero"
   }));
 }
 
@@ -1496,7 +1494,7 @@ function iconArchive() {
   }, h("path", {
     d: "M10.45 2.05h1.05a.5.5 0 0 1 .5.5v.024a.5.5 0 0 1-.5.5h-1.05a.5.5 0 0 1-.5-.5V2.55a.5.5 0 0 1 .5-.5zm2.05 1.024h1.05a.5.5 0 0 1 .5.5V3.6a.5.5 0 0 1-.5.5H12.5a.5.5 0 0 1-.5-.5v-.025a.5.5 0 0 1 .5-.5v-.001zM10.45 0h1.05a.5.5 0 0 1 .5.5v.025a.5.5 0 0 1-.5.5h-1.05a.5.5 0 0 1-.5-.5V.5a.5.5 0 0 1 .5-.5zm2.05 1.025h1.05a.5.5 0 0 1 .5.5v.024a.5.5 0 0 1-.5.5H12.5a.5.5 0 0 1-.5-.5v-.024a.5.5 0 0 1 .5-.5zm-2.05 3.074h1.05a.5.5 0 0 1 .5.5v.025a.5.5 0 0 1-.5.5h-1.05a.5.5 0 0 1-.5-.5v-.025a.5.5 0 0 1 .5-.5zm2.05 1.025h1.05a.5.5 0 0 1 .5.5v.024a.5.5 0 0 1-.5.5H12.5a.5.5 0 0 1-.5-.5v-.024a.5.5 0 0 1 .5-.5zm-2.05 1.024h1.05a.5.5 0 0 1 .5.5v.025a.5.5 0 0 1-.5.5h-1.05a.5.5 0 0 1-.5-.5v-.025a.5.5 0 0 1 .5-.5zm2.05 1.025h1.05a.5.5 0 0 1 .5.5v.025a.5.5 0 0 1-.5.5H12.5a.5.5 0 0 1-.5-.5v-.025a.5.5 0 0 1 .5-.5zm-2.05 1.025h1.05a.5.5 0 0 1 .5.5v.025a.5.5 0 0 1-.5.5h-1.05a.5.5 0 0 1-.5-.5v-.025a.5.5 0 0 1 .5-.5zm2.05 1.025h1.05a.5.5 0 0 1 .5.5v.024a.5.5 0 0 1-.5.5H12.5a.5.5 0 0 1-.5-.5v-.024a.5.5 0 0 1 .5-.5zm-1.656 3.074l-.82 5.946c.52.302 1.174.458 1.976.458.803 0 1.455-.156 1.975-.458l-.82-5.946h-2.311zm0-1.025h2.312c.512 0 .946.378 1.015.885l.82 5.946c.056.412-.142.817-.501 1.026-.686.398-1.515.597-2.49.597-.974 0-1.804-.199-2.49-.597a1.025 1.025 0 0 1-.5-1.026l.819-5.946c.07-.507.503-.885 1.015-.885zm.545 6.6a.5.5 0 0 1-.397-.561l.143-.999a.5.5 0 0 1 .495-.429h.74a.5.5 0 0 1 .495.43l.143.998a.5.5 0 0 1-.397.561c-.404.08-.819.08-1.222 0z",
     fill: "#00C469",
-    fillRule: "nonzero"
+    "fill-rule": "nonzero"
   }));
 }
 
@@ -1504,13 +1502,13 @@ function iconFile() {
   return h("svg", {
     "aria-hidden": "true",
     focusable: "false",
-    className: "uppy-c-icon",
+    class: "uppy-c-icon",
     width: "25",
     height: "25",
     viewBox: "0 0 25 25"
   }, h("g", {
     fill: "#A7AFB7",
-    fillRule: "nonzero"
+    "fill-rule": "nonzero"
   }, h("path", {
     d: "M5.5 22a.5.5 0 0 1-.5-.5v-18a.5.5 0 0 1 .5-.5h10.719a.5.5 0 0 1 .367.16l3.281 3.556a.5.5 0 0 1 .133.339V21.5a.5.5 0 0 1-.5.5h-14zm.5-1h13V7.25L16 4H6v17z"
   }), h("path", {
@@ -1522,14 +1520,14 @@ function iconText() {
   return h("svg", {
     "aria-hidden": "true",
     focusable: "false",
-    className: "uppy-c-icon",
+    class: "uppy-c-icon",
     width: "25",
     height: "25",
     viewBox: "0 0 25 25"
   }, h("path", {
     d: "M4.5 7h13a.5.5 0 1 1 0 1h-13a.5.5 0 0 1 0-1zm0 3h15a.5.5 0 1 1 0 1h-15a.5.5 0 1 1 0-1zm0 3h15a.5.5 0 1 1 0 1h-15a.5.5 0 1 1 0-1zm0 3h10a.5.5 0 1 1 0 1h-10a.5.5 0 1 1 0-1z",
     fill: "#5A5E69",
-    fillRule: "nonzero"
+    "fill-rule": "nonzero"
   }));
 }
 
@@ -1690,7 +1688,6 @@ var createElement = __webpack_require__("cc12");
 
 // Thank's IE8 for his funny defineProperty
 module.exports = !DESCRIPTORS && !fails(function () {
-  // eslint-disable-next-line es/no-object-defineproperty -- requied for testing
   return Object.defineProperty(createElement('div'), 'a', {
     get: function () { return 7; }
   }).a != 7;
@@ -2472,7 +2469,7 @@ var requireObjectCoercible = __webpack_require__("1d80");
 
 // `String.prototype.repeat` method implementation
 // https://tc39.es/ecma262/#sec-string.prototype.repeat
-module.exports = function repeat(count) {
+module.exports = ''.repeat || function repeat(count) {
   var str = String(requireObjectCoercible(this));
   var result = '';
   var n = toInteger(count);
@@ -2621,12 +2618,14 @@ var advanceStringIndex = __webpack_require__("8aa5");
 var toLength = __webpack_require__("50c4");
 var callRegExpExec = __webpack_require__("14c3");
 var regexpExec = __webpack_require__("9263");
-var stickyHelpers = __webpack_require__("9f7f");
+var fails = __webpack_require__("d039");
 
-var UNSUPPORTED_Y = stickyHelpers.UNSUPPORTED_Y;
 var arrayPush = [].push;
 var min = Math.min;
 var MAX_UINT32 = 0xFFFFFFFF;
+
+// babel-minify transpiles RegExp('x', 'y') -> /x/y and it causes SyntaxError
+var SUPPORTS_Y = !fails(function () { return !RegExp(MAX_UINT32, 'y'); });
 
 // @@split logic
 fixRegExpWellKnownSymbolLogic('split', 2, function (SPLIT, nativeSplit, maybeCallNative) {
@@ -2710,11 +2709,11 @@ fixRegExpWellKnownSymbolLogic('split', 2, function (SPLIT, nativeSplit, maybeCal
       var flags = (rx.ignoreCase ? 'i' : '') +
                   (rx.multiline ? 'm' : '') +
                   (rx.unicode ? 'u' : '') +
-                  (UNSUPPORTED_Y ? 'g' : 'y');
+                  (SUPPORTS_Y ? 'y' : 'g');
 
       // ^(? + rx + ) is needed, in combination with some S slicing, to
       // simulate the 'y' flag.
-      var splitter = new C(UNSUPPORTED_Y ? '^(?:' + rx.source + ')' : rx, flags);
+      var splitter = new C(SUPPORTS_Y ? rx : '^(?:' + rx.source + ')', flags);
       var lim = limit === undefined ? MAX_UINT32 : limit >>> 0;
       if (lim === 0) return [];
       if (S.length === 0) return callRegExpExec(splitter, S) === null ? [S] : [];
@@ -2722,12 +2721,12 @@ fixRegExpWellKnownSymbolLogic('split', 2, function (SPLIT, nativeSplit, maybeCal
       var q = 0;
       var A = [];
       while (q < S.length) {
-        splitter.lastIndex = UNSUPPORTED_Y ? 0 : q;
-        var z = callRegExpExec(splitter, UNSUPPORTED_Y ? S.slice(q) : S);
+        splitter.lastIndex = SUPPORTS_Y ? q : 0;
+        var z = callRegExpExec(splitter, SUPPORTS_Y ? S : S.slice(q));
         var e;
         if (
           z === null ||
-          (e = min(toLength(splitter.lastIndex + (UNSUPPORTED_Y ? q : 0)), S.length)) === p
+          (e = min(toLength(splitter.lastIndex + (SUPPORTS_Y ? 0 : q)), S.length)) === p
         ) {
           q = advanceStringIndex(S, q, unicodeMatching);
         } else {
@@ -2744,7 +2743,7 @@ fixRegExpWellKnownSymbolLogic('split', 2, function (SPLIT, nativeSplit, maybeCal
       return A;
     }
   ];
-}, UNSUPPORTED_Y);
+}, !SUPPORTS_Y);
 
 
 /***/ }),
@@ -3446,7 +3445,6 @@ var STRICT_METHOD = arrayMethodIsStrict('forEach');
 // https://tc39.es/ecma262/#sec-array.prototype.foreach
 module.exports = !STRICT_METHOD ? function forEach(callbackfn /* , thisArg */) {
   return $forEach(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined);
-// eslint-disable-next-line es/no-array-prototype-foreach -- safe
 } : [].forEach;
 
 
@@ -3614,477 +3612,6 @@ module.exports = !STRICT_METHOD ? function forEach(callbackfn /* , thisArg */) {
 
 })));
 
-
-/***/ }),
-
-/***/ "1816":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(global) {
-
-var required = __webpack_require__("440d")
-  , qs = __webpack_require__("9c59")
-  , slashes = /^[A-Za-z][A-Za-z0-9+-.]*:[\\/]+/
-  , protocolre = /^([a-z][a-z0-9.+-]*:)?([\\/]{1,})?([\S\s]*)/i
-  , whitespace = '[\\x09\\x0A\\x0B\\x0C\\x0D\\x20\\xA0\\u1680\\u180E\\u2000\\u2001\\u2002\\u2003\\u2004\\u2005\\u2006\\u2007\\u2008\\u2009\\u200A\\u202F\\u205F\\u3000\\u2028\\u2029\\uFEFF]'
-  , left = new RegExp('^'+ whitespace +'+');
-
-/**
- * Trim a given string.
- *
- * @param {String} str String to trim.
- * @public
- */
-function trimLeft(str) {
-  return (str ? str : '').toString().replace(left, '');
-}
-
-/**
- * These are the parse rules for the URL parser, it informs the parser
- * about:
- *
- * 0. The char it Needs to parse, if it's a string it should be done using
- *    indexOf, RegExp using exec and NaN means set as current value.
- * 1. The property we should set when parsing this value.
- * 2. Indication if it's backwards or forward parsing, when set as number it's
- *    the value of extra chars that should be split off.
- * 3. Inherit from location if non existing in the parser.
- * 4. `toLowerCase` the resulting value.
- */
-var rules = [
-  ['#', 'hash'],                        // Extract from the back.
-  ['?', 'query'],                       // Extract from the back.
-  function sanitize(address) {          // Sanitize what is left of the address
-    return address.replace('\\', '/');
-  },
-  ['/', 'pathname'],                    // Extract from the back.
-  ['@', 'auth', 1],                     // Extract from the front.
-  [NaN, 'host', undefined, 1, 1],       // Set left over value.
-  [/:(\d+)$/, 'port', undefined, 1],    // RegExp the back.
-  [NaN, 'hostname', undefined, 1, 1]    // Set left over.
-];
-
-/**
- * These properties should not be copied or inherited from. This is only needed
- * for all non blob URL's as a blob URL does not include a hash, only the
- * origin.
- *
- * @type {Object}
- * @private
- */
-var ignore = { hash: 1, query: 1 };
-
-/**
- * The location object differs when your code is loaded through a normal page,
- * Worker or through a worker using a blob. And with the blobble begins the
- * trouble as the location object will contain the URL of the blob, not the
- * location of the page where our code is loaded in. The actual origin is
- * encoded in the `pathname` so we can thankfully generate a good "default"
- * location from it so we can generate proper relative URL's again.
- *
- * @param {Object|String} loc Optional default location object.
- * @returns {Object} lolcation object.
- * @public
- */
-function lolcation(loc) {
-  var globalVar;
-
-  if (typeof window !== 'undefined') globalVar = window;
-  else if (typeof global !== 'undefined') globalVar = global;
-  else if (typeof self !== 'undefined') globalVar = self;
-  else globalVar = {};
-
-  var location = globalVar.location || {};
-  loc = loc || location;
-
-  var finaldestination = {}
-    , type = typeof loc
-    , key;
-
-  if ('blob:' === loc.protocol) {
-    finaldestination = new Url(unescape(loc.pathname), {});
-  } else if ('string' === type) {
-    finaldestination = new Url(loc, {});
-    for (key in ignore) delete finaldestination[key];
-  } else if ('object' === type) {
-    for (key in loc) {
-      if (key in ignore) continue;
-      finaldestination[key] = loc[key];
-    }
-
-    if (finaldestination.slashes === undefined) {
-      finaldestination.slashes = slashes.test(loc.href);
-    }
-  }
-
-  return finaldestination;
-}
-
-/**
- * @typedef ProtocolExtract
- * @type Object
- * @property {String} protocol Protocol matched in the URL, in lowercase.
- * @property {Boolean} slashes `true` if protocol is followed by "//", else `false`.
- * @property {String} rest Rest of the URL that is not part of the protocol.
- */
-
-/**
- * Extract protocol information from a URL with/without double slash ("//").
- *
- * @param {String} address URL we want to extract from.
- * @return {ProtocolExtract} Extracted information.
- * @private
- */
-function extractProtocol(address) {
-  address = trimLeft(address);
-
-  var match = protocolre.exec(address)
-    , protocol = match[1] ? match[1].toLowerCase() : ''
-    , slashes = !!(match[2] && match[2].length >= 2)
-    , rest =  match[2] && match[2].length === 1 ? '/' + match[3] : match[3];
-
-  return {
-    protocol: protocol,
-    slashes: slashes,
-    rest: rest
-  };
-}
-
-/**
- * Resolve a relative URL pathname against a base URL pathname.
- *
- * @param {String} relative Pathname of the relative URL.
- * @param {String} base Pathname of the base URL.
- * @return {String} Resolved pathname.
- * @private
- */
-function resolve(relative, base) {
-  if (relative === '') return base;
-
-  var path = (base || '/').split('/').slice(0, -1).concat(relative.split('/'))
-    , i = path.length
-    , last = path[i - 1]
-    , unshift = false
-    , up = 0;
-
-  while (i--) {
-    if (path[i] === '.') {
-      path.splice(i, 1);
-    } else if (path[i] === '..') {
-      path.splice(i, 1);
-      up++;
-    } else if (up) {
-      if (i === 0) unshift = true;
-      path.splice(i, 1);
-      up--;
-    }
-  }
-
-  if (unshift) path.unshift('');
-  if (last === '.' || last === '..') path.push('');
-
-  return path.join('/');
-}
-
-/**
- * The actual URL instance. Instead of returning an object we've opted-in to
- * create an actual constructor as it's much more memory efficient and
- * faster and it pleases my OCD.
- *
- * It is worth noting that we should not use `URL` as class name to prevent
- * clashes with the global URL instance that got introduced in browsers.
- *
- * @constructor
- * @param {String} address URL we want to parse.
- * @param {Object|String} [location] Location defaults for relative paths.
- * @param {Boolean|Function} [parser] Parser for the query string.
- * @private
- */
-function Url(address, location, parser) {
-  address = trimLeft(address);
-
-  if (!(this instanceof Url)) {
-    return new Url(address, location, parser);
-  }
-
-  var relative, extracted, parse, instruction, index, key
-    , instructions = rules.slice()
-    , type = typeof location
-    , url = this
-    , i = 0;
-
-  //
-  // The following if statements allows this module two have compatibility with
-  // 2 different API:
-  //
-  // 1. Node.js's `url.parse` api which accepts a URL, boolean as arguments
-  //    where the boolean indicates that the query string should also be parsed.
-  //
-  // 2. The `URL` interface of the browser which accepts a URL, object as
-  //    arguments. The supplied object will be used as default values / fall-back
-  //    for relative paths.
-  //
-  if ('object' !== type && 'string' !== type) {
-    parser = location;
-    location = null;
-  }
-
-  if (parser && 'function' !== typeof parser) parser = qs.parse;
-
-  location = lolcation(location);
-
-  //
-  // Extract protocol information before running the instructions.
-  //
-  extracted = extractProtocol(address || '');
-  relative = !extracted.protocol && !extracted.slashes;
-  url.slashes = extracted.slashes || relative && location.slashes;
-  url.protocol = extracted.protocol || location.protocol || '';
-  address = extracted.rest;
-
-  //
-  // When the authority component is absent the URL starts with a path
-  // component.
-  //
-  if (!extracted.slashes) instructions[3] = [/(.*)/, 'pathname'];
-
-  for (; i < instructions.length; i++) {
-    instruction = instructions[i];
-
-    if (typeof instruction === 'function') {
-      address = instruction(address);
-      continue;
-    }
-
-    parse = instruction[0];
-    key = instruction[1];
-
-    if (parse !== parse) {
-      url[key] = address;
-    } else if ('string' === typeof parse) {
-      if (~(index = address.indexOf(parse))) {
-        if ('number' === typeof instruction[2]) {
-          url[key] = address.slice(0, index);
-          address = address.slice(index + instruction[2]);
-        } else {
-          url[key] = address.slice(index);
-          address = address.slice(0, index);
-        }
-      }
-    } else if ((index = parse.exec(address))) {
-      url[key] = index[1];
-      address = address.slice(0, index.index);
-    }
-
-    url[key] = url[key] || (
-      relative && instruction[3] ? location[key] || '' : ''
-    );
-
-    //
-    // Hostname, host and protocol should be lowercased so they can be used to
-    // create a proper `origin`.
-    //
-    if (instruction[4]) url[key] = url[key].toLowerCase();
-  }
-
-  //
-  // Also parse the supplied query string in to an object. If we're supplied
-  // with a custom parser as function use that instead of the default build-in
-  // parser.
-  //
-  if (parser) url.query = parser(url.query);
-
-  //
-  // If the URL is relative, resolve the pathname against the base URL.
-  //
-  if (
-      relative
-    && location.slashes
-    && url.pathname.charAt(0) !== '/'
-    && (url.pathname !== '' || location.pathname !== '')
-  ) {
-    url.pathname = resolve(url.pathname, location.pathname);
-  }
-
-  //
-  // Default to a / for pathname if none exists. This normalizes the URL
-  // to always have a /
-  //
-  if (url.pathname.charAt(0) !== '/' && url.hostname) {
-    url.pathname = '/' + url.pathname;
-  }
-
-  //
-  // We should not add port numbers if they are already the default port number
-  // for a given protocol. As the host also contains the port number we're going
-  // override it with the hostname which contains no port number.
-  //
-  if (!required(url.port, url.protocol)) {
-    url.host = url.hostname;
-    url.port = '';
-  }
-
-  //
-  // Parse down the `auth` for the username and password.
-  //
-  url.username = url.password = '';
-  if (url.auth) {
-    instruction = url.auth.split(':');
-    url.username = instruction[0] || '';
-    url.password = instruction[1] || '';
-  }
-
-  url.origin = url.protocol && url.host && url.protocol !== 'file:'
-    ? url.protocol +'//'+ url.host
-    : 'null';
-
-  //
-  // The href is just the compiled result.
-  //
-  url.href = url.toString();
-}
-
-/**
- * This is convenience method for changing properties in the URL instance to
- * insure that they all propagate correctly.
- *
- * @param {String} part          Property we need to adjust.
- * @param {Mixed} value          The newly assigned value.
- * @param {Boolean|Function} fn  When setting the query, it will be the function
- *                               used to parse the query.
- *                               When setting the protocol, double slash will be
- *                               removed from the final url if it is true.
- * @returns {URL} URL instance for chaining.
- * @public
- */
-function set(part, value, fn) {
-  var url = this;
-
-  switch (part) {
-    case 'query':
-      if ('string' === typeof value && value.length) {
-        value = (fn || qs.parse)(value);
-      }
-
-      url[part] = value;
-      break;
-
-    case 'port':
-      url[part] = value;
-
-      if (!required(value, url.protocol)) {
-        url.host = url.hostname;
-        url[part] = '';
-      } else if (value) {
-        url.host = url.hostname +':'+ value;
-      }
-
-      break;
-
-    case 'hostname':
-      url[part] = value;
-
-      if (url.port) value += ':'+ url.port;
-      url.host = value;
-      break;
-
-    case 'host':
-      url[part] = value;
-
-      if (/:\d+$/.test(value)) {
-        value = value.split(':');
-        url.port = value.pop();
-        url.hostname = value.join(':');
-      } else {
-        url.hostname = value;
-        url.port = '';
-      }
-
-      break;
-
-    case 'protocol':
-      url.protocol = value.toLowerCase();
-      url.slashes = !fn;
-      break;
-
-    case 'pathname':
-    case 'hash':
-      if (value) {
-        var char = part === 'pathname' ? '/' : '#';
-        url[part] = value.charAt(0) !== char ? char + value : value;
-      } else {
-        url[part] = value;
-      }
-      break;
-
-    default:
-      url[part] = value;
-  }
-
-  for (var i = 0; i < rules.length; i++) {
-    var ins = rules[i];
-
-    if (ins[4]) url[ins[1]] = url[ins[1]].toLowerCase();
-  }
-
-  url.origin = url.protocol && url.host && url.protocol !== 'file:'
-    ? url.protocol +'//'+ url.host
-    : 'null';
-
-  url.href = url.toString();
-
-  return url;
-}
-
-/**
- * Transform the properties back in to a valid and full URL string.
- *
- * @param {Function} stringify Optional query stringify function.
- * @returns {String} Compiled version of the URL.
- * @public
- */
-function toString(stringify) {
-  if (!stringify || 'function' !== typeof stringify) stringify = qs.stringify;
-
-  var query
-    , url = this
-    , protocol = url.protocol;
-
-  if (protocol && protocol.charAt(protocol.length - 1) !== ':') protocol += ':';
-
-  var result = protocol + (url.slashes ? '//' : '');
-
-  if (url.username) {
-    result += url.username;
-    if (url.password) result += ':'+ url.password;
-    result += '@';
-  }
-
-  result += url.host + url.pathname;
-
-  query = 'object' === typeof url.query ? stringify(url.query) : url.query;
-  if (query) result += '?' !== query.charAt(0) ? '?'+ query : query;
-
-  if (url.hash) result += url.hash;
-
-  return result;
-}
-
-Url.prototype = { set: set, toString: toString };
-
-//
-// Expose the URL parser and some additional properties that might be useful for
-// others or testing.
-//
-Url.extractProtocol = extractProtocol;
-Url.location = lolcation;
-Url.trimLeft = trimLeft;
-Url.qs = qs;
-
-module.exports = Url;
-
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("c8ba")))
 
 /***/ }),
 
@@ -4307,11 +3834,11 @@ module.exports = function prettyETA(seconds) {
   // display minutes if hours is being displayed
   // Display a leading zero if the there is a preceding unit: 1m 05s, but 5s
 
-  var hoursStr = time.hours ? time.hours + "h " : '';
-  var minutesVal = time.hours ? ("0" + time.minutes).substr(-2) : time.minutes;
-  var minutesStr = minutesVal ? minutesVal + "m" : '';
-  var secondsVal = minutesVal ? ("0" + time.seconds).substr(-2) : time.seconds;
-  var secondsStr = time.hours ? '' : minutesVal ? " " + secondsVal + "s" : secondsVal + "s";
+  var hoursStr = time.hours ? time.hours + 'h ' : '';
+  var minutesVal = time.hours ? ('0' + time.minutes).substr(-2) : time.minutes;
+  var minutesStr = minutesVal ? minutesVal + 'm' : '';
+  var secondsVal = minutesVal ? ('0' + time.seconds).substr(-2) : time.seconds;
+  var secondsStr = time.hours ? '' : minutesVal ? ' ' + secondsVal + 's' : secondsVal + 's';
   return "" + hoursStr + minutesStr + secondsStr;
 };
 
@@ -4795,12 +4322,12 @@ var _require = __webpack_require__("30bf"),
 
 module.exports = function (props) {
   return [h("span", {
-    className: "uppy-ProviderBrowser-user",
+    class: "uppy-ProviderBrowser-user",
     key: "username"
   }, props.username), h("button", {
     type: "button",
-    onClick: props.logout,
-    className: "uppy-u-reset uppy-ProviderBrowser-userLogout",
+    onclick: props.logout,
+    class: "uppy-u-reset uppy-ProviderBrowser-userLogout",
     key: "logout"
   }, props.i18n('logOut'))];
 };
@@ -4828,7 +4355,7 @@ try {
   iteratorWithReturn[ITERATOR] = function () {
     return this;
   };
-  // eslint-disable-next-line es/no-array-from, no-throw-literal -- required for testing
+  // eslint-disable-next-line no-throw-literal -- required for testing
   Array.from(iteratorWithReturn, function () { throw 2; });
 } catch (error) { /* empty */ }
 
@@ -4907,7 +4434,7 @@ module.exports = !fails(function () {
 
 var userAgent = __webpack_require__("342f");
 
-module.exports = /(?:iphone|ipod|ipad).*applewebkit/i.test(userAgent);
+module.exports = /(iphone|ipod|ipad).*applewebkit/i.test(userAgent);
 
 
 /***/ }),
@@ -4945,15 +4472,15 @@ var _require = __webpack_require__("30bf"),
 
 module.exports = function (props) {
   return h("div", {
-    className: "uppy-ProviderBrowser-footer"
+    class: "uppy-ProviderBrowser-footer"
   }, h("button", {
-    className: "uppy-u-reset uppy-c-btn uppy-c-btn-primary",
-    onClick: props.done
+    class: "uppy-u-reset uppy-c-btn uppy-c-btn-primary",
+    onclick: props.done
   }, props.i18n('selectX', {
     smart_count: props.selected
   })), h("button", {
-    className: "uppy-u-reset uppy-c-btn uppy-c-btn-link",
-    onClick: props.cancel
+    class: "uppy-u-reset uppy-c-btn uppy-c-btn-link",
+    onclick: props.cancel
   }, props.i18n('cancel')));
 };
 
@@ -11727,7 +11254,7 @@ module.exports = (_temp = _class = /*#__PURE__*/function () {
   };
 
   return ProviderView;
-}(), _class.VERSION = "1.12.0", _temp);
+}(), _class.VERSION = "1.11.2", _temp);
 
 /***/ }),
 
@@ -12031,7 +11558,6 @@ var hiddenKeys = enumBugKeys.concat('length', 'prototype');
 
 // `Object.getOwnPropertyNames` method
 // https://tc39.es/ecma262/#sec-object.getownpropertynames
-// eslint-disable-next-line es/no-object-getownpropertynames -- safe
 exports.f = Object.getOwnPropertyNames || function getOwnPropertyNames(O) {
   return internalObjectKeys(O, hiddenKeys);
 };
@@ -12048,8 +11574,8 @@ var _require = __webpack_require__("30bf"),
 module.exports = function (props) {
   return h("button", {
     type: "button",
-    onClick: props.triggerSearchInput,
-    className: "uppy-u-reset uppy-ProviderBrowser-userLogout"
+    onclick: props.triggerSearchInput,
+    class: "uppy-u-reset uppy-ProviderBrowser-userLogout"
   }, props.i18n('backToSearch'));
 };
 
@@ -12774,9 +12300,7 @@ module.exports = {};
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; subClass.__proto__ = superClass; }
 
 var _require = __webpack_require__("30bf"),
     h = _require.h,
@@ -12814,21 +12338,21 @@ var UrlUI = /*#__PURE__*/function (_Component) {
     var _this2 = this;
 
     return h("div", {
-      className: "uppy-Url"
+      class: "uppy-Url"
     }, h("input", {
-      className: "uppy-u-reset uppy-c-textInput uppy-Url-input",
+      class: "uppy-u-reset uppy-c-textInput uppy-Url-input",
       type: "text",
       "aria-label": this.props.i18n('enterUrlToImport'),
       placeholder: this.props.i18n('enterUrlToImport'),
-      onKeyUp: this.handleKeyPress,
+      onkeyup: this.handleKeyPress,
       ref: function ref(input) {
         _this2.input = input;
       },
       "data-uppy-super-focusable": true
     }), h("button", {
-      className: "uppy-u-reset uppy-c-btn uppy-c-btn-primary uppy-Url-importButton",
+      class: "uppy-u-reset uppy-c-btn uppy-c-btn-primary uppy-Url-importButton",
       type: "button",
-      onClick: this.handleClick
+      onclick: this.handleClick
     }, this.props.i18n('import')));
   };
 
@@ -12964,7 +12488,6 @@ var parseInt = __webpack_require__("c20d");
 
 // `Number.parseInt` method
 // https://tc39.es/ecma262/#sec-number.parseint
-// eslint-disable-next-line es/no-number-parseint -- required for testing
 $({ target: 'Number', stat: true, forced: Number.parseInt != parseInt }, {
   parseInt: parseInt
 });
@@ -14689,8 +14212,7 @@ var requireObjectCoercible = __webpack_require__("1d80");
 var correctIsRegExpLogic = __webpack_require__("ab13");
 var IS_PURE = __webpack_require__("c430");
 
-// eslint-disable-next-line es/no-string-prototype-startswith -- safe
-var $startsWith = ''.startsWith;
+var nativeStartsWith = ''.startsWith;
 var min = Math.min;
 
 var CORRECT_IS_REGEXP_LOGIC = correctIsRegExpLogic('startsWith');
@@ -14708,8 +14230,8 @@ $({ target: 'String', proto: true, forced: !MDN_POLYFILL_BUG && !CORRECT_IS_REGE
     notARegExp(searchString);
     var index = toLength(min(arguments.length > 1 ? arguments[1] : undefined, that.length));
     var search = String(searchString);
-    return $startsWith
-      ? $startsWith.call(that, search, index)
+    return nativeStartsWith
+      ? nativeStartsWith.call(that, search, index)
       : that.slice(index, index + search.length) === search;
   }
 });
@@ -18256,9 +17778,7 @@ var _class, _temp;
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; subClass.__proto__ = superClass; }
 
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
@@ -18571,12 +18091,11 @@ module.exports = (_temp = _class = /*#__PURE__*/function (_Plugin) {
         }
 
         if (opts.validateStatus(ev.target.status, xhr.responseText, xhr)) {
-          var _body = opts.getResponseData(xhr.responseText, xhr);
-
-          var uploadURL = _body[opts.responseUrlFieldName];
+          var body = opts.getResponseData(xhr.responseText, xhr);
+          var uploadURL = body[opts.responseUrlFieldName];
           var uploadResp = {
             status: ev.target.status,
-            body: _body,
+            body: body,
             uploadURL: uploadURL
           };
 
@@ -18587,18 +18106,19 @@ module.exports = (_temp = _class = /*#__PURE__*/function (_Plugin) {
           }
 
           return resolve(file);
+        } else {
+          var _body = opts.getResponseData(xhr.responseText, xhr);
+
+          var error = buildResponseError(xhr, opts.getResponseError(xhr.responseText, xhr));
+          var response = {
+            status: ev.target.status,
+            body: _body
+          };
+
+          _this3.uppy.emit('upload-error', file, error, response);
+
+          return reject(error);
         }
-
-        var body = opts.getResponseData(xhr.responseText, xhr);
-        var error = buildResponseError(xhr, opts.getResponseError(xhr.responseText, xhr));
-        var response = {
-          status: ev.target.status,
-          body: body
-        };
-
-        _this3.uppy.emit('upload-error', file, error, response);
-
-        return reject(error);
       });
       xhr.addEventListener('error', function (ev) {
         _this3.uppy.log("[XHRUpload] " + id + " errored");
@@ -18627,16 +18147,11 @@ module.exports = (_temp = _class = /*#__PURE__*/function (_Plugin) {
         xhr.responseType = opts.responseType;
       }
 
-      var queuedRequest = _this3.requests.run(function () {
-        // When using an authentication system like JWT, the bearer token goes as a header. This
-        // header needs to be fresh each time the token is refreshed so computing and setting the
-        // headers just before the upload starts enables this kind of authentication to work properly.
-        // Otherwise, half-way through the list of uploads the token could be stale and the upload would fail.
-        var currentOpts = _this3.getOptions(file);
+      Object.keys(opts.headers).forEach(function (header) {
+        xhr.setRequestHeader(header, opts.headers[header]);
+      });
 
-        Object.keys(currentOpts.headers).forEach(function (header) {
-          xhr.setRequestHeader(header, currentOpts.headers[header]);
-        });
+      var queuedRequest = _this3.requests.run(function () {
         xhr.send(data);
         return function () {
           timer.done();
@@ -18876,13 +18391,11 @@ module.exports = (_temp = _class = /*#__PURE__*/function (_Plugin) {
 
       if (file.error) {
         return Promise.reject(new Error(file.error));
-      }
-
-      if (file.isRemote) {
+      } else if (file.isRemote) {
         return _this6.uploadRemote(file, current, total);
+      } else {
+        return _this6.upload(file, current, total);
       }
-
-      return _this6.upload(file, current, total);
     });
     return settle(promises);
   };
@@ -18990,7 +18503,7 @@ module.exports = (_temp = _class = /*#__PURE__*/function (_Plugin) {
   };
 
   return XHRUpload;
-}(Plugin), _class.VERSION = "1.7.2", _temp);
+}(Plugin), _class.VERSION = "1.7.1", _temp);
 
 /***/ }),
 
@@ -19456,7 +18969,6 @@ var objectKeys = __webpack_require__("df75");
 
 // `Object.defineProperties` method
 // https://tc39.es/ecma262/#sec-object.defineproperties
-// eslint-disable-next-line es/no-object-defineproperties -- safe
 module.exports = DESCRIPTORS ? Object.defineProperties : function defineProperties(O, Properties) {
   anObject(O);
   var keys = objectKeys(Properties);
@@ -19725,7 +19237,7 @@ module.exports = function FilePreview(props) {
 
   if (file.preview) {
     return h("img", {
-      className: "uppy-Dashboard-Item-previewImg",
+      class: "uppy-Dashboard-Item-previewImg",
       alt: file.name,
       src: file.preview
     });
@@ -19736,16 +19248,16 @@ module.exports = function FilePreview(props) {
       icon = _getFileTypeIcon.icon;
 
   return h("div", {
-    className: "uppy-Dashboard-Item-previewIconWrap"
+    class: "uppy-Dashboard-Item-previewIconWrap"
   }, h("span", {
-    className: "uppy-Dashboard-Item-previewIcon",
+    class: "uppy-Dashboard-Item-previewIcon",
     style: {
       color: color
     }
   }, icon), h("svg", {
     "aria-hidden": "true",
     focusable: "false",
-    className: "uppy-Dashboard-Item-previewIconBg",
+    class: "uppy-Dashboard-Item-previewIconBg",
     width: "58",
     height: "76",
     viewBox: "0 0 58 76"
@@ -19754,7 +19266,7 @@ module.exports = function FilePreview(props) {
     width: "58",
     height: "76",
     rx: "3",
-    fillRule: "evenodd"
+    "fill-rule": "evenodd"
   })));
 };
 
@@ -20473,15 +19985,15 @@ var _require = __webpack_require__("30bf"),
 
 module.exports = function (props) {
   return h("li", {
-    className: props.className,
+    class: props.className,
     title: props.isDisabled ? props.restrictionReason : null
   }, h("div", {
     "aria-hidden": true,
-    className: "uppy-ProviderBrowserItem-fakeCheckbox " + (props.isChecked ? 'uppy-ProviderBrowserItem-fakeCheckbox--is-checked' : '')
+    class: "uppy-ProviderBrowserItem-fakeCheckbox " + (props.isChecked ? 'uppy-ProviderBrowserItem-fakeCheckbox--is-checked' : '')
   }), h("button", {
     type: "button",
-    className: "uppy-u-reset uppy-ProviderBrowserItem-inner",
-    onClick: props.toggleCheckbox,
+    class: "uppy-u-reset uppy-ProviderBrowserItem-inner",
+    onclick: props.toggleCheckbox,
     role: "option",
     "aria-label": props.isChecked ? props.i18n('unselectFileNamed', {
       name: props.title
@@ -21683,9 +21195,7 @@ function _extends() { _extends = Object.assign || function (target) { for (var i
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; subClass.__proto__ = superClass; }
 
 var _require = __webpack_require__("b880"),
     Plugin = _require.Plugin;
@@ -21793,7 +21303,7 @@ module.exports = (_temp = _class = /*#__PURE__*/function (_Plugin) {
   _proto.getTotalSpeed = function getTotalSpeed(files) {
     var totalSpeed = 0;
     files.forEach(function (file) {
-      totalSpeed += getSpeed(file.progress);
+      totalSpeed = totalSpeed + getSpeed(file.progress);
     });
     return totalSpeed;
   };
@@ -21888,8 +21398,8 @@ module.exports = (_temp = _class = /*#__PURE__*/function (_Plugin) {
     var totalSize = 0;
     var totalUploadedSize = 0;
     startedFiles.forEach(function (file) {
-      totalSize += file.progress.bytesTotal || 0;
-      totalUploadedSize += file.progress.bytesUploaded || 0;
+      totalSize = totalSize + (file.progress.bytesTotal || 0);
+      totalUploadedSize = totalUploadedSize + (file.progress.bytesUploaded || 0);
     });
     var isUploadStarted = startedFiles.length > 0;
     var isAllComplete = totalProgress === 100 && completeFiles.length === Object.keys(files).length && processingFiles.length === 0;
@@ -21957,7 +21467,7 @@ module.exports = (_temp = _class = /*#__PURE__*/function (_Plugin) {
   };
 
   return StatusBar;
-}(Plugin), _class.VERSION = "1.9.3", _temp);
+}(Plugin), _class.VERSION = "1.9.2", _temp);
 
 /***/ }),
 
@@ -22309,52 +21819,6 @@ exports.features = {};
 
 /***/ }),
 
-/***/ "440d":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-/**
- * Check if we're required to add a port number.
- *
- * @see https://url.spec.whatwg.org/#default-port
- * @param {Number|String} port Port number we need to check
- * @param {String} protocol Protocol we need to check against.
- * @returns {Boolean} Is it a default port for the given protocol
- * @api private
- */
-module.exports = function required(port, protocol) {
-  protocol = protocol.split(':')[0];
-  port = +port;
-
-  if (!port) return false;
-
-  switch (protocol) {
-    case 'http':
-    case 'ws':
-    return port !== 80;
-
-    case 'https':
-    case 'wss':
-    return port !== 443;
-
-    case 'ftp':
-    return port !== 21;
-
-    case 'gopher':
-    return port !== 70;
-
-    case 'file':
-    return false;
-  }
-
-  return port !== 0;
-};
-
-
-/***/ }),
-
 /***/ "44ad":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -22486,15 +21950,13 @@ module.exports = function getFileType(file) {
   if (file.type) {
     // if mime type is set in the file object already, use that
     return file.type;
-  }
-
-  if (fileExtension && mimeTypes[fileExtension]) {
+  } else if (fileExtension && mimeTypes[fileExtension]) {
     // else, see if we can map extension to a mime type
     return mimeTypes[fileExtension];
-  } // if all fails, fall back to a generic byte stream type
-
-
-  return 'application/octet-stream';
+  } else {
+    // if all fails, fall back to a generic byte stream type
+    return 'application/octet-stream';
+  }
 };
 
 /***/ }),
@@ -22546,9 +22008,7 @@ module.exports = baseRange;
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; subClass.__proto__ = superClass; }
 
 var _require = __webpack_require__("30bf"),
     h = _require.h,
@@ -22578,38 +22038,38 @@ module.exports = /*#__PURE__*/function (_Component) {
     var _this2 = this;
 
     return h("div", {
-      className: "uppy-ProviderBrowser-search"
+      class: "uppy-ProviderBrowser-search"
     }, h("input", {
-      className: "uppy-u-reset uppy-ProviderBrowser-searchInput",
+      class: "uppy-u-reset uppy-ProviderBrowser-searchInput",
       type: "text",
       placeholder: this.props.i18n('filter'),
       "aria-label": this.props.i18n('filter'),
-      onKeyUp: this.preventEnterPress,
-      onKeyDown: this.preventEnterPress,
-      onKeyPress: this.preventEnterPress,
-      onInput: function onInput(e) {
+      onkeyup: this.preventEnterPress,
+      onkeydown: this.preventEnterPress,
+      onkeypress: this.preventEnterPress,
+      oninput: function oninput(e) {
         return _this2.props.filterQuery(e);
       },
       value: this.props.filterInput
     }), h("svg", {
       "aria-hidden": "true",
       focusable: "false",
-      className: "uppy-c-icon uppy-ProviderBrowser-searchIcon",
+      class: "uppy-c-icon uppy-ProviderBrowser-searchIcon",
       width: "12",
       height: "12",
       viewBox: "0 0 12 12"
     }, h("path", {
       d: "M8.638 7.99l3.172 3.172a.492.492 0 1 1-.697.697L7.91 8.656a4.977 4.977 0 0 1-2.983.983C2.206 9.639 0 7.481 0 4.819 0 2.158 2.206 0 4.927 0c2.721 0 4.927 2.158 4.927 4.82a4.74 4.74 0 0 1-1.216 3.17zm-3.71.685c2.176 0 3.94-1.726 3.94-3.856 0-2.129-1.764-3.855-3.94-3.855C2.75.964.984 2.69.984 4.819c0 2.13 1.765 3.856 3.942 3.856z"
     })), this.props.filterInput && h("button", {
-      className: "uppy-u-reset uppy-ProviderBrowser-searchClose",
+      class: "uppy-u-reset uppy-ProviderBrowser-searchClose",
       type: "button",
       "aria-label": this.props.i18n('resetFilter'),
       title: this.props.i18n('resetFilter'),
-      onClick: this.props.filterQuery
+      onclick: this.props.filterQuery
     }, h("svg", {
       "aria-hidden": "true",
       focusable: "false",
-      className: "uppy-c-icon",
+      class: "uppy-c-icon",
       viewBox: "0 0 19 19"
     }, h("path", {
       d: "M17.318 17.232L9.94 9.854 9.586 9.5l-.354.354-7.378 7.378h.707l-.62-.62v.706L9.318 9.94l.354-.354-.354-.354L1.94 1.854v.707l.62-.62h-.706l7.378 7.378.354.354.354-.354 7.378-7.378h-.707l.622.62v-.706L9.854 9.232l-.354.354.354.354 7.378 7.378.708-.707-7.38-7.378v.708l7.38-7.38.353-.353-.353-.353-.622-.622-.353-.353-.354.352-7.378 7.38h.708L2.56 1.23 2.208.88l-.353.353-.622.62-.353.355.352.353 7.38 7.38v-.708l-7.38 7.38-.353.353.352.353.622.622.353.353.354-.353 7.38-7.38h-.708l7.38 7.38z"
@@ -22707,9 +22167,8 @@ var IS_NODE = __webpack_require__("605d");
 var V8_VERSION = __webpack_require__("2d00");
 var fails = __webpack_require__("d039");
 
-// eslint-disable-next-line es/no-object-getownpropertysymbols -- required for testing
 module.exports = !!Object.getOwnPropertySymbols && !fails(function () {
-  // eslint-disable-next-line es/no-symbol -- required for testing
+  /* global Symbol -- required for testing */
   return !Symbol.sham &&
     // Chrome 38 Symbol has incorrect toString conversion
     // Chrome 38-40 symbols are not inherited from DOM collections prototypes to instances
@@ -22915,22 +22374,22 @@ var getAriaLabelOfCheckbox = function getAriaLabelOfCheckbox(props) {
       return props.i18n('unselectAllFilesFromFolderNamed', {
         name: props.title
       });
+    } else {
+      return props.i18n('selectAllFilesFromFolderNamed', {
+        name: props.title
+      });
     }
-
-    return props.i18n('selectAllFilesFromFolderNamed', {
-      name: props.title
-    });
+  } else {
+    if (props.isChecked) {
+      return props.i18n('unselectFileNamed', {
+        name: props.title
+      });
+    } else {
+      return props.i18n('selectFileNamed', {
+        name: props.title
+      });
+    }
   }
-
-  if (props.isChecked) {
-    return props.i18n('unselectFileNamed', {
-      name: props.title
-    });
-  }
-
-  return props.i18n('selectFileNamed', {
-    name: props.title
-  });
 }; // if folder:
 //   + checkbox (selects all files from folder)
 //   + folder name (opens folder)
@@ -22941,11 +22400,11 @@ var getAriaLabelOfCheckbox = function getAriaLabelOfCheckbox(props) {
 
 module.exports = function (props) {
   return h("li", {
-    className: props.className,
+    class: props.className,
     title: props.isDisabled ? props.restrictionReason : null
-  }, !props.isCheckboxDisabled ? h("button", {
+  }, h("button", {
     type: "button",
-    className: "uppy-u-reset uppy-ProviderBrowserItem-fakeCheckbox " + (props.isChecked ? 'uppy-ProviderBrowserItem-fakeCheckbox--is-checked' : ''),
+    class: "uppy-u-reset uppy-ProviderBrowserItem-fakeCheckbox " + (props.isChecked ? 'uppy-ProviderBrowserItem-fakeCheckbox--is-checked' : ''),
     onClick: props.toggleCheckbox // for the <label/>
     ,
     id: props.id,
@@ -22955,22 +22414,22 @@ module.exports = function (props) {
     "aria-disabled": props.isDisabled,
     disabled: props.isDisabled,
     "data-uppy-super-focusable": true
-  }) : null, props.type === 'file' ? // label for a checkbox
+  }), props.type === 'file' ? // label for a checkbox
   h("label", {
-    htmlFor: props.id,
-    className: "uppy-u-reset uppy-ProviderBrowserItem-inner"
+    for: props.id,
+    class: "uppy-u-reset uppy-ProviderBrowserItem-inner"
   }, h("div", {
-    className: "uppy-ProviderBrowserItem-iconWrap"
+    class: "uppy-ProviderBrowserItem-iconWrap"
   }, props.itemIconEl), props.showTitles && props.title) : // button to open a folder
   h("button", {
     type: "button",
-    className: "uppy-u-reset uppy-ProviderBrowserItem-inner",
-    onClick: props.handleFolderClick,
+    class: "uppy-u-reset uppy-ProviderBrowserItem-inner",
+    onclick: props.handleFolderClick,
     "aria-label": props.i18n('openFolderNamed', {
       name: props.title
     })
   }, h("div", {
-    className: "uppy-ProviderBrowserItem-iconWrap"
+    class: "uppy-ProviderBrowserItem-iconWrap"
   }, props.itemIconEl), props.showTitles && h("span", null, props.title)));
 };
 
@@ -23222,7 +22681,7 @@ module.exports = trimmedEndIndex;
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
-  Copyright (c) 2018 Jed Watson.
+  Copyright (c) 2017 Jed Watson.
   Licensed under the MIT License (MIT), see
   http://jedwatson.github.io/classnames
 */
@@ -23233,7 +22692,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 
 	var hasOwn = {}.hasOwnProperty;
 
-	function classNames() {
+	function classNames () {
 		var classes = [];
 
 		for (var i = 0; i < arguments.length; i++) {
@@ -23244,22 +22703,16 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 
 			if (argType === 'string' || argType === 'number') {
 				classes.push(arg);
-			} else if (Array.isArray(arg)) {
-				if (arg.length) {
-					var inner = classNames.apply(null, arg);
-					if (inner) {
-						classes.push(inner);
-					}
+			} else if (Array.isArray(arg) && arg.length) {
+				var inner = classNames.apply(null, arg);
+				if (inner) {
+					classes.push(inner);
 				}
 			} else if (argType === 'object') {
-				if (arg.toString === Object.prototype.toString) {
-					for (var key in arg) {
-						if (hasOwn.call(arg, key) && arg[key]) {
-							classes.push(key);
-						}
+				for (var key in arg) {
+					if (hasOwn.call(arg, key) && arg[key]) {
+						classes.push(key);
 					}
-				} else {
-					classes.push(arg.toString());
 				}
 			}
 		}
@@ -23826,7 +23279,6 @@ var UNSUPPORTED_Y = __webpack_require__("9f7f").UNSUPPORTED_Y;
 
 // `RegExp.prototype.flags` getter
 // https://tc39.es/ecma262/#sec-get-regexp.prototype.flags
-// eslint-disable-next-line es/no-regexp-prototype-flags -- required for testing
 if (DESCRIPTORS && (/./g.flags != 'g' || UNSUPPORTED_Y)) {
   objectDefinePropertyModule.f(RegExp.prototype, 'flags', {
     configurable: true,
@@ -24178,7 +23630,7 @@ var store = __webpack_require__("c6cd");
 (module.exports = function (key, value) {
   return store[key] || (store[key] = value !== undefined ? value : {});
 })('versions', []).push({
-  version: '3.10.2',
+  version: '3.9.1',
   mode: IS_PURE ? 'pure' : 'global',
   copyright: '© 2021 Denis Pushkarev (zloirock.ru)'
 });
@@ -24244,9 +23696,7 @@ var _class, _temp;
 
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; subClass.__proto__ = superClass; }
 
 var _require = __webpack_require__("b880"),
     Plugin = _require.Plugin;
@@ -24290,7 +23740,7 @@ module.exports = (_temp = _class = /*#__PURE__*/function (_Plugin) {
       };
 
       return h("div", {
-        className: "uppy uppy-Informer",
+        class: "uppy uppy-Informer",
         "aria-hidden": isHidden
       }, h("p", {
         role: "alert"
@@ -24299,7 +23749,7 @@ module.exports = (_temp = _class = /*#__PURE__*/function (_Plugin) {
         "data-microtip-position": "top-left",
         "data-microtip-size": "medium",
         role: "tooltip",
-        onClick: displayErrorAlert,
+        onclick: displayErrorAlert,
         onMouseOver: handleMouseOver,
         onMouseLeave: handleMouseLeave
       }, "?")));
@@ -24326,7 +23776,7 @@ module.exports = (_temp = _class = /*#__PURE__*/function (_Plugin) {
   };
 
   return Informer;
-}(Plugin), _class.VERSION = "1.6.3", _temp);
+}(Plugin), _class.VERSION = "1.6.2", _temp);
 
 /***/ }),
 
@@ -25923,9 +25373,7 @@ module.exports = function(module) {
 /***/ "63b5":
 /***/ (function(module, exports, __webpack_require__) {
 
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; subClass.__proto__ = superClass; }
 
 var _require = __webpack_require__("30bf"),
     Component = _require.Component;
@@ -26162,16 +25610,14 @@ module.exports = function truncateString(string, maxLength) {
 
   if (string.length <= maxLength) {
     return string; // Return truncated substring without '...' if string can't be meaningfully truncated
-  }
-
-  if (maxLength <= separator.length) {
+  } else if (maxLength <= separator.length) {
     return string.substr(0, maxLength); // Return truncated string divided in half by '...'
+  } else {
+    var charsToShow = maxLength - separator.length;
+    var frontChars = Math.ceil(charsToShow / 2);
+    var backChars = Math.floor(charsToShow / 2);
+    return string.substr(0, frontChars) + separator + string.substr(string.length - backChars);
   }
-
-  var charsToShow = maxLength - separator.length;
-  var frontChars = Math.ceil(charsToShow / 2);
-  var backChars = Math.floor(charsToShow / 2);
-  return string.substr(0, frontChars) + separator + string.substr(string.length - backChars);
 };
 
 /***/ }),
@@ -27349,9 +26795,7 @@ module.exports = (_temp = _class = /*#__PURE__*/function () {
     var getRegex = function getRegex(value) {
       if (typeof value === 'string') {
         return new RegExp("^" + value + "$");
-      }
-
-      if (value instanceof RegExp) {
+      } else if (value instanceof RegExp) {
         return value;
       }
     };
@@ -27426,9 +26870,9 @@ module.exports = (_temp = _class = /*#__PURE__*/function () {
           }).catch(function (e) {
             return reject(e);
           });
+        } else {
+          return resolve(files);
         }
-
-        return resolve(files);
       }).catch(function (e) {
         return reject(e);
       });
@@ -27444,9 +26888,9 @@ module.exports = (_temp = _class = /*#__PURE__*/function () {
     var promises = currentSelection.map(function (file) {
       if (file.isFolder) {
         return _this7.addFolder(file);
+      } else {
+        return _this7.addFile(file);
       }
-
-      return _this7.addFile(file);
     });
 
     this._sharedHandler.loaderWrapper(Promise.all(promises), function () {
@@ -27547,7 +26991,7 @@ module.exports = (_temp = _class = /*#__PURE__*/function () {
   };
 
   return ProviderView;
-}(), _class.VERSION = "1.12.0", _temp);
+}(), _class.VERSION = "1.11.2", _temp);
 
 /***/ }),
 
@@ -27623,7 +27067,6 @@ var shared = __webpack_require__("c6cd");
 var sharedKey = __webpack_require__("f772");
 var hiddenKeys = __webpack_require__("d012");
 
-var OBJECT_ALREADY_INITIALIZED = 'Object already initialized';
 var WeakMap = global.WeakMap;
 var set, get, has;
 
@@ -27646,7 +27089,6 @@ if (NATIVE_WEAK_MAP) {
   var wmhas = store.has;
   var wmset = store.set;
   set = function (it, metadata) {
-    if (wmhas.call(store, it)) throw new TypeError(OBJECT_ALREADY_INITIALIZED);
     metadata.facade = it;
     wmset.call(store, it, metadata);
     return metadata;
@@ -27661,7 +27103,6 @@ if (NATIVE_WEAK_MAP) {
   var STATE = sharedKey('state');
   hiddenKeys[STATE] = true;
   set = function (it, metadata) {
-    if (objectHas(it, STATE)) throw new TypeError(OBJECT_ALREADY_INITIALIZED);
     metadata.facade = it;
     createNonEnumerableProperty(it, STATE, metadata);
     return metadata;
@@ -27695,16 +27136,16 @@ var _require = __webpack_require__("30bf"),
 var Breadcrumb = function Breadcrumb(props) {
   return h("span", null, h("button", {
     type: "button",
-    className: "uppy-u-reset",
-    onClick: props.getFolder
+    class: "uppy-u-reset",
+    onclick: props.getFolder
   }, props.title), !props.isLast ? ' / ' : '');
 };
 
 module.exports = function (props) {
   return h("div", {
-    className: "uppy-Provider-breadcrumbs"
+    class: "uppy-Provider-breadcrumbs"
   }, h("div", {
-    className: "uppy-Provider-breadcrumbsIcon"
+    class: "uppy-Provider-breadcrumbsIcon"
   }, props.breadcrumbsIcon), props.directories.map(function (directory, i) {
     return h(Breadcrumb, {
       key: directory.id,
@@ -28041,21 +27482,21 @@ module.exports = function (props) {
   };
 
   return h("div", {
-    className: "uppy-SearchProvider"
+    class: "uppy-SearchProvider"
   }, h("input", {
-    className: "uppy-u-reset uppy-c-textInput uppy-SearchProvider-input",
+    class: "uppy-u-reset uppy-c-textInput uppy-SearchProvider-input",
     type: "text",
     "aria-label": props.i18n('enterTextToSearch'),
     placeholder: props.i18n('enterTextToSearch'),
-    onKeyUp: handleKeyPress,
+    onkeyup: handleKeyPress,
     ref: function ref(input_) {
       input = input_;
     },
     "data-uppy-super-focusable": true
   }), h("button", {
-    className: "uppy-u-reset uppy-c-btn uppy-c-btn-primary uppy-SearchProvider-searchButton",
+    class: "uppy-u-reset uppy-c-btn uppy-c-btn-primary uppy-SearchProvider-searchButton",
     type: "button",
-    onClick: validateAndSearch
+    onclick: validateAndSearch
   }, props.i18n('searchImages')));
 };
 
@@ -29801,9 +29242,9 @@ __webpack_require__("d3b7");
 
 __webpack_require__("d28b");
 
-__webpack_require__("e260");
-
 __webpack_require__("3ca3");
+
+__webpack_require__("e260");
 
 __webpack_require__("ddb0");
 
@@ -30112,7 +29553,6 @@ module.exports = isTypedArray;
 /***/ "7418":
 /***/ (function(module, exports) {
 
-// eslint-disable-next-line es/no-object-getownpropertysymbols -- safe
 exports.f = Object.getOwnPropertySymbols;
 
 
@@ -31216,9 +30656,7 @@ module.exports = pickBy;
 "use strict";
 
 
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; subClass.__proto__ = superClass; }
 
 var RequestClient = __webpack_require__("dd81");
 
@@ -32180,9 +31618,7 @@ module.exports = Object.create || function create(O, Properties) {
 /***/ "7c79":
 /***/ (function(module, exports, __webpack_require__) {
 
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; subClass.__proto__ = superClass; }
 
 var _require = __webpack_require__("30bf"),
     h = _require.h,
@@ -32252,11 +31688,11 @@ module.exports = /*#__PURE__*/function (_Component) {
       'is-noIndividualCancellation': !this.props.individualCancellation
     });
     return h("div", {
-      className: dashboardItemClass,
+      class: dashboardItemClass,
       id: "uppy_" + file.id,
       role: this.props.role
     }, h("div", {
-      className: "uppy-Dashboard-Item-preview"
+      class: "uppy-Dashboard-Item-preview"
     }, h(FilePreviewAndLink, {
       file: file,
       showLinkToFileUploadResult: this.props.showLinkToFileUploadResult
@@ -32275,7 +31711,7 @@ module.exports = /*#__PURE__*/function (_Component) {
       retryUpload: this.props.retryUpload,
       i18n: this.props.i18n
     })), h("div", {
-      className: "uppy-Dashboard-Item-fileInfoAndButtons"
+      class: "uppy-Dashboard-Item-fileInfoAndButtons"
     }, h(FileInfo, {
       file: file,
       id: this.props.id,
@@ -32424,11 +31860,11 @@ module.exports = baseGetAllKeys;
 module.exports = function getRelativePath(fileEntry) {
   // fileEntry.fullPath - "/simpsons/hi.jpeg" or undefined (for browsers that don't support it)
   // fileEntry.name - "hi.jpeg"
-  if (!fileEntry.fullPath || fileEntry.fullPath === "/" + fileEntry.name) {
+  if (!fileEntry.fullPath || fileEntry.fullPath === '/' + fileEntry.name) {
     return null;
+  } else {
+    return fileEntry.fullPath;
   }
-
-  return fileEntry.fullPath;
 };
 
 /***/ }),
@@ -32939,12 +32375,12 @@ var getFileTypeIcon = __webpack_require__("0c1d");
 
 module.exports = function FilePreviewAndLink(props) {
   return h("div", {
-    className: "uppy-Dashboard-Item-previewInnerWrap",
+    class: "uppy-Dashboard-Item-previewInnerWrap",
     style: {
       backgroundColor: getFileTypeIcon(props.file.type).color
     }
   }, props.showLinkToFileUploadResult && props.file.uploadURL && h("a", {
-    className: "uppy-Dashboard-Item-previewLink",
+    class: "uppy-Dashboard-Item-previewLink",
     href: props.file.uploadURL,
     rel: "noreferrer noopener",
     target: "_blank",
@@ -33188,7 +32624,6 @@ var fails = __webpack_require__("d039");
 
 // Detect IE8's incomplete defineProperty implementation
 module.exports = !fails(function () {
-  // eslint-disable-next-line es/no-object-defineproperty -- required for testing
   return Object.defineProperty({}, 1, { get: function () { return 7; } })[1] != 7;
 });
 
@@ -33231,9 +32666,7 @@ function progressIndicatorTitle(props) {
     }
 
     return props.i18n('pauseUpload');
-  }
-
-  if (props.individualCancellation) {
+  } else if (props.individualCancellation) {
     return props.i18n('cancelUpload');
   }
 
@@ -33242,13 +32675,13 @@ function progressIndicatorTitle(props) {
 
 function ProgressIndicatorButton(props) {
   return h("div", {
-    className: "uppy-Dashboard-Item-progress"
+    class: "uppy-Dashboard-Item-progress"
   }, h("button", {
-    className: "uppy-u-reset uppy-Dashboard-Item-progressIndicator",
+    class: "uppy-u-reset uppy-Dashboard-Item-progressIndicator",
     type: "button",
     "aria-label": progressIndicatorTitle(props),
     title: progressIndicatorTitle(props),
-    onClick: function onClick() {
+    onclick: function onclick() {
       return onPauseResumeCancelRetry(props);
     }
   }, props.children));
@@ -33262,7 +32695,7 @@ function ProgressCircleContainer(_ref) {
     width: "70",
     height: "70",
     viewBox: "0 0 36 36",
-    className: "uppy-c-icon uppy-Dashboard-Item-progressIcon--circle"
+    class: "uppy-c-icon uppy-Dashboard-Item-progressIcon--circle"
   }, children);
 }
 
@@ -33271,22 +32704,22 @@ function ProgressCircle(_ref2) {
   // circle length equals 2 * PI * R
   var circleLength = 2 * Math.PI * 15;
   return h("g", null, h("circle", {
-    className: "uppy-Dashboard-Item-progressIcon--bg",
+    class: "uppy-Dashboard-Item-progressIcon--bg",
     r: "15",
     cx: "18",
     cy: "18",
-    strokeWidth: "2",
+    "stroke-width": "2",
     fill: "none"
   }), h("circle", {
-    className: "uppy-Dashboard-Item-progressIcon--progress",
+    class: "uppy-Dashboard-Item-progressIcon--progress",
     r: "15",
     cx: "18",
     cy: "18",
     transform: "rotate(-90, 18, 18)",
-    strokeWidth: "2",
+    "stroke-width": "2",
     fill: "none",
-    strokeDasharray: circleLength,
-    strokeDashoffset: circleLength - circleLength / 100 * progress
+    "stroke-dasharray": circleLength,
+    "stroke-dashoffset": circleLength - circleLength / 100 * progress
   }));
 }
 
@@ -33299,16 +32732,16 @@ module.exports = function FileProgress(props) {
 
   if (props.isUploaded) {
     return h("div", {
-      className: "uppy-Dashboard-Item-progress"
+      class: "uppy-Dashboard-Item-progress"
     }, h("div", {
-      className: "uppy-Dashboard-Item-progressIndicator"
+      class: "uppy-Dashboard-Item-progressIndicator"
     }, h(ProgressCircleContainer, null, h("circle", {
       r: "15",
       cx: "18",
       cy: "18",
       fill: "#1bb240"
     }), h("polygon", {
-      className: "uppy-Dashboard-Item-progressIcon--check",
+      class: "uppy-Dashboard-Item-progressIcon--check",
       transform: "translate(2, 3)",
       points: "14 22.5 7 15.2457065 8.99985857 13.1732815 14 18.3547104 22.9729883 9 25 11.1005634"
     }))));
@@ -33319,7 +32752,7 @@ module.exports = function FileProgress(props) {
     return h(ProgressIndicatorButton, props, h("svg", {
       "aria-hidden": "true",
       focusable: "false",
-      className: "uppy-c-icon uppy-Dashboard-Item-progressIcon--retry",
+      class: "uppy-c-icon uppy-Dashboard-Item-progressIcon--retry",
       width: "28",
       height: "31",
       viewBox: "0 0 16 19"
@@ -33339,11 +32772,11 @@ module.exports = function FileProgress(props) {
     return h(ProgressIndicatorButton, props, h(ProgressCircleContainer, null, h(ProgressCircle, {
       progress: props.file.progress.percentage
     }), props.file.isPaused ? h("polygon", {
-      className: "uppy-Dashboard-Item-progressIcon--play",
+      class: "uppy-Dashboard-Item-progressIcon--play",
       transform: "translate(3, 3)",
       points: "12 20 12 10 20 15"
     }) : h("g", {
-      className: "uppy-Dashboard-Item-progressIcon--pause",
+      class: "uppy-Dashboard-Item-progressIcon--pause",
       transform: "translate(14.5, 13)"
     }, h("rect", {
       x: "0",
@@ -33365,7 +32798,7 @@ module.exports = function FileProgress(props) {
     return h(ProgressIndicatorButton, props, h(ProgressCircleContainer, null, h(ProgressCircle, {
       progress: props.file.progress.percentage
     }), h("polygon", {
-      className: "cancel",
+      class: "cancel",
       transform: "translate(2, 2)",
       points: "19.8856516 11.0625 16 14.9481516 12.1019737 11.0625 11.0625 12.1143484 14.9481516 16 11.0625 19.8980263 12.1019737 20.9375 16 17.0518484 19.8856516 20.9375 20.9375 19.8980263 17.0518484 16 20.9375 12"
     })));
@@ -33373,9 +32806,9 @@ module.exports = function FileProgress(props) {
 
 
   return h("div", {
-    className: "uppy-Dashboard-Item-progress"
+    class: "uppy-Dashboard-Item-progress"
   }, h("div", {
-    className: "uppy-Dashboard-Item-progressIndicator"
+    class: "uppy-Dashboard-Item-progressIndicator"
   }, h(ProgressCircleContainer, null, h(ProgressCircle, {
     progress: props.file.progress.percentage
   }))));
@@ -34017,7 +33450,7 @@ var _require = __webpack_require__("30bf"),
 
 module.exports = function (props) {
   return h("div", {
-    className: "uppy-Provider-loading"
+    class: "uppy-Provider-loading"
   }, h("span", null, props.i18n('loading')));
 };
 
@@ -34597,24 +34030,24 @@ module.exports = function (props) {
   var showPauseResumeBtn = resumableUploads && !hidePauseResumeButton && uploadState === statusBarStates.STATE_UPLOADING;
   var showRetryBtn = error && !hideRetryButton;
   var showDoneBtn = props.doneButtonHandler && uploadState === statusBarStates.STATE_COMPLETE;
-  var progressClassNames = "uppy-StatusBar-progress\n                           " + (progressMode ? "is-" + progressMode : '');
+  var progressClassNames = "uppy-StatusBar-progress\n                           " + (progressMode ? 'is-' + progressMode : '');
   var statusBarClassNames = classNames({
     'uppy-Root': props.isTargetDOMEl
   }, 'uppy-StatusBar', "is-" + uploadState);
   return h("div", {
-    className: statusBarClassNames,
+    class: statusBarClassNames,
     "aria-hidden": isHidden
   }, h("div", {
-    className: progressClassNames,
+    class: progressClassNames,
     style: {
-      width: width + "%"
+      width: width + '%'
     },
     role: "progressbar",
     "aria-valuemin": "0",
     "aria-valuemax": "100",
     "aria-valuenow": progressValue
   }), progressBarContent, h("div", {
-    className: "uppy-StatusBar-actions"
+    class: "uppy-StatusBar-actions"
   }, showUploadBtn ? h(UploadBtn, _extends({}, props, {
     uploadState: uploadState
   })) : null, showRetryBtn ? h(RetryBtn, props) : null, showPauseResumeBtn ? h(PauseResumeButton, props) : null, showCancelBtn ? h(CancelBtn, props) : null, showDoneBtn ? h(DoneBtn, props) : null));
@@ -34626,11 +34059,11 @@ var UploadBtn = function UploadBtn(props) {
   });
   return h("button", {
     type: "button",
-    className: uploadBtnClassNames,
+    class: uploadBtnClassNames,
     "aria-label": props.i18n('uploadXFiles', {
       smart_count: props.newFiles
     }),
-    onClick: props.startUpload,
+    onclick: props.startUpload,
     "data-uppy-super-focusable": true
   }, props.newFiles && props.isUploadStarted ? props.i18n('uploadXNewFiles', {
     smart_count: props.newFiles
@@ -34642,14 +34075,14 @@ var UploadBtn = function UploadBtn(props) {
 var RetryBtn = function RetryBtn(props) {
   return h("button", {
     type: "button",
-    className: "uppy-u-reset uppy-c-btn uppy-StatusBar-actionBtn uppy-StatusBar-actionBtn--retry",
+    class: "uppy-u-reset uppy-c-btn uppy-StatusBar-actionBtn uppy-StatusBar-actionBtn--retry",
     "aria-label": props.i18n('retryUpload'),
-    onClick: props.retryAll,
+    onclick: props.retryAll,
     "data-uppy-super-focusable": true
   }, h("svg", {
     "aria-hidden": "true",
     focusable: "false",
-    className: "uppy-c-icon",
+    class: "uppy-c-icon",
     width: "8",
     height: "10",
     viewBox: "0 0 8 10"
@@ -34661,21 +34094,21 @@ var RetryBtn = function RetryBtn(props) {
 var CancelBtn = function CancelBtn(props) {
   return h("button", {
     type: "button",
-    className: "uppy-u-reset uppy-StatusBar-actionCircleBtn",
+    class: "uppy-u-reset uppy-StatusBar-actionCircleBtn",
     title: props.i18n('cancel'),
     "aria-label": props.i18n('cancel'),
-    onClick: props.cancelAll,
+    onclick: props.cancelAll,
     "data-uppy-super-focusable": true
   }, h("svg", {
     "aria-hidden": "true",
     focusable: "false",
-    className: "uppy-c-icon",
+    class: "uppy-c-icon",
     width: "16",
     height: "16",
     viewBox: "0 0 16 16"
   }, h("g", {
     fill: "none",
-    fillRule: "evenodd"
+    "fill-rule": "evenodd"
   }, h("circle", {
     fill: "#888",
     cx: "8",
@@ -34694,22 +34127,22 @@ var PauseResumeButton = function PauseResumeButton(props) {
   return h("button", {
     title: title,
     "aria-label": title,
-    className: "uppy-u-reset uppy-StatusBar-actionCircleBtn",
+    class: "uppy-u-reset uppy-StatusBar-actionCircleBtn",
     type: "button",
-    onClick: function onClick() {
+    onclick: function onclick() {
       return togglePauseResume(props);
     },
     "data-uppy-super-focusable": true
   }, isAllPaused ? h("svg", {
     "aria-hidden": "true",
     focusable: "false",
-    className: "uppy-c-icon",
+    class: "uppy-c-icon",
     width: "16",
     height: "16",
     viewBox: "0 0 16 16"
   }, h("g", {
     fill: "none",
-    fillRule: "evenodd"
+    "fill-rule": "evenodd"
   }, h("circle", {
     fill: "#888",
     cx: "8",
@@ -34721,13 +34154,13 @@ var PauseResumeButton = function PauseResumeButton(props) {
   }))) : h("svg", {
     "aria-hidden": "true",
     focusable: "false",
-    className: "uppy-c-icon",
+    class: "uppy-c-icon",
     width: "16",
     height: "16",
     viewBox: "0 0 16 16"
   }, h("g", {
     fill: "none",
-    fillRule: "evenodd"
+    "fill-rule": "evenodd"
   }, h("circle", {
     fill: "#888",
     cx: "8",
@@ -34743,7 +34176,7 @@ var DoneBtn = function DoneBtn(props) {
   var i18n = props.i18n;
   return h("button", {
     type: "button",
-    className: "uppy-u-reset uppy-c-btn uppy-StatusBar-actionBtn uppy-StatusBar-actionBtn--done",
+    class: "uppy-u-reset uppy-c-btn uppy-StatusBar-actionBtn uppy-StatusBar-actionBtn--done",
     onClick: props.doneButtonHandler,
     "data-uppy-super-focusable": true
   }, i18n('done'));
@@ -34751,21 +34184,21 @@ var DoneBtn = function DoneBtn(props) {
 
 var LoadingSpinner = function LoadingSpinner() {
   return h("svg", {
-    className: "uppy-StatusBar-spinner",
+    class: "uppy-StatusBar-spinner",
     "aria-hidden": "true",
     focusable: "false",
     width: "14",
     height: "14"
   }, h("path", {
     d: "M13.983 6.547c-.12-2.509-1.64-4.893-3.939-5.936-2.48-1.127-5.488-.656-7.556 1.094C.524 3.367-.398 6.048.162 8.562c.556 2.495 2.46 4.52 4.94 5.183 2.932.784 5.61-.602 7.256-3.015-1.493 1.993-3.745 3.309-6.298 2.868-2.514-.434-4.578-2.349-5.153-4.84a6.226 6.226 0 0 1 2.98-6.778C6.34.586 9.74 1.1 11.373 3.493c.407.596.693 1.282.842 1.988.127.598.073 1.197.161 1.794.078.525.543 1.257 1.15.864.525-.341.49-1.05.456-1.592-.007-.15.02.3 0 0",
-    fillRule: "evenodd"
+    "fill-rule": "evenodd"
   }));
 };
 
 var ProgressBarProcessing = function ProgressBarProcessing(props) {
   var value = Math.round(props.value * 100);
   return h("div", {
-    className: "uppy-StatusBar-content"
+    class: "uppy-StatusBar-content"
   }, h(LoadingSpinner, null), props.mode === 'determinate' ? value + "% \xB7 " : '', props.message);
 };
 
@@ -34776,12 +34209,12 @@ var renderDot = function renderDot() {
 var ProgressDetails = function ProgressDetails(props) {
   var ifShowFilesUploadedOfTotal = props.numUploads > 1;
   return h("div", {
-    className: "uppy-StatusBar-statusSecondary"
+    class: "uppy-StatusBar-statusSecondary"
   }, ifShowFilesUploadedOfTotal && props.i18n('filesUploadedOfTotal', {
     complete: props.complete,
     smart_count: props.numUploads
   }), h("span", {
-    className: "uppy-StatusBar-additionalInfo"
+    class: "uppy-StatusBar-additionalInfo"
   }, ifShowFilesUploadedOfTotal && renderDot(), props.i18n('dataUploadedOfTotal', {
     complete: prettierBytes(props.totalUploadedSize),
     total: prettierBytes(props.totalSize)
@@ -34792,7 +34225,7 @@ var ProgressDetails = function ProgressDetails(props) {
 
 var UnknownProgressDetails = function UnknownProgressDetails(props) {
   return h("div", {
-    className: "uppy-StatusBar-statusSecondary"
+    class: "uppy-StatusBar-statusSecondary"
   }, props.i18n('filesUploadedOfTotal', {
     complete: props.complete,
     smart_count: props.numUploads
@@ -34802,18 +34235,18 @@ var UnknownProgressDetails = function UnknownProgressDetails(props) {
 var UploadNewlyAddedFiles = function UploadNewlyAddedFiles(props) {
   var uploadBtnClassNames = classNames('uppy-u-reset', 'uppy-c-btn', 'uppy-StatusBar-actionBtn', 'uppy-StatusBar-actionBtn--uploadNewlyAdded');
   return h("div", {
-    className: "uppy-StatusBar-statusSecondary"
+    class: "uppy-StatusBar-statusSecondary"
   }, h("div", {
-    className: "uppy-StatusBar-statusSecondaryHint"
+    class: "uppy-StatusBar-statusSecondaryHint"
   }, props.i18n('xMoreFilesAdded', {
     smart_count: props.newFiles
   })), h("button", {
     type: "button",
-    className: uploadBtnClassNames,
+    class: uploadBtnClassNames,
     "aria-label": props.i18n('uploadXFiles', {
       smart_count: props.newFiles
     }),
-    onClick: props.startUpload
+    onclick: props.startUpload
   }, props.i18n('upload')));
 };
 
@@ -34830,13 +34263,13 @@ var ProgressBarUploading = function ProgressBarUploading(props) {
   var title = props.isAllPaused ? props.i18n('paused') : props.i18n('uploading');
   var showUploadNewlyAddedFiles = props.newFiles && props.isUploadStarted;
   return h("div", {
-    className: "uppy-StatusBar-content",
+    class: "uppy-StatusBar-content",
     "aria-label": title,
     title: title
   }, !props.isAllPaused ? h(LoadingSpinner, null) : null, h("div", {
-    className: "uppy-StatusBar-status"
+    class: "uppy-StatusBar-status"
   }, h("div", {
-    className: "uppy-StatusBar-statusPrimary"
+    class: "uppy-StatusBar-statusPrimary"
   }, props.supportsUploadProgress ? title + ": " + props.totalProgress + "%" : title), !props.isAllPaused && !showUploadNewlyAddedFiles && props.showProgressDetails ? props.supportsUploadProgress ? h(ThrottledProgressDetails, props) : h(UnknownProgressDetails, props) : null, showUploadNewlyAddedFiles ? h(UploadNewlyAddedFiles, props) : null));
 };
 
@@ -34844,17 +34277,17 @@ var ProgressBarComplete = function ProgressBarComplete(_ref) {
   var totalProgress = _ref.totalProgress,
       i18n = _ref.i18n;
   return h("div", {
-    className: "uppy-StatusBar-content",
+    class: "uppy-StatusBar-content",
     role: "status",
     title: i18n('complete')
   }, h("div", {
-    className: "uppy-StatusBar-status"
+    class: "uppy-StatusBar-status"
   }, h("div", {
-    className: "uppy-StatusBar-statusPrimary"
+    class: "uppy-StatusBar-statusPrimary"
   }, h("svg", {
     "aria-hidden": "true",
     focusable: "false",
-    className: "uppy-StatusBar-statusIndicator uppy-c-icon",
+    class: "uppy-StatusBar-statusIndicator uppy-c-icon",
     width: "15",
     height: "11",
     viewBox: "0 0 15 11"
@@ -34875,29 +34308,29 @@ var ProgressBarError = function ProgressBarError(_ref2) {
   }
 
   return h("div", {
-    className: "uppy-StatusBar-content",
+    class: "uppy-StatusBar-content",
     role: "alert",
     title: i18n('uploadFailed')
   }, h("div", {
-    className: "uppy-StatusBar-status"
+    class: "uppy-StatusBar-status"
   }, h("div", {
-    className: "uppy-StatusBar-statusPrimary"
+    class: "uppy-StatusBar-statusPrimary"
   }, h("svg", {
     "aria-hidden": "true",
     focusable: "false",
-    className: "uppy-StatusBar-statusIndicator uppy-c-icon",
+    class: "uppy-StatusBar-statusIndicator uppy-c-icon",
     width: "11",
     height: "11",
     viewBox: "0 0 11 11"
   }, h("path", {
     d: "M4.278 5.5L0 1.222 1.222 0 5.5 4.278 9.778 0 11 1.222 6.722 5.5 11 9.778 9.778 11 5.5 6.722 1.222 11 0 9.778z"
   })), i18n('uploadFailed'))), h("span", {
-    className: "uppy-StatusBar-details",
+    class: "uppy-StatusBar-details",
     "aria-label": error,
     "data-microtip-position": "top-right",
     "data-microtip-size": "medium",
     role: "tooltip",
-    onClick: displayErrorAlert
+    onclick: displayErrorAlert
   }, "?"));
 };
 
@@ -35823,11 +35256,12 @@ module.exports = function forEachDroppedOrPastedUrl(dataTransfer, isDropOrPaste,
 
         if (atLeastOneFileIsDragged) {
           return;
+        } else {
+          urlItems = items.filter(function (item) {
+            return item.kind === 'string' && item.type === 'text/plain';
+          });
         }
 
-        urlItems = items.filter(function (item) {
-          return item.kind === 'string' && item.type === 'text/plain';
-        });
         break;
       }
 
@@ -36135,9 +35569,7 @@ module.exports = toPlainObject;
 
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; subClass.__proto__ = superClass; }
 
 var _require = __webpack_require__("30bf"),
     h = _require.h,
@@ -36188,7 +35620,7 @@ var FileCard = /*#__PURE__*/function (_Component) {
     };
 
     _this.renderMetaFields = function () {
-      var metaFields = _this.getMetaFields() || [];
+      var metaFields = _this.props.metaFields || [];
       var fieldCSSClasses = {
         text: 'uppy-u-reset uppy-c-textInput uppy-Dashboard-FileCard-input'
       };
@@ -36196,10 +35628,10 @@ var FileCard = /*#__PURE__*/function (_Component) {
         var id = "uppy-Dashboard-FileCard-input-" + field.id;
         return h("fieldset", {
           key: field.id,
-          className: "uppy-Dashboard-FileCard-fieldset"
+          class: "uppy-Dashboard-FileCard-fieldset"
         }, h("label", {
-          className: "uppy-Dashboard-FileCard-label",
-          htmlFor: id
+          class: "uppy-Dashboard-FileCard-label",
+          for: id
         }, field.name), field.render !== undefined ? field.render({
           value: _this.state.formState[field.id],
           onChange: function onChange(newVal) {
@@ -36207,15 +35639,15 @@ var FileCard = /*#__PURE__*/function (_Component) {
           },
           fieldCSSClasses: fieldCSSClasses
         }, h) : h("input", {
-          className: fieldCSSClasses.text,
+          class: fieldCSSClasses.text,
           id: id,
           type: field.type || 'text',
           value: _this.state.formState[field.id],
           placeholder: field.placeholder,
-          onKeyUp: _this.saveOnEnter,
-          onKeyDown: _this.saveOnEnter,
-          onKeyPress: _this.saveOnEnter,
-          onInput: function onInput(ev) {
+          onkeyup: _this.saveOnEnter,
+          onkeydown: _this.saveOnEnter,
+          onkeypress: _this.saveOnEnter,
+          oninput: function oninput(ev) {
             return _this.updateMeta(ev.target.value, field.id);
           },
           "data-uppy-super-focusable": true
@@ -36225,7 +35657,7 @@ var FileCard = /*#__PURE__*/function (_Component) {
 
     var _file = _this.props.files[_this.props.fileCardFor];
 
-    var _metaFields = _this.getMetaFields() || [];
+    var _metaFields = _this.props.metaFields || [];
 
     var storedMetaData = {};
 
@@ -36241,41 +35673,37 @@ var FileCard = /*#__PURE__*/function (_Component) {
 
   var _proto = FileCard.prototype;
 
-  _proto.getMetaFields = function getMetaFields() {
-    return typeof this.props.metaFields === 'function' ? this.props.metaFields(this.props.files[this.props.fileCardFor]) : this.props.metaFields;
-  };
-
   _proto.render = function render() {
     var _this2 = this;
 
     var file = this.props.files[this.props.fileCardFor];
     var showEditButton = this.props.canEditFile(file);
     return h("div", {
-      className: classNames('uppy-Dashboard-FileCard', this.props.className),
+      class: classNames('uppy-Dashboard-FileCard', this.props.className),
       "data-uppy-panelType": "FileCard",
       onDragOver: ignoreEvent,
       onDragLeave: ignoreEvent,
       onDrop: ignoreEvent,
       onPaste: ignoreEvent
     }, h("div", {
-      className: "uppy-DashboardContent-bar"
+      class: "uppy-DashboardContent-bar"
     }, h("div", {
-      className: "uppy-DashboardContent-title",
+      class: "uppy-DashboardContent-title",
       role: "heading",
       "aria-level": "1"
     }, this.props.i18nArray('editing', {
       file: h("span", {
-        className: "uppy-DashboardContent-titleFile"
+        class: "uppy-DashboardContent-titleFile"
       }, file.meta ? file.meta.name : file.name)
     })), h("button", {
-      className: "uppy-DashboardContent-back",
+      class: "uppy-DashboardContent-back",
       type: "button",
       title: this.props.i18n('finishEditingFile'),
-      onClick: this.handleSave
+      onclick: this.handleSave
     }, this.props.i18n('done'))), h("div", {
-      className: "uppy-Dashboard-FileCard-inner"
+      class: "uppy-Dashboard-FileCard-inner"
     }, h("div", {
-      className: "uppy-Dashboard-FileCard-preview",
+      class: "uppy-Dashboard-FileCard-preview",
       style: {
         backgroundColor: getFileTypeIcon(file.type).color
       }
@@ -36283,22 +35711,22 @@ var FileCard = /*#__PURE__*/function (_Component) {
       file: file
     }), showEditButton && h("button", {
       type: "button",
-      className: "uppy-u-reset uppy-c-btn uppy-Dashboard-FileCard-edit",
+      class: "uppy-u-reset uppy-c-btn uppy-Dashboard-FileCard-edit",
       onClick: function onClick() {
         return _this2.props.openFileEditor(file);
       }
     }, this.props.i18n('editFile'))), h("div", {
-      className: "uppy-Dashboard-FileCard-info"
+      class: "uppy-Dashboard-FileCard-info"
     }, this.renderMetaFields()), h("div", {
-      className: "uppy-Dashboard-FileCard-actions"
+      class: "uppy-Dashboard-FileCard-actions"
     }, h("button", {
-      className: "uppy-u-reset uppy-c-btn uppy-c-btn-primary uppy-Dashboard-FileCard-actionsBtn",
+      class: "uppy-u-reset uppy-c-btn uppy-c-btn-primary uppy-Dashboard-FileCard-actionsBtn",
       type: "button",
-      onClick: this.handleSave
+      onclick: this.handleSave
     }, this.props.i18n('saveChanges')), h("button", {
-      className: "uppy-u-reset uppy-c-btn uppy-c-btn-link uppy-Dashboard-FileCard-actionsBtn",
+      class: "uppy-u-reset uppy-c-btn uppy-c-btn-link uppy-Dashboard-FileCard-actionsBtn",
       type: "button",
-      onClick: this.handleCancel
+      onclick: this.handleCancel
     }, this.props.i18n('cancel')))));
   };
 
@@ -37029,10 +36457,12 @@ module.exports = overArg;
 
 var regexpFlags = __webpack_require__("ad6d");
 var stickyHelpers = __webpack_require__("9f7f");
-var shared = __webpack_require__("5692");
 
 var nativeExec = RegExp.prototype.exec;
-var nativeReplace = shared('native-string-replace', String.prototype.replace);
+// This always refers to the native implementation, because the
+// String#replace polyfill uses ./fix-regexp-well-known-symbol-logic.js,
+// which loads this file before patching the method.
+var nativeReplace = String.prototype.replace;
 
 var patchedExec = nativeExec;
 
@@ -37047,7 +36477,7 @@ var UPDATES_LAST_INDEX_WRONG = (function () {
 var UNSUPPORTED_Y = stickyHelpers.UNSUPPORTED_Y || stickyHelpers.BROKEN_CARET;
 
 // nonparticipating capturing group, copied from es5-shim's String#split patch.
-// eslint-disable-next-line regexp/no-assertion-capturing-group, regexp/no-empty-group, regexp/no-lazy-ends -- testing
+// eslint-disable-next-line regexp/no-assertion-capturing-group, regexp/no-empty-group -- required for testing
 var NPCG_INCLUDED = /()??/.exec('')[1] !== undefined;
 
 var PATCH = UPDATES_LAST_INDEX_WRONG || NPCG_INCLUDED || UNSUPPORTED_Y;
@@ -37401,508 +36831,6 @@ function mapCacheDelete(key) {
 }
 
 module.exports = mapCacheDelete;
-
-
-/***/ }),
-
-/***/ "947a":
-/***/ (function(module, exports, __webpack_require__) {
-
-/* global define */
-
-(function (root, pluralize) {
-  /* istanbul ignore else */
-  if (true) {
-    // Node.
-    module.exports = pluralize();
-  } else {}
-})(this, function () {
-  // Rule storage - pluralize and singularize need to be run sequentially,
-  // while other rules can be optimized using an object for instant lookups.
-  var pluralRules = [];
-  var singularRules = [];
-  var uncountables = {};
-  var irregularPlurals = {};
-  var irregularSingles = {};
-
-  /**
-   * Sanitize a pluralization rule to a usable regular expression.
-   *
-   * @param  {(RegExp|string)} rule
-   * @return {RegExp}
-   */
-  function sanitizeRule (rule) {
-    if (typeof rule === 'string') {
-      return new RegExp('^' + rule + '$', 'i');
-    }
-
-    return rule;
-  }
-
-  /**
-   * Pass in a word token to produce a function that can replicate the case on
-   * another word.
-   *
-   * @param  {string}   word
-   * @param  {string}   token
-   * @return {Function}
-   */
-  function restoreCase (word, token) {
-    // Tokens are an exact match.
-    if (word === token) return token;
-
-    // Lower cased words. E.g. "hello".
-    if (word === word.toLowerCase()) return token.toLowerCase();
-
-    // Upper cased words. E.g. "WHISKY".
-    if (word === word.toUpperCase()) return token.toUpperCase();
-
-    // Title cased words. E.g. "Title".
-    if (word[0] === word[0].toUpperCase()) {
-      return token.charAt(0).toUpperCase() + token.substr(1).toLowerCase();
-    }
-
-    // Lower cased words. E.g. "test".
-    return token.toLowerCase();
-  }
-
-  /**
-   * Interpolate a regexp string.
-   *
-   * @param  {string} str
-   * @param  {Array}  args
-   * @return {string}
-   */
-  function interpolate (str, args) {
-    return str.replace(/\$(\d{1,2})/g, function (match, index) {
-      return args[index] || '';
-    });
-  }
-
-  /**
-   * Replace a word using a rule.
-   *
-   * @param  {string} word
-   * @param  {Array}  rule
-   * @return {string}
-   */
-  function replace (word, rule) {
-    return word.replace(rule[0], function (match, index) {
-      var result = interpolate(rule[1], arguments);
-
-      if (match === '') {
-        return restoreCase(word[index - 1], result);
-      }
-
-      return restoreCase(match, result);
-    });
-  }
-
-  /**
-   * Sanitize a word by passing in the word and sanitization rules.
-   *
-   * @param  {string}   token
-   * @param  {string}   word
-   * @param  {Array}    rules
-   * @return {string}
-   */
-  function sanitizeWord (token, word, rules) {
-    // Empty string or doesn't need fixing.
-    if (!token.length || uncountables.hasOwnProperty(token)) {
-      return word;
-    }
-
-    var len = rules.length;
-
-    // Iterate over the sanitization rules and use the first one to match.
-    while (len--) {
-      var rule = rules[len];
-
-      if (rule[0].test(word)) return replace(word, rule);
-    }
-
-    return word;
-  }
-
-  /**
-   * Replace a word with the updated word.
-   *
-   * @param  {Object}   replaceMap
-   * @param  {Object}   keepMap
-   * @param  {Array}    rules
-   * @return {Function}
-   */
-  function replaceWord (replaceMap, keepMap, rules) {
-    return function (word) {
-      // Get the correct token and case restoration functions.
-      var token = word.toLowerCase();
-
-      // Check against the keep object map.
-      if (keepMap.hasOwnProperty(token)) {
-        return restoreCase(word, token);
-      }
-
-      // Check against the replacement map for a direct word replacement.
-      if (replaceMap.hasOwnProperty(token)) {
-        return restoreCase(word, replaceMap[token]);
-      }
-
-      // Run all the rules against the word.
-      return sanitizeWord(token, word, rules);
-    };
-  }
-
-  /**
-   * Check if a word is part of the map.
-   */
-  function checkWord (replaceMap, keepMap, rules, bool) {
-    return function (word) {
-      var token = word.toLowerCase();
-
-      if (keepMap.hasOwnProperty(token)) return true;
-      if (replaceMap.hasOwnProperty(token)) return false;
-
-      return sanitizeWord(token, token, rules) === token;
-    };
-  }
-
-  /**
-   * Pluralize or singularize a word based on the passed in count.
-   *
-   * @param  {string}  word      The word to pluralize
-   * @param  {number}  count     How many of the word exist
-   * @param  {boolean} inclusive Whether to prefix with the number (e.g. 3 ducks)
-   * @return {string}
-   */
-  function pluralize (word, count, inclusive) {
-    var pluralized = count === 1
-      ? pluralize.singular(word) : pluralize.plural(word);
-
-    return (inclusive ? count + ' ' : '') + pluralized;
-  }
-
-  /**
-   * Pluralize a word.
-   *
-   * @type {Function}
-   */
-  pluralize.plural = replaceWord(
-    irregularSingles, irregularPlurals, pluralRules
-  );
-
-  /**
-   * Check if a word is plural.
-   *
-   * @type {Function}
-   */
-  pluralize.isPlural = checkWord(
-    irregularSingles, irregularPlurals, pluralRules
-  );
-
-  /**
-   * Singularize a word.
-   *
-   * @type {Function}
-   */
-  pluralize.singular = replaceWord(
-    irregularPlurals, irregularSingles, singularRules
-  );
-
-  /**
-   * Check if a word is singular.
-   *
-   * @type {Function}
-   */
-  pluralize.isSingular = checkWord(
-    irregularPlurals, irregularSingles, singularRules
-  );
-
-  /**
-   * Add a pluralization rule to the collection.
-   *
-   * @param {(string|RegExp)} rule
-   * @param {string}          replacement
-   */
-  pluralize.addPluralRule = function (rule, replacement) {
-    pluralRules.push([sanitizeRule(rule), replacement]);
-  };
-
-  /**
-   * Add a singularization rule to the collection.
-   *
-   * @param {(string|RegExp)} rule
-   * @param {string}          replacement
-   */
-  pluralize.addSingularRule = function (rule, replacement) {
-    singularRules.push([sanitizeRule(rule), replacement]);
-  };
-
-  /**
-   * Add an uncountable word rule.
-   *
-   * @param {(string|RegExp)} word
-   */
-  pluralize.addUncountableRule = function (word) {
-    if (typeof word === 'string') {
-      uncountables[word.toLowerCase()] = true;
-      return;
-    }
-
-    // Set singular and plural references for the word.
-    pluralize.addPluralRule(word, '$0');
-    pluralize.addSingularRule(word, '$0');
-  };
-
-  /**
-   * Add an irregular word definition.
-   *
-   * @param {string} single
-   * @param {string} plural
-   */
-  pluralize.addIrregularRule = function (single, plural) {
-    plural = plural.toLowerCase();
-    single = single.toLowerCase();
-
-    irregularSingles[single] = plural;
-    irregularPlurals[plural] = single;
-  };
-
-  /**
-   * Irregular rules.
-   */
-  [
-    // Pronouns.
-    ['I', 'we'],
-    ['me', 'us'],
-    ['he', 'they'],
-    ['she', 'they'],
-    ['them', 'them'],
-    ['myself', 'ourselves'],
-    ['yourself', 'yourselves'],
-    ['itself', 'themselves'],
-    ['herself', 'themselves'],
-    ['himself', 'themselves'],
-    ['themself', 'themselves'],
-    ['is', 'are'],
-    ['was', 'were'],
-    ['has', 'have'],
-    ['this', 'these'],
-    ['that', 'those'],
-    // Words ending in with a consonant and `o`.
-    ['echo', 'echoes'],
-    ['dingo', 'dingoes'],
-    ['volcano', 'volcanoes'],
-    ['tornado', 'tornadoes'],
-    ['torpedo', 'torpedoes'],
-    // Ends with `us`.
-    ['genus', 'genera'],
-    ['viscus', 'viscera'],
-    // Ends with `ma`.
-    ['stigma', 'stigmata'],
-    ['stoma', 'stomata'],
-    ['dogma', 'dogmata'],
-    ['lemma', 'lemmata'],
-    ['schema', 'schemata'],
-    ['anathema', 'anathemata'],
-    // Other irregular rules.
-    ['ox', 'oxen'],
-    ['axe', 'axes'],
-    ['die', 'dice'],
-    ['yes', 'yeses'],
-    ['foot', 'feet'],
-    ['eave', 'eaves'],
-    ['goose', 'geese'],
-    ['tooth', 'teeth'],
-    ['quiz', 'quizzes'],
-    ['human', 'humans'],
-    ['proof', 'proofs'],
-    ['carve', 'carves'],
-    ['valve', 'valves'],
-    ['looey', 'looies'],
-    ['thief', 'thieves'],
-    ['groove', 'grooves'],
-    ['pickaxe', 'pickaxes'],
-    ['passerby', 'passersby']
-  ].forEach(function (rule) {
-    return pluralize.addIrregularRule(rule[0], rule[1]);
-  });
-
-  /**
-   * Pluralization rules.
-   */
-  [
-    [/s?$/i, 's'],
-    [/[^\u0000-\u007F]$/i, '$0'],
-    [/([^aeiou]ese)$/i, '$1'],
-    [/(ax|test)is$/i, '$1es'],
-    [/(alias|[^aou]us|t[lm]as|gas|ris)$/i, '$1es'],
-    [/(e[mn]u)s?$/i, '$1s'],
-    [/([^l]ias|[aeiou]las|[ejzr]as|[iu]am)$/i, '$1'],
-    [/(alumn|syllab|vir|radi|nucle|fung|cact|stimul|termin|bacill|foc|uter|loc|strat)(?:us|i)$/i, '$1i'],
-    [/(alumn|alg|vertebr)(?:a|ae)$/i, '$1ae'],
-    [/(seraph|cherub)(?:im)?$/i, '$1im'],
-    [/(her|at|gr)o$/i, '$1oes'],
-    [/(agend|addend|millenni|dat|extrem|bacteri|desiderat|strat|candelabr|errat|ov|symposi|curricul|automat|quor)(?:a|um)$/i, '$1a'],
-    [/(apheli|hyperbat|periheli|asyndet|noumen|phenomen|criteri|organ|prolegomen|hedr|automat)(?:a|on)$/i, '$1a'],
-    [/sis$/i, 'ses'],
-    [/(?:(kni|wi|li)fe|(ar|l|ea|eo|oa|hoo)f)$/i, '$1$2ves'],
-    [/([^aeiouy]|qu)y$/i, '$1ies'],
-    [/([^ch][ieo][ln])ey$/i, '$1ies'],
-    [/(x|ch|ss|sh|zz)$/i, '$1es'],
-    [/(matr|cod|mur|sil|vert|ind|append)(?:ix|ex)$/i, '$1ices'],
-    [/\b((?:tit)?m|l)(?:ice|ouse)$/i, '$1ice'],
-    [/(pe)(?:rson|ople)$/i, '$1ople'],
-    [/(child)(?:ren)?$/i, '$1ren'],
-    [/eaux$/i, '$0'],
-    [/m[ae]n$/i, 'men'],
-    ['thou', 'you']
-  ].forEach(function (rule) {
-    return pluralize.addPluralRule(rule[0], rule[1]);
-  });
-
-  /**
-   * Singularization rules.
-   */
-  [
-    [/s$/i, ''],
-    [/(ss)$/i, '$1'],
-    [/(wi|kni|(?:after|half|high|low|mid|non|night|[^\w]|^)li)ves$/i, '$1fe'],
-    [/(ar|(?:wo|[ae])l|[eo][ao])ves$/i, '$1f'],
-    [/ies$/i, 'y'],
-    [/\b([pl]|zomb|(?:neck|cross)?t|coll|faer|food|gen|goon|group|lass|talk|goal|cut)ies$/i, '$1ie'],
-    [/\b(mon|smil)ies$/i, '$1ey'],
-    [/\b((?:tit)?m|l)ice$/i, '$1ouse'],
-    [/(seraph|cherub)im$/i, '$1'],
-    [/(x|ch|ss|sh|zz|tto|go|cho|alias|[^aou]us|t[lm]as|gas|(?:her|at|gr)o|[aeiou]ris)(?:es)?$/i, '$1'],
-    [/(analy|diagno|parenthe|progno|synop|the|empha|cri|ne)(?:sis|ses)$/i, '$1sis'],
-    [/(movie|twelve|abuse|e[mn]u)s$/i, '$1'],
-    [/(test)(?:is|es)$/i, '$1is'],
-    [/(alumn|syllab|vir|radi|nucle|fung|cact|stimul|termin|bacill|foc|uter|loc|strat)(?:us|i)$/i, '$1us'],
-    [/(agend|addend|millenni|dat|extrem|bacteri|desiderat|strat|candelabr|errat|ov|symposi|curricul|quor)a$/i, '$1um'],
-    [/(apheli|hyperbat|periheli|asyndet|noumen|phenomen|criteri|organ|prolegomen|hedr|automat)a$/i, '$1on'],
-    [/(alumn|alg|vertebr)ae$/i, '$1a'],
-    [/(cod|mur|sil|vert|ind)ices$/i, '$1ex'],
-    [/(matr|append)ices$/i, '$1ix'],
-    [/(pe)(rson|ople)$/i, '$1rson'],
-    [/(child)ren$/i, '$1'],
-    [/(eau)x?$/i, '$1'],
-    [/men$/i, 'man']
-  ].forEach(function (rule) {
-    return pluralize.addSingularRule(rule[0], rule[1]);
-  });
-
-  /**
-   * Uncountable rules.
-   */
-  [
-    // Singular words with no plurals.
-    'adulthood',
-    'advice',
-    'agenda',
-    'aid',
-    'aircraft',
-    'alcohol',
-    'ammo',
-    'analytics',
-    'anime',
-    'athletics',
-    'audio',
-    'bison',
-    'blood',
-    'bream',
-    'buffalo',
-    'butter',
-    'carp',
-    'cash',
-    'chassis',
-    'chess',
-    'clothing',
-    'cod',
-    'commerce',
-    'cooperation',
-    'corps',
-    'debris',
-    'diabetes',
-    'digestion',
-    'elk',
-    'energy',
-    'equipment',
-    'excretion',
-    'expertise',
-    'firmware',
-    'flounder',
-    'fun',
-    'gallows',
-    'garbage',
-    'graffiti',
-    'hardware',
-    'headquarters',
-    'health',
-    'herpes',
-    'highjinks',
-    'homework',
-    'housework',
-    'information',
-    'jeans',
-    'justice',
-    'kudos',
-    'labour',
-    'literature',
-    'machinery',
-    'mackerel',
-    'mail',
-    'media',
-    'mews',
-    'moose',
-    'music',
-    'mud',
-    'manga',
-    'news',
-    'only',
-    'personnel',
-    'pike',
-    'plankton',
-    'pliers',
-    'police',
-    'pollution',
-    'premises',
-    'rain',
-    'research',
-    'rice',
-    'salmon',
-    'scissors',
-    'series',
-    'sewage',
-    'shambles',
-    'shrimp',
-    'software',
-    'species',
-    'staff',
-    'swine',
-    'tennis',
-    'traffic',
-    'transportation',
-    'trout',
-    'tuna',
-    'wealth',
-    'welfare',
-    'whiting',
-    'wildebeest',
-    'wildlife',
-    'you',
-    /pok[eé]mon$/i,
-    // Regexes.
-    /[^aeiou]ese$/i, // "chinese", "japanese"
-    /deer$/i, // "deer", "reindeer"
-    /fish$/i, // "fish", "blowfish", "angelfish"
-    /measles$/i,
-    /o[iu]s$/i, // "carnivorous"
-    /pox$/i, // "chickpox", "smallpox"
-    /sheep$/i
-  ].forEach(pluralize.addUncountableRule);
-
-  return pluralize;
-});
 
 
 /***/ }),
@@ -39588,17 +38516,16 @@ var IE8_DOM_DEFINE = __webpack_require__("0cfb");
 var anObject = __webpack_require__("825a");
 var toPrimitive = __webpack_require__("c04e");
 
-// eslint-disable-next-line es/no-object-defineproperty -- safe
-var $defineProperty = Object.defineProperty;
+var nativeDefineProperty = Object.defineProperty;
 
 // `Object.defineProperty` method
 // https://tc39.es/ecma262/#sec-object.defineproperty
-exports.f = DESCRIPTORS ? $defineProperty : function defineProperty(O, P, Attributes) {
+exports.f = DESCRIPTORS ? nativeDefineProperty : function defineProperty(O, P, Attributes) {
   anObject(O);
   P = toPrimitive(P, true);
   anObject(Attributes);
   if (IE8_DOM_DEFINE) try {
-    return $defineProperty(O, P, Attributes);
+    return nativeDefineProperty(O, P, Attributes);
   } catch (error) { /* empty */ }
   if ('get' in Attributes || 'set' in Attributes) throw TypeError('Accessors not supported');
   if ('value' in Attributes) O[P] = Attributes.value;
@@ -39765,132 +38692,6 @@ module.exports = function createNamespaceEmitter () {
 
   return emitter
 }
-
-
-/***/ }),
-
-/***/ "9c59":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var has = Object.prototype.hasOwnProperty
-  , undef;
-
-/**
- * Decode a URI encoded string.
- *
- * @param {String} input The URI encoded string.
- * @returns {String|Null} The decoded string.
- * @api private
- */
-function decode(input) {
-  try {
-    return decodeURIComponent(input.replace(/\+/g, ' '));
-  } catch (e) {
-    return null;
-  }
-}
-
-/**
- * Attempts to encode a given input.
- *
- * @param {String} input The string that needs to be encoded.
- * @returns {String|Null} The encoded string.
- * @api private
- */
-function encode(input) {
-  try {
-    return encodeURIComponent(input);
-  } catch (e) {
-    return null;
-  }
-}
-
-/**
- * Simple query string parser.
- *
- * @param {String} query The query string that needs to be parsed.
- * @returns {Object}
- * @api public
- */
-function querystring(query) {
-  var parser = /([^=?#&]+)=?([^&]*)/g
-    , result = {}
-    , part;
-
-  while (part = parser.exec(query)) {
-    var key = decode(part[1])
-      , value = decode(part[2]);
-
-    //
-    // Prevent overriding of existing properties. This ensures that build-in
-    // methods like `toString` or __proto__ are not overriden by malicious
-    // querystrings.
-    //
-    // In the case if failed decoding, we want to omit the key/value pairs
-    // from the result.
-    //
-    if (key === null || value === null || key in result) continue;
-    result[key] = value;
-  }
-
-  return result;
-}
-
-/**
- * Transform a query string to an object.
- *
- * @param {Object} obj Object that should be transformed.
- * @param {String} prefix Optional prefix.
- * @returns {String}
- * @api public
- */
-function querystringify(obj, prefix) {
-  prefix = prefix || '';
-
-  var pairs = []
-    , value
-    , key;
-
-  //
-  // Optionally prefix with a '?' if needed
-  //
-  if ('string' !== typeof prefix) prefix = '?';
-
-  for (key in obj) {
-    if (has.call(obj, key)) {
-      value = obj[key];
-
-      //
-      // Edge cases where we actually want to encode the value to an empty
-      // string instead of the stringified value.
-      //
-      if (!value && (value === null || value === undef || isNaN(value))) {
-        value = '';
-      }
-
-      key = encode(key);
-      value = encode(value);
-
-      //
-      // If we failed to encode the strings, we should bail out as we don't
-      // want to add invalid strings to the query.
-      //
-      if (key === null || value === null) continue;
-      pairs.push(key +'='+ value);
-    }
-  }
-
-  return pairs.length ? prefix + pairs.join('&') : '';
-}
-
-//
-// Expose the module.
-//
-exports.stringify = querystringify;
-exports.parse = querystring;
 
 
 /***/ }),
@@ -40097,13 +38898,9 @@ module.exports = Symbol;
 
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; subClass.__proto__ = superClass; }
 
 var qsStringify = __webpack_require__("cfd4");
-
-var URL = __webpack_require__("1816");
 
 var RequestClient = __webpack_require__("dd81");
 
@@ -40250,7 +39047,7 @@ module.exports = /*#__PURE__*/function (_RequestClient) {
       if (/^(?!https?:\/\/).*$/i.test(opts.companionUrl)) {
         plugin.opts.companionAllowedHosts = "https://" + opts.companionUrl.replace(/^\/\//, '');
       } else {
-        plugin.opts.companionAllowedHosts = new URL(opts.companionUrl).origin;
+        plugin.opts.companionAllowedHosts = opts.companionUrl;
       }
     }
 
@@ -40293,9 +39090,7 @@ function _extends() { _extends = Object.assign || function (target) { for (var i
 
 function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
 
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; subClass.__proto__ = superClass; }
 
 /**
  * Adapted from preact-virtual-list: https://github.com/developit/preact-virtual-list
@@ -40738,7 +39533,7 @@ function FileIcon() {
   return h("svg", {
     "aria-hidden": "true",
     focusable: "false",
-    className: "uppy-c-icon",
+    class: "uppy-c-icon",
     width: 11,
     height: 14.5,
     viewBox: "0 0 44 58"
@@ -40751,7 +39546,7 @@ function FolderIcon() {
   return h("svg", {
     "aria-hidden": "true",
     focusable: "false",
-    className: "uppy-c-icon",
+    class: "uppy-c-icon",
     style: {
       minWidth: 16,
       marginRight: 3
@@ -41461,7 +40256,6 @@ var from = __webpack_require__("4df4");
 var checkCorrectnessOfIteration = __webpack_require__("1c7e");
 
 var INCORRECT_ITERATION = !checkCorrectnessOfIteration(function (iterable) {
-  // eslint-disable-next-line es/no-array-from -- required for testing
   Array.from(iterable);
 });
 
@@ -41577,13 +40371,13 @@ module.exports = function (O, defaultConstructor) {
 "use strict";
 
 
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
+function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; subClass.__proto__ = superClass; }
 
 function _wrapNativeSuper(Class) { var _cache = typeof Map === "function" ? new Map() : undefined; _wrapNativeSuper = function _wrapNativeSuper(Class) { if (Class === null || !_isNativeFunction(Class)) return Class; if (typeof Class !== "function") { throw new TypeError("Super expression must either be null or a function"); } if (typeof _cache !== "undefined") { if (_cache.has(Class)) return _cache.get(Class); _cache.set(Class, Wrapper); } function Wrapper() { return _construct(Class, arguments, _getPrototypeOf(this).constructor); } Wrapper.prototype = Object.create(Class.prototype, { constructor: { value: Wrapper, enumerable: false, writable: true, configurable: true } }); return _setPrototypeOf(Wrapper, Class); }; return _wrapNativeSuper(Class); }
 
 function _construct(Parent, args, Class) { if (_isNativeReflectConstruct()) { _construct = Reflect.construct; } else { _construct = function _construct(Parent, args, Class) { var a = [null]; a.push.apply(a, args); var Constructor = Function.bind.apply(Parent, a); var instance = new Constructor(); if (Class) _setPrototypeOf(instance, Class.prototype); return instance; }; } return _construct.apply(null, arguments); }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
 
 function _isNativeFunction(fn) { return Function.toString.call(fn).indexOf("[native code]") !== -1; }
 
@@ -41955,19 +40749,19 @@ var AddFiles = __webpack_require__("abc5");
 
 var AddFilesPanel = function AddFilesPanel(props) {
   return h("div", {
-    className: classNames('uppy-Dashboard-AddFilesPanel', props.className),
+    class: classNames('uppy-Dashboard-AddFilesPanel', props.className),
     "data-uppy-panelType": "AddFiles",
     "aria-hidden": props.showAddFilesPanel
   }, h("div", {
-    className: "uppy-DashboardContent-bar"
+    class: "uppy-DashboardContent-bar"
   }, h("div", {
-    className: "uppy-DashboardContent-title",
+    class: "uppy-DashboardContent-title",
     role: "heading",
     "aria-level": "1"
   }, props.i18n('addingMoreFiles')), h("button", {
-    className: "uppy-DashboardContent-back",
+    class: "uppy-DashboardContent-back",
     type: "button",
-    onClick: function onClick(ev) {
+    onclick: function onclick(ev) {
       return props.toggleAddFilesPanel(false);
     }
   }, props.i18n('back'))), h(AddFiles, props));
@@ -42303,23 +41097,23 @@ module.exports = function Dashboard(props) {
 
   var showFileList = props.showSelectedFiles && !noFiles;
   var dashboard = h("div", {
-    className: dashboardClassName,
+    class: dashboardClassName,
     "data-uppy-theme": props.theme,
     "data-uppy-num-acquirers": props.acquirers.length,
     "data-uppy-drag-drop-supported": isDragDropSupported(),
     "aria-hidden": props.inline ? 'false' : props.isHidden,
     "aria-disabled": props.disabled,
     "aria-label": !props.inline ? props.i18n('dashboardWindowTitle') : props.i18n('dashboardTitle'),
-    onPaste: props.handlePaste,
+    onpaste: props.handlePaste,
     onDragOver: props.handleDragOver,
     onDragLeave: props.handleDragLeave,
     onDrop: props.handleDrop
   }, h("div", {
-    className: "uppy-Dashboard-overlay",
-    tabIndex: -1,
-    onClick: props.handleClickOutside
+    class: "uppy-Dashboard-overlay",
+    tabindex: -1,
+    onclick: props.handleClickOutside
   }), h("div", {
-    className: "uppy-Dashboard-inner",
+    class: "uppy-Dashboard-inner",
     "aria-modal": !props.inline && 'true',
     role: !props.inline && 'dialog',
     style: {
@@ -42327,17 +41121,17 @@ module.exports = function Dashboard(props) {
       height: props.inline && props.height ? props.height : ''
     }
   }, !props.inline ? h("button", {
-    className: "uppy-u-reset uppy-Dashboard-close",
+    class: "uppy-u-reset uppy-Dashboard-close",
     type: "button",
     "aria-label": props.i18n('closeModal'),
     title: props.i18n('closeModal'),
-    onClick: props.closeModal
+    onclick: props.closeModal
   }, h("span", {
     "aria-hidden": "true"
   }, "\xD7")) : null, h("div", {
-    className: "uppy-Dashboard-innerWrap"
+    class: "uppy-Dashboard-innerWrap"
   }, h("div", {
-    className: "uppy-Dashboard-dropFilesHereHint"
+    class: "uppy-Dashboard-dropFilesHereHint"
   }, props.i18n('dropHint')), showFileList && h(PanelTopBar, props), showFileList ? h(FileList, _extends({}, props, {
     itemsPerRow: itemsPerRow
   })) : h(AddFiles, _extends({}, props, {
@@ -42353,13 +41147,13 @@ module.exports = function Dashboard(props) {
   }, props)) : null), h(Slide, null, props.showFileEditor ? h(EditorPanel, _extends({
     key: "Editor"
   }, props)) : null), h("div", {
-    className: "uppy-Dashboard-progressindicators"
+    class: "uppy-Dashboard-progressindicators"
   }, props.progressindicators.map(function (target) {
     return props.getPlugin(target.id).render(props.state);
   })))));
   return (// Wrap it for RTL language support
     h("div", {
-      className: wrapperClassName,
+      class: wrapperClassName,
       dir: props.direction
     }, dashboard)
   );
@@ -46325,9 +45119,7 @@ module.exports = /*#__PURE__*/function () {
 /***/ "abc5":
 /***/ (function(module, exports, __webpack_require__) {
 
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; subClass.__proto__ = superClass; }
 
 var _require = __webpack_require__("30bf"),
     h = _require.h,
@@ -46367,15 +45159,15 @@ var AddFiles = /*#__PURE__*/function (_Component) {
 
     _this.renderHiddenInput = function (isFolder, refCallback) {
       return h("input", {
-        className: "uppy-Dashboard-input",
+        class: "uppy-Dashboard-input",
         hidden: true,
         "aria-hidden": "true",
-        tabIndex: -1,
+        tabindex: -1,
         webkitdirectory: isFolder,
         type: "file",
         name: "files[]",
         multiple: _this.props.maxNumberOfFiles !== 1,
-        onChange: _this.onFileInputChange,
+        onchange: _this.onFileInputChange,
         accept: _this.props.allowedFileTypes,
         ref: refCallback
       });
@@ -46383,16 +45175,16 @@ var AddFiles = /*#__PURE__*/function (_Component) {
 
     _this.renderMyDeviceAcquirer = function () {
       return h("div", {
-        className: "uppy-DashboardTab",
+        class: "uppy-DashboardTab",
         role: "presentation",
         "data-uppy-acquirer-id": "MyDevice"
       }, h("button", {
         type: "button",
-        className: "uppy-DashboardTab-btn",
+        class: "uppy-DashboardTab-btn",
         role: "tab",
-        tabIndex: 0,
+        tabindex: 0,
         "data-uppy-super-focusable": true,
-        onClick: _this.triggerFileInputClick
+        onclick: _this.triggerFileInputClick
       }, h("svg", {
         "aria-hidden": "true",
         focusable: "false",
@@ -46401,9 +45193,9 @@ var AddFiles = /*#__PURE__*/function (_Component) {
         viewBox: "0 0 32 32"
       }, h("g", {
         fill: "none",
-        fillRule: "evenodd"
+        "fill-rule": "evenodd"
       }, h("rect", {
-        className: "uppy-ProviderIconBg",
+        class: "uppy-ProviderIconBg",
         width: "32",
         height: "32",
         rx: "16",
@@ -46412,7 +45204,7 @@ var AddFiles = /*#__PURE__*/function (_Component) {
         d: "M21.973 21.152H9.863l-1.108-5.087h14.464l-1.246 5.087zM9.935 11.37h3.958l.886 1.444a.673.673 0 0 0 .585.316h6.506v1.37H9.935v-3.13zm14.898 3.44a.793.793 0 0 0-.616-.31h-.978v-2.126c0-.379-.275-.613-.653-.613H15.75l-.886-1.445a.673.673 0 0 0-.585-.316H9.232c-.378 0-.667.209-.667.587V14.5h-.782a.793.793 0 0 0-.61.303.795.795 0 0 0-.155.663l1.45 6.633c.078.36.396.618.764.618h13.354c.36 0 .674-.246.76-.595l1.631-6.636a.795.795 0 0 0-.144-.675z",
         fill: "#FFF"
       }))), h("div", {
-        className: "uppy-DashboardTab-name"
+        class: "uppy-DashboardTab-name"
       }, _this.props.i18n('myDevice'))));
     };
 
@@ -46420,8 +45212,8 @@ var AddFiles = /*#__PURE__*/function (_Component) {
       var numberOfAcquirers = _this.props.acquirers.length;
       return h("button", {
         type: "button",
-        className: "uppy-u-reset uppy-Dashboard-browse",
-        onClick: onClickFn,
+        class: "uppy-u-reset uppy-Dashboard-browse",
+        onclick: onClickFn,
         "data-uppy-super-focusable": numberOfAcquirers === 0
       }, text);
     };
@@ -46495,28 +45287,28 @@ var AddFiles = /*#__PURE__*/function (_Component) {
       }
 
       return h("div", {
-        className: "uppy-Dashboard-AddFiles-title"
+        class: "uppy-Dashboard-AddFiles-title"
       }, titleText);
     };
 
     _this.renderAcquirer = function (acquirer) {
       return h("div", {
-        className: "uppy-DashboardTab",
+        class: "uppy-DashboardTab",
         role: "presentation",
         "data-uppy-acquirer-id": acquirer.id
       }, h("button", {
         type: "button",
-        className: "uppy-DashboardTab-btn",
+        class: "uppy-DashboardTab-btn",
         role: "tab",
-        tabIndex: 0,
+        tabindex: 0,
         "aria-controls": "uppy-DashboardContent-panel--" + acquirer.id,
         "aria-selected": _this.props.activePickerPanel.id === acquirer.id,
         "data-uppy-super-focusable": true,
-        onClick: function onClick() {
+        onclick: function onclick() {
           return _this.props.showPanel(acquirer.id);
         }
       }, acquirer.icon(), h("div", {
-        className: "uppy-DashboardTab-name"
+        class: "uppy-DashboardTab-name"
       }, acquirer.name)));
     };
 
@@ -46526,7 +45318,7 @@ var AddFiles = /*#__PURE__*/function (_Component) {
       var acquirersWithoutLastTwo = [].concat(acquirers);
       var lastTwoAcquirers = acquirersWithoutLastTwo.splice(acquirers.length - 2, acquirers.length);
       return h("div", {
-        className: "uppy-Dashboard-AddFiles-list",
+        class: "uppy-Dashboard-AddFiles-list",
         role: "tablist"
       }, _this.renderMyDeviceAcquirer(), acquirersWithoutLastTwo.map(function (acquirer) {
         return _this.renderAcquirer(acquirer);
@@ -46547,15 +45339,15 @@ var AddFiles = /*#__PURE__*/function (_Component) {
     var uppyBranding = h("span", null, h("svg", {
       "aria-hidden": "true",
       focusable: "false",
-      className: "uppy-c-icon uppy-Dashboard-poweredByIcon",
+      class: "uppy-c-icon uppy-Dashboard-poweredByIcon",
       width: "11",
       height: "11",
       viewBox: "0 0 11 11"
     }, h("path", {
       d: "M7.365 10.5l-.01-4.045h2.612L5.5.806l-4.467 5.65h2.604l.01 4.044h3.718z",
-      fillRule: "evenodd"
+      "fill-rule": "evenodd"
     })), h("span", {
-      className: "uppy-Dashboard-poweredByUppy"
+      class: "uppy-Dashboard-poweredByUppy"
     }, "Uppy")); // Support both the old word-order-insensitive string `poweredBy` and the new word-order-sensitive string `poweredBy2`
 
     var linkText = this.props.i18nArray('poweredBy2', {
@@ -46563,11 +45355,11 @@ var AddFiles = /*#__PURE__*/function (_Component) {
       uppy: uppyBranding
     });
     return h("a", {
-      tabIndex: "-1",
+      tabindex: "-1",
       href: "https://uppy.io",
       rel: "noreferrer noopener",
       target: "_blank",
-      className: "uppy-Dashboard-poweredBy"
+      class: "uppy-Dashboard-poweredBy"
     }, linkText);
   };
 
@@ -46575,15 +45367,15 @@ var AddFiles = /*#__PURE__*/function (_Component) {
     var _this2 = this;
 
     return h("div", {
-      className: "uppy-Dashboard-AddFiles"
+      class: "uppy-Dashboard-AddFiles"
     }, this.renderHiddenInput(false, function (ref) {
       _this2.fileInput = ref;
     }), this.renderHiddenInput(true, function (ref) {
       _this2.folderInput = ref;
     }), this.renderDropPasteBrowseTagline(), this.props.acquirers.length > 0 && this.renderAcquirers(this.props.acquirers), h("div", {
-      className: "uppy-Dashboard-AddFiles-info"
+      class: "uppy-Dashboard-AddFiles-info"
     }, this.props.note && h("div", {
-      className: "uppy-Dashboard-note"
+      class: "uppy-Dashboard-note"
     }, this.props.note), this.props.proudlyDisplayPoweredByUppy && this.renderPoweredByUppy(this.props)));
   };
 
@@ -46724,9 +45516,7 @@ module.exports = baseIsArguments;
 /***/ "acfc":
 /***/ (function(module, exports, __webpack_require__) {
 
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; subClass.__proto__ = superClass; }
 
 var _require = __webpack_require__("30bf"),
     cloneElement = _require.cloneElement,
@@ -46921,7 +45711,6 @@ var returnThis = function () { return this; };
 // https://tc39.es/ecma262/#sec-%iteratorprototype%-object
 var IteratorPrototype, PrototypeOfArrayIteratorPrototype, arrayIterator;
 
-/* eslint-disable es/no-array-prototype-keys -- safe */
 if ([].keys) {
   arrayIterator = [].keys();
   // Safari 8 has buggy iterators w/o `next`
@@ -47706,7 +46495,7 @@ module.exports = function getTimeStamp() {
   var hours = pad(date.getHours().toString());
   var minutes = pad(date.getMinutes().toString());
   var seconds = pad(date.getSeconds().toString());
-  return hours + ":" + minutes + ":" + seconds;
+  return hours + ':' + minutes + ':' + seconds;
 };
 /**
  * Adds zero to strings shorter than two characters
@@ -47989,10 +46778,7 @@ var _require = __webpack_require__("30bf"),
 
 var remoteFileObjToLocal = __webpack_require__("840e");
 
-var Item = __webpack_require__("b557"); // Hopefully this name will not be used by Google
-
-
-var VIRTUAL_SHARED_DIR = 'shared-with-me';
+var Item = __webpack_require__("b557");
 
 var getSharedProps = function getSharedProps(fileOrFolder, props) {
   return {
@@ -48013,35 +46799,29 @@ var getSharedProps = function getSharedProps(fileOrFolder, props) {
 };
 
 module.exports = function (props) {
-  var folders = props.folders,
-      files = props.files,
-      handleScroll = props.handleScroll,
-      isChecked = props.isChecked;
-
-  if (!folders.length && !files.length) {
+  if (!props.folders.length && !props.files.length) {
     return h("div", {
-      className: "uppy-Provider-empty"
+      class: "uppy-Provider-empty"
     }, props.i18n('noFilesFound'));
   }
 
   return h("div", {
-    className: "uppy-ProviderBrowser-body"
+    class: "uppy-ProviderBrowser-body"
   }, h("ul", {
-    className: "uppy-ProviderBrowser-list",
-    onScroll: handleScroll,
+    class: "uppy-ProviderBrowser-list",
+    onscroll: props.handleScroll,
     role: "listbox" // making <ul> not focusable for firefox
     ,
-    tabIndex: "-1"
-  }, folders.map(function (folder) {
+    tabindex: "-1"
+  }, props.folders.map(function (folder) {
     return Item(_extends({}, getSharedProps(folder, props), {
       type: 'folder',
-      isDisabled: isChecked(folder) ? isChecked(folder).loading : false,
-      isCheckboxDisabled: folder.id === VIRTUAL_SHARED_DIR,
+      isDisabled: props.isChecked(folder) ? props.isChecked(folder).loading : false,
       handleFolderClick: function handleFolderClick() {
         return props.handleFolderClick(folder);
       }
     }));
-  }), files.map(function (file) {
+  }), props.files.map(function (file) {
     var validateRestrictions = props.validateRestrictions(remoteFileObjToLocal(file), [].concat(props.uppyFiles, props.currentSelection));
     var sharedProps = getSharedProps(file, props);
     var restrictionReason = validateRestrictions.reason;
@@ -53677,13 +52457,13 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
+function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; subClass.__proto__ = superClass; }
 
 function _wrapNativeSuper(Class) { var _cache = typeof Map === "function" ? new Map() : undefined; _wrapNativeSuper = function _wrapNativeSuper(Class) { if (Class === null || !_isNativeFunction(Class)) return Class; if (typeof Class !== "function") { throw new TypeError("Super expression must either be null or a function"); } if (typeof _cache !== "undefined") { if (_cache.has(Class)) return _cache.get(Class); _cache.set(Class, Wrapper); } function Wrapper() { return _construct(Class, arguments, _getPrototypeOf(this).constructor); } Wrapper.prototype = Object.create(Class.prototype, { constructor: { value: Wrapper, enumerable: false, writable: true, configurable: true } }); return _setPrototypeOf(Wrapper, Class); }; return _wrapNativeSuper(Class); }
 
 function _construct(Parent, args, Class) { if (_isNativeReflectConstruct()) { _construct = Reflect.construct; } else { _construct = function _construct(Parent, args, Class) { var a = [null]; a.push.apply(a, args); var Constructor = Function.bind.apply(Parent, a); var instance = new Constructor(); if (Class) _setPrototypeOf(instance, Class.prototype); return instance; }; } return _construct.apply(null, arguments); }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
 
 function _isNativeFunction(fn) { return Function.toString.call(fn).indexOf("[native code]") !== -1; }
 
@@ -54304,7 +53084,7 @@ var Uppy = /*#__PURE__*/function () {
     var logMessageWithDetails = message;
 
     if (details) {
-      logMessageWithDetails += " " + details;
+      logMessageWithDetails += ' ' + details;
     }
 
     if (err.isRestriction) {
@@ -54369,7 +53149,7 @@ var Uppy = /*#__PURE__*/function () {
     if (file.name) {
       fileName = file.name;
     } else if (fileType.split('/')[0] === 'image') {
-      fileName = fileType.split('/')[0] + "." + fileType.split('/')[1];
+      fileName = fileType.split('/')[0] + '.' + fileType.split('/')[1];
     } else {
       fileName = 'noname';
     }
@@ -54841,7 +53621,7 @@ var Uppy = /*#__PURE__*/function () {
       }
 
       if (error.details) {
-        errorMsg += " " + error.details;
+        errorMsg += ' ' + error.details;
       }
 
       _this6.setState({
@@ -54856,7 +53636,7 @@ var Uppy = /*#__PURE__*/function () {
       }
 
       if (error.details) {
-        errorMsg += " " + error.details;
+        errorMsg += ' ' + error.details;
       }
 
       _this6.setFileState(file.id, {
@@ -54873,7 +53653,7 @@ var Uppy = /*#__PURE__*/function () {
         newError.details = error.message;
 
         if (error.details) {
-          newError.details += " " + error.details;
+          newError.details += ' ' + error.details;
         }
 
         newError.message = _this6.i18n('failedToUpload', {
@@ -55557,7 +54337,7 @@ var Uppy = /*#__PURE__*/function () {
   return Uppy;
 }();
 
-Uppy.VERSION = "1.17.0";
+Uppy.VERSION = "1.16.2";
 
 module.exports = function (opts) {
   return new Uppy(opts);
@@ -56020,13 +54800,13 @@ module.exports = function toArray(list) {
 /***/ "bcbe":
 /***/ (function(module, exports) {
 
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
+function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; subClass.__proto__ = superClass; }
 
 function _wrapNativeSuper(Class) { var _cache = typeof Map === "function" ? new Map() : undefined; _wrapNativeSuper = function _wrapNativeSuper(Class) { if (Class === null || !_isNativeFunction(Class)) return Class; if (typeof Class !== "function") { throw new TypeError("Super expression must either be null or a function"); } if (typeof _cache !== "undefined") { if (_cache.has(Class)) return _cache.get(Class); _cache.set(Class, Wrapper); } function Wrapper() { return _construct(Class, arguments, _getPrototypeOf(this).constructor); } Wrapper.prototype = Object.create(Class.prototype, { constructor: { value: Wrapper, enumerable: false, writable: true, configurable: true } }); return _setPrototypeOf(Wrapper, Class); }; return _wrapNativeSuper(Class); }
 
 function _construct(Parent, args, Class) { if (_isNativeReflectConstruct()) { _construct = Reflect.construct; } else { _construct = function _construct(Parent, args, Class) { var a = [null]; a.push.apply(a, args); var Constructor = Function.bind.apply(Parent, a); var instance = new Constructor(); if (Class) _setPrototypeOf(instance, Class.prototype); return instance; }; } return _construct.apply(null, arguments); }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
 
 function _isNativeFunction(fn) { return Function.toString.call(fn).indexOf("[native code]") !== -1; }
 
@@ -56409,23 +55189,23 @@ module.exports = function generateFileID(file) {
   var id = 'uppy';
 
   if (typeof file.name === 'string') {
-    id += "-" + encodeFilename(file.name.toLowerCase());
+    id += '-' + encodeFilename(file.name.toLowerCase());
   }
 
   if (file.type !== undefined) {
-    id += "-" + file.type;
+    id += '-' + file.type;
   }
 
   if (file.meta && typeof file.meta.relativePath === 'string') {
-    id += "-" + encodeFilename(file.meta.relativePath.toLowerCase());
+    id += '-' + encodeFilename(file.meta.relativePath.toLowerCase());
   }
 
   if (file.data.size !== undefined) {
-    id += "-" + file.data.size;
+    id += '-' + file.data.size;
   }
 
   if (file.data.lastModified !== undefined) {
-    id += "-" + file.data.lastModified;
+    id += '-' + file.data.lastModified;
   }
 
   return id;
@@ -56434,7 +55214,7 @@ module.exports = function generateFileID(file) {
 function encodeFilename(name) {
   var suffix = '';
   return name.replace(/[^A-Z0-9]/ig, function (character) {
-    suffix += "-" + encodeCharacter(character);
+    suffix += '-' + encodeCharacter(character);
     return '/';
   }) + suffix;
 }
@@ -56774,9 +55554,7 @@ if (NOT_GENERIC || INCORRECT_NAME) {
 /***/ "c1ee":
 /***/ (function(module, exports, __webpack_require__) {
 
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; subClass.__proto__ = superClass; }
 
 var _require = __webpack_require__("fffd"),
     ProviderViews = _require.ProviderViews;
@@ -57225,12 +56003,12 @@ module.exports = function getFileNameAndExtension(fullFileName) {
       name: fullFileName,
       extension: undefined
     };
+  } else {
+    return {
+      name: fullFileName.slice(0, lastDot),
+      extension: fullFileName.slice(lastDot + 1)
+    };
   }
-
-  return {
-    name: fullFileName.slice(0, lastDot),
-    extension: fullFileName.slice(lastDot + 1)
-  };
 };
 
 /***/ }),
@@ -58841,19 +57619,18 @@ module.exports = hashHas;
 
 "use strict";
 
-var $propertyIsEnumerable = {}.propertyIsEnumerable;
-// eslint-disable-next-line es/no-object-getownpropertydescriptor -- safe
+var nativePropertyIsEnumerable = {}.propertyIsEnumerable;
 var getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor;
 
 // Nashorn ~ JDK8 bug
-var NASHORN_BUG = getOwnPropertyDescriptor && !$propertyIsEnumerable.call({ 1: 2 }, 1);
+var NASHORN_BUG = getOwnPropertyDescriptor && !nativePropertyIsEnumerable.call({ 1: 2 }, 1);
 
 // `Object.prototype.propertyIsEnumerable` method implementation
 // https://tc39.es/ecma262/#sec-object.prototype.propertyisenumerable
 exports.f = NASHORN_BUG ? function propertyIsEnumerable(V) {
   var descriptor = getOwnPropertyDescriptor(this, V);
   return !!descriptor && descriptor.enumerable;
-} : $propertyIsEnumerable;
+} : nativePropertyIsEnumerable;
 
 
 /***/ }),
@@ -58939,13 +57716,11 @@ var aPossiblePrototype = __webpack_require__("3bbe");
 // `Object.setPrototypeOf` method
 // https://tc39.es/ecma262/#sec-object.setprototypeof
 // Works with __proto__ only. Old v8 can't work with null proto objects.
-// eslint-disable-next-line es/no-object-setprototypeof -- safe
 module.exports = Object.setPrototypeOf || ('__proto__' in {} ? function () {
   var CORRECT_SETTER = false;
   var test = {};
   var setter;
   try {
-    // eslint-disable-next-line es/no-object-getownpropertydescriptor -- safe
     setter = Object.getOwnPropertyDescriptor(Object.prototype, '__proto__').set;
     setter.call(test, []);
     CORRECT_SETTER = test instanceof Array;
@@ -59551,6 +58326,7 @@ __webpack_require__("ac1f");
 var redefine = __webpack_require__("6eeb");
 var fails = __webpack_require__("d039");
 var wellKnownSymbol = __webpack_require__("b622");
+var regexpExec = __webpack_require__("9263");
 var createNonEnumerableProperty = __webpack_require__("9112");
 
 var SPECIES = wellKnownSymbol('species');
@@ -59571,7 +58347,6 @@ var REPLACE_SUPPORTS_NAMED_GROUPS = !fails(function () {
 // IE <= 11 replaces $0 with the whole match, as if it was $&
 // https://stackoverflow.com/questions/6024666/getting-ie-to-replace-a-regex-with-the-literal-string-0
 var REPLACE_KEEPS_$0 = (function () {
-  // eslint-disable-next-line regexp/prefer-escape-replacement-dollar-char -- required for testing
   return 'a'.replace(/./, '$0') === '$0';
 })();
 
@@ -59641,7 +58416,7 @@ module.exports = function (KEY, length, exec, sham) {
   ) {
     var nativeRegExpMethod = /./[SYMBOL];
     var methods = exec(SYMBOL, ''[KEY], function (nativeMethod, regexp, str, arg2, forceStringMethod) {
-      if (regexp.exec === RegExp.prototype.exec) {
+      if (regexp.exec === regexpExec) {
         if (DELEGATES_TO_SYMBOL && !forceStringMethod) {
           // The native String method already delegates to @@method (this
           // polyfilled function), leasing to infinite recursion.
@@ -59787,9 +58562,9 @@ module.exports = function getDroppedFiles(dataTransfer, _temp) {
   // Get all files from all subdirs. Works (at least) in Chrome, Mozilla, and Safari
   if (dataTransfer.items && dataTransfer.items[0] && 'webkitGetAsEntry' in dataTransfer.items[0]) {
     return webkitGetAsEntryApi(dataTransfer, logDropError); // Otherwise just return all first-order files
+  } else {
+    return fallbackApi(dataTransfer);
   }
-
-  return fallbackApi(dataTransfer);
 };
 
 /***/ }),
@@ -59995,7 +58770,7 @@ var renderAcquirerIcon = function renderAcquirerIcon(acquirer, props) {
 
 var renderFileSource = function renderFileSource(props) {
   return props.file.source && props.file.source !== props.id && h("div", {
-    className: "uppy-Dashboard-Item-sourceIcon"
+    class: "uppy-Dashboard-Item-sourceIcon"
   }, props.acquirers.map(function (acquirer) {
     if (acquirer.id === props.file.source) {
       return renderAcquirerIcon(acquirer, props);
@@ -60016,14 +58791,14 @@ var renderFileName = function renderFileName(props) {
   }
 
   return h("div", {
-    className: "uppy-Dashboard-Item-name",
+    class: "uppy-Dashboard-Item-name",
     title: props.file.meta.name
   }, truncateString(props.file.meta.name, maxNameLength));
 };
 
 var renderFileSize = function renderFileSize(props) {
   return props.file.data.size && h("div", {
-    className: "uppy-Dashboard-Item-statusSize"
+    class: "uppy-Dashboard-Item-statusSize"
   }, prettierBytes(props.file.data.size));
 };
 
@@ -60033,12 +58808,12 @@ var ErrorButton = function ErrorButton(_ref) {
 
   if (file.error) {
     return h("span", {
-      className: "uppy-Dashboard-Item-errorDetails",
+      class: "uppy-Dashboard-Item-errorDetails",
       "aria-label": file.error,
       "data-microtip-position": "bottom",
       "data-microtip-size": "medium",
       role: "tooltip",
-      onClick: onClick
+      onclick: onClick
     }, "?");
   }
 
@@ -60047,10 +58822,10 @@ var ErrorButton = function ErrorButton(_ref) {
 
 module.exports = function FileInfo(props) {
   return h("div", {
-    className: "uppy-Dashboard-Item-fileInfo",
+    class: "uppy-Dashboard-Item-fileInfo",
     "data-uppy-file-source": props.file.source
   }, renderFileName(props), h("div", {
-    className: "uppy-Dashboard-Item-status"
+    class: "uppy-Dashboard-Item-status"
   }, renderFileSize(props), renderFileSource(props), h(ErrorButton, {
     file: props.file,
     onClick: function onClick() {
@@ -60116,10 +58891,9 @@ module.exports = function (it) {
 
 // https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
 module.exports =
-  // eslint-disable-next-line es/no-global-this -- safe
+  /* global globalThis -- safe */
   check(typeof globalThis == 'object' && globalThis) ||
   check(typeof window == 'object' && window) ||
-  // eslint-disable-next-line no-restricted-globals -- safe
   check(typeof self == 'object' && self) ||
   check(typeof global == 'object' && global) ||
   // eslint-disable-next-line no-new-func -- fallback
@@ -60231,7 +59005,7 @@ var ignoreEvent = __webpack_require__("962e");
 
 function PickerPanelContent(props) {
   return h("div", {
-    className: classNames('uppy-DashboardContent-panel', props.className),
+    class: classNames('uppy-DashboardContent-panel', props.className),
     role: "tabpanel",
     "data-uppy-panelType": "PickerPanel",
     id: "uppy-DashboardContent-panel--" + props.activePickerPanel.id,
@@ -60240,19 +59014,19 @@ function PickerPanelContent(props) {
     onDrop: ignoreEvent,
     onPaste: ignoreEvent
   }, h("div", {
-    className: "uppy-DashboardContent-bar"
+    class: "uppy-DashboardContent-bar"
   }, h("div", {
-    className: "uppy-DashboardContent-title",
+    class: "uppy-DashboardContent-title",
     role: "heading",
     "aria-level": "1"
   }, props.i18n('importFrom', {
     name: props.activePickerPanel.name
   })), h("button", {
-    className: "uppy-DashboardContent-back",
+    class: "uppy-DashboardContent-back",
     type: "button",
-    onClick: props.hideAllPanels
+    onclick: props.hideAllPanels
   }, props.i18n('done'))), h("div", {
-    className: "uppy-DashboardContent-panelBody"
+    class: "uppy-DashboardContent-panelBody"
   }, props.getPlugin(props.activePickerPanel.id).render(props.state)));
 }
 
@@ -60598,7 +59372,7 @@ module.exports = (_temp = _class = /*#__PURE__*/function () {
   }]);
 
   return RequestClient;
-}(), _class.VERSION = "1.9.0", _temp);
+}(), _class.VERSION = "1.8.3", _temp);
 
 /***/ }),
 
@@ -60862,7 +59636,7 @@ module.exports = /*#__PURE__*/function () {
         // in the same phrase.
 
 
-        interpolated = insertReplacement(interpolated, new RegExp("%\\{" + arg + "\\}", 'g'), replacement);
+        interpolated = insertReplacement(interpolated, new RegExp('%\\{' + arg + '\\}', 'g'), replacement);
       }
     }
 
@@ -60926,9 +59700,9 @@ module.exports = /*#__PURE__*/function () {
       if (options && typeof options.smart_count !== 'undefined') {
         var plural = this.locale.pluralize(options.smart_count);
         return this.interpolate(string[plural], options);
+      } else {
+        throw new Error('Attempted to use a string with plural forms, but no value was given for %{smart_count}');
       }
-
-      throw new Error('Attempted to use a string with plural forms, but no value was given for %{smart_count}');
     }
 
     return this.interpolate(string, options);
@@ -61287,11 +60061,11 @@ var Browser = function Browser(props) {
 
   var selected = currentSelection.length;
   return h("div", {
-    className: classNames('uppy-ProviderBrowser', "uppy-ProviderBrowser-viewType--" + props.viewType)
+    class: classNames('uppy-ProviderBrowser', "uppy-ProviderBrowser-viewType--" + props.viewType)
   }, h("div", {
-    className: "uppy-ProviderBrowser-header"
+    class: "uppy-ProviderBrowser-header"
   }, h("div", {
-    className: classNames('uppy-ProviderBrowser-headerBar', !props.showBreadcrumbs && 'uppy-ProviderBrowser-headerBar--simple')
+    class: classNames('uppy-ProviderBrowser-headerBar', !props.showBreadcrumbs && 'uppy-ProviderBrowser-headerBar--simple')
   }, props.headerComponent)), props.showFilter && h(Filter, props), h(ItemList, {
     columns: [{
       name: 'Name',
@@ -61340,7 +60114,6 @@ var enumBugKeys = __webpack_require__("7839");
 
 // `Object.keys` method
 // https://tc39.es/ecma262/#sec-object.keys
-// eslint-disable-next-line es/no-object-keys -- safe
 module.exports = Object.keys || function keys(O) {
   return internalObjectKeys(O, enumBugKeys);
 };
@@ -61829,7 +60602,6 @@ var ObjectPrototype = Object.prototype;
 
 // `Object.getPrototypeOf` method
 // https://tc39.es/ecma262/#sec-object.getprototypeof
-// eslint-disable-next-line es/no-object-getprototypeof -- safe
 module.exports = CORRECT_PROTOTYPE_GETTER ? Object.getPrototypeOf : function (O) {
   O = toObject(O);
   if (has(O, IE_PROTO)) return O[IE_PROTO];
@@ -61848,9 +60620,7 @@ var _class, _temp;
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; subClass.__proto__ = superClass; }
 
 var _require = __webpack_require__("b880"),
     Plugin = _require.Plugin;
@@ -61884,9 +60654,9 @@ module.exports = (_temp = _class = /*#__PURE__*/function (_Plugin) {
         viewBox: "0 0 32 32"
       }, h("g", {
         fill: "none",
-        fillRule: "evenodd"
+        "fill-rule": "evenodd"
       }, h("rect", {
-        className: "uppy-ProviderIconBg",
+        class: "uppy-ProviderIconBg",
         fill: "#4285F4",
         width: "32",
         height: "32",
@@ -61937,7 +60707,7 @@ module.exports = (_temp = _class = /*#__PURE__*/function (_Plugin) {
   };
 
   return GoogleDrive;
-}(Plugin), _class.VERSION = "1.6.0", _temp);
+}(Plugin), _class.VERSION = "1.5.25", _temp);
 
 /***/ }),
 
@@ -61949,7 +60719,6 @@ var fails = __webpack_require__("d039");
 module.exports = !fails(function () {
   function F() { /* empty */ }
   F.prototype.constructor = null;
-  // eslint-disable-next-line es/no-object-getprototypeof -- required for testing
   return Object.getPrototypeOf(new F()) !== F.prototype;
 });
 
@@ -65740,7 +64509,6 @@ var classof = __webpack_require__("c6b6");
 
 // `IsArray` abstract operation
 // https://tc39.es/ecma262/#sec-isarray
-// eslint-disable-next-line es/no-array-isarray -- safe
 module.exports = Array.isArray || function isArray(arg) {
   return classof(arg) == 'Array';
 };
@@ -66474,9 +65242,7 @@ module.exports = Map;
 /***/ "ef26":
 /***/ (function(module, exports, __webpack_require__) {
 
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; subClass.__proto__ = superClass; }
 
 var _require = __webpack_require__("30bf"),
     h = _require.h,
@@ -66493,20 +65259,20 @@ var AuthView = /*#__PURE__*/function (_Component) {
 
   _proto.render = function render() {
     var pluginNameComponent = h("span", {
-      className: "uppy-Provider-authTitleName"
+      class: "uppy-Provider-authTitleName"
     }, this.props.pluginName, h("br", null));
     return h("div", {
-      className: "uppy-Provider-auth"
+      class: "uppy-Provider-auth"
     }, h("div", {
-      className: "uppy-Provider-authIcon"
+      class: "uppy-Provider-authIcon"
     }, this.props.pluginIcon()), h("div", {
-      className: "uppy-Provider-authTitle"
+      class: "uppy-Provider-authTitle"
     }, this.props.i18nArray('authenticateWithTitle', {
       pluginName: pluginNameComponent
     })), h("button", {
       type: "button",
-      className: "uppy-u-reset uppy-c-btn uppy-c-btn-primary uppy-Provider-authBtn",
-      onClick: this.props.handleAuth,
+      class: "uppy-u-reset uppy-c-btn uppy-c-btn-primary uppy-Provider-authBtn",
+      onclick: this.props.handleAuth,
       "data-uppy-super-focusable": true
     }, this.props.i18nArray('authenticateWith', {
       pluginName: this.props.pluginName
@@ -66550,9 +65316,7 @@ function _extends() { _extends = Object.assign || function (target) { for (var i
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; subClass.__proto__ = superClass; }
 
 var _require = __webpack_require__("30bf"),
     h = _require.h;
@@ -66972,8 +65736,8 @@ module.exports = (_temp = _class = /*#__PURE__*/function (_Plugin) {
         var isModalAndClosed = !_this.opts.inline && pluginState.isHidden;
 
         if ( // if ResizeObserver hasn't yet fired,
-        !pluginState.areInsidesReadyToBeVisible // and it's not due to the modal being closed
-        && !isModalAndClosed) {
+        !pluginState.areInsidesReadyToBeVisible && // and it's not due to the modal being closed
+        !isModalAndClosed) {
           _this.uppy.log("[Dashboard] resize event didn't fire on time: defaulted to mobile layout", 'debug');
 
           _this.setPluginState({
@@ -67302,12 +66066,12 @@ module.exports = (_temp = _class = /*#__PURE__*/function (_Plugin) {
 
       if ( // If update is connected to showing the Informer - let the screen reader calmly read it.
       isInformerHidden && ( // If we are in a modal - always superfocus without concern for other elements on the page (user is unlikely to want to interact with the rest of the page)
-      isModal // If we are already inside of Uppy, or
-      || isFocusInUppy // If we are not focused on anything BUT we have already, at least once, focused on uppy
+      isModal || // If we are already inside of Uppy, or
+      isFocusInUppy || // If we are not focused on anything BUT we have already, at least once, focused on uppy
       //   1. We focus when isFocusNowhere, because when the element we were focused on disappears (e.g. an overlay), - focus gets lost. If user is typing something somewhere else on the page, - focus won't be 'nowhere'.
       //   2. We only focus when focus is nowhere AND this.ifFocusedOnUppyRecently, to avoid focus jumps if we do something else on the page.
       //   [Practical check] Without '&& this.ifFocusedOnUppyRecently', in Safari, in inline mode, when file is uploading, - navigate via tab to the checkbox, try to press space multiple times. Focus will jump to Uppy.
-      || isFocusNowhere && _this.ifFocusedOnUppyRecently)) {
+      isFocusNowhere && _this.ifFocusedOnUppyRecently)) {
         _this.superFocus(_this.el, _this.getPluginState().activeOverlayType);
       } else {
         _this.superFocus.cancel();
@@ -67790,7 +66554,7 @@ module.exports = (_temp = _class = /*#__PURE__*/function (_Plugin) {
   };
 
   return Dashboard;
-}(Plugin), _class.VERSION = "1.18.0", _temp);
+}(Plugin), _class.VERSION = "1.17.1", _temp);
 
 /***/ }),
 
@@ -67803,9 +66567,7 @@ function _extends() { _extends = Object.assign || function (target) { for (var i
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; subClass.__proto__ = superClass; }
 
 var _require = __webpack_require__("b880"),
     Plugin = _require.Plugin;
@@ -67831,9 +66593,9 @@ function UrlIcon() {
     viewBox: "0 0 32 32"
   }, h("g", {
     fill: "none",
-    fillRule: "evenodd"
+    "fill-rule": "evenodd"
   }, h("rect", {
-    className: "uppy-ProviderIconBg",
+    class: "uppy-ProviderIconBg",
     fill: "#FF753E",
     width: "32",
     height: "32",
@@ -67841,7 +66603,7 @@ function UrlIcon() {
   }), h("path", {
     d: "M22.788 15.389l-2.199 2.19a3.184 3.184 0 0 1-.513.437c-.806.584-1.686.876-2.638.876a4.378 4.378 0 0 1-3.519-1.752c-.22-.292-.146-.802.147-1.021.293-.22.806-.146 1.026.146.953 1.313 2.785 1.532 4.105.583a.571.571 0 0 0 .293-.292l2.199-2.189c1.1-1.167 1.1-2.992-.073-4.086a2.976 2.976 0 0 0-4.105 0l-1.246 1.24a.71.71 0 0 1-1.026 0 .703.703 0 0 1 0-1.022l1.246-1.24a4.305 4.305 0 0 1 6.083 0c1.833 1.605 1.906 4.451.22 6.13zm-7.183 5.035l-1.246 1.24a2.976 2.976 0 0 1-4.105 0c-1.172-1.094-1.172-2.991-.073-4.086l2.2-2.19.292-.291c.66-.438 1.393-.657 2.2-.584.805.146 1.465.51 1.905 1.168.22.292.733.365 1.026.146.293-.22.367-.73.147-1.022-.733-.949-1.76-1.532-2.859-1.678-1.1-.22-2.272.073-3.225.802l-.44.438-2.199 2.19c-1.686 1.75-1.612 4.524.074 6.202.88.803 1.979 1.241 3.078 1.241 1.1 0 2.199-.438 3.079-1.24l1.246-1.241a.703.703 0 0 0 0-1.022c-.294-.292-.807-.365-1.1-.073z",
     fill: "#FFF",
-    fillRule: "nonzero"
+    "fill-rule": "nonzero"
   })));
 }
 /**
@@ -68050,7 +66812,7 @@ module.exports = (_temp = _class = /*#__PURE__*/function (_Plugin) {
   };
 
   return Url;
-}(Plugin), _class.VERSION = "1.5.20", _temp);
+}(Plugin), _class.VERSION = "1.5.19", _temp);
 
 /***/ }),
 
@@ -71499,9 +70261,7 @@ var _class, _temp;
 
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; subClass.__proto__ = superClass; }
 
 var _require = __webpack_require__("b880"),
     Plugin = _require.Plugin;
@@ -71901,11 +70661,11 @@ module.exports = (_temp = _class = /*#__PURE__*/function (_Plugin) {
       .then(function () {
         return _this3.processQueue();
       });
+    } else {
+      this.queueProcessing = false;
+      this.uppy.log('[ThumbnailGenerator] Emptied thumbnail queue');
+      this.uppy.emit('thumbnail:all-generated');
     }
-
-    this.queueProcessing = false;
-    this.uppy.log('[ThumbnailGenerator] Emptied thumbnail queue');
-    this.uppy.emit('thumbnail:all-generated');
   };
 
   _proto.requestThumbnail = function requestThumbnail(file) {
@@ -71963,7 +70723,7 @@ module.exports = (_temp = _class = /*#__PURE__*/function (_Plugin) {
   };
 
   return ThumbnailGenerator;
-}(Plugin), _class.VERSION = "1.7.8", _temp);
+}(Plugin), _class.VERSION = "1.7.7", _temp);
 
 /***/ }),
 
@@ -73024,11 +71784,11 @@ var staticRenderFns = []
 
 // CONCATENATED MODULE: ./src/components/users/profile.vue?vue&type=template&id=daf4fb52&scoped=true&
 
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es.object.to-string.js
-var es_object_to_string = __webpack_require__("d3b7");
-
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.promise.js
 var es_promise = __webpack_require__("e6cf");
+
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.object.to-string.js
+var es_object_to_string = __webpack_require__("d3b7");
 
 // CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js
 
@@ -73491,7 +72251,7 @@ var custom_fields_tutorial_modalvue_type_template_id_09f3c1e9_staticRenderFns = 
 
 // CONCATENATED MODULE: ./src/components/modals/custom-fields-tutorial-modal.vue?vue&type=template&id=09f3c1e9&
 
-// EXTERNAL MODULE: /home/sparohawk/gewaer/cms/node_modules/vue-form-wizard/dist/vue-form-wizard.js
+// EXTERNAL MODULE: C:/Users/Jesus/Workspace/kanvas/gewaer-crm/node_modules/vue-form-wizard/dist/vue-form-wizard.js
 var vue_form_wizard = __webpack_require__("09c7");
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/modals/custom-fields-tutorial-modal.vue?vue&type=script&lang=js&
@@ -74671,24 +73431,17 @@ var notifications_component = normalizeComponent(
 )
 
 /* harmony default export */ var notifications = (notifications_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"524cd089-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/users/security.vue?vue&type=template&id=23ded734&
-var securityvue_type_template_id_23ded734_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('container-template',[_c('div',{attrs:{"slot":"tab-content"},slot:"tab-content"},[_c('h5',[_vm._v("User Settings")]),_c('tabs-menu',{attrs:{"slot":"tab-menu"},slot:"tab-menu"}),_c('div',{staticClass:"card h-100 mb-0"},[_c('div',{staticClass:"row user-general-information"},[_c('div',{staticClass:"col-12 col-md-6"},[_c('div',{staticClass:"form-group required"},[_c('label',[_vm._v("Current password")]),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.currentPassword),expression:"currentPassword"},{name:"validate",rawName:"v-validate",value:('required'),expression:"'required'"}],staticClass:"form-control",attrs:{"autocomplete":"off","type":"password","data-vv-as":"password","data-vv-ignore-unsaved":"true","name":"password"},domProps:{"value":(_vm.currentPassword)},on:{"input":function($event){if($event.target.composing){ return; }_vm.currentPassword=$event.target.value}}}),_c('span',{staticClass:"text-danger"},[_vm._v(_vm._s(_vm.errors.first("password")))])]),_c('div',{staticClass:"form-group required"},[_c('label',[_vm._v("New password")]),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.newPassword),expression:"newPassword"},{name:"validate",rawName:"v-validate",value:('required'),expression:"'required'"}],staticClass:"form-control",attrs:{"autocomplete":"off","type":"password","data-vv-as":"new password","name":"new-password"},domProps:{"value":(_vm.newPassword)},on:{"input":function($event){if($event.target.composing){ return; }_vm.newPassword=$event.target.value}}}),_c('span',{staticClass:"text-danger"},[_vm._v(_vm._s(_vm.errors.first("new-password")))])]),_c('div',{staticClass:"form-group required"},[_c('label',[_vm._v("Confirm new password")]),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.confirmNewPassword),expression:"confirmNewPassword"},{name:"validate",rawName:"v-validate",value:('required'),expression:"'required'"}],staticClass:"form-control",attrs:{"autocomplete":"off","type":"password","data-vv-as":"confirm new password","name":"confirm-new-password"},domProps:{"value":(_vm.confirmNewPassword)},on:{"input":function($event){if($event.target.composing){ return; }_vm.confirmNewPassword=$event.target.value}}}),_c('span',{staticClass:"text-danger"},[_vm._v(_vm._s(_vm.errors.first("confirm-new-password")))])])]),_c('div',{staticClass:"col-12 col-md-6"},[_c('div',{staticClass:"password-rules"},[_c('img',{attrs:{"src":"/img/settings/exclamation.svg","alt":"Exclamation icon"}}),_c('p',[_vm._v("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vitae sem mattis, mattis metus sit amet, tincidunt justo.")]),_c('p',[_vm._v("Ut hendrerit, est in sodales rhoncus, quam sapien malesuada arcu, vitae tincidunt odio orci porttitor ligula.")])])])])]),_c('div',{staticClass:"d-flex justify-content-end mt-4"},[_c('button',{staticClass:"btn btn-primary",attrs:{"disabled":_vm.isLoading},on:{"click":function($event){return _vm.update()}}},[_vm._v(" Change ")])])],1)])}
-var securityvue_type_template_id_23ded734_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"524cd089-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/users/security.vue?vue&type=template&id=7975c8d0&
+var securityvue_type_template_id_7975c8d0_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('container-template',[_c('div',{attrs:{"slot":"tab-content"},slot:"tab-content"},[_c('h5',[_vm._v("User Settings")]),_c('tabs-menu',{attrs:{"slot":"tab-menu"},slot:"tab-menu"}),_c('div',{staticClass:"card h-100 mb-0"},[_c('div',{staticClass:"row user-general-information"},[_c('div',{staticClass:"col-12"},[_c('div',{staticClass:"form-group required"},[_c('label',[_vm._v("Current password")]),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.currentPassword),expression:"currentPassword"},{name:"validate",rawName:"v-validate",value:('required'),expression:"'required'"}],staticClass:"form-control",attrs:{"autocomplete":"off","type":"password","data-vv-as":"password","data-vv-ignore-unsaved":"true","name":"password"},domProps:{"value":(_vm.currentPassword)},on:{"input":function($event){if($event.target.composing){ return; }_vm.currentPassword=$event.target.value}}}),_c('span',{staticClass:"text-danger"},[_vm._v(_vm._s(_vm.errors.first("password")))])]),_c('div',{staticClass:"form-group required"},[_c('label',[_vm._v("New password")]),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.newPassword),expression:"newPassword"},{name:"validate",rawName:"v-validate",value:('required'),expression:"'required'"}],staticClass:"form-control",attrs:{"autocomplete":"off","type":"password","data-vv-as":"new password","name":"new-password"},domProps:{"value":(_vm.newPassword)},on:{"input":function($event){if($event.target.composing){ return; }_vm.newPassword=$event.target.value}}}),_c('span',{staticClass:"text-danger"},[_vm._v(_vm._s(_vm.errors.first("new-password")))])]),_c('div',{staticClass:"form-group required"},[_c('label',[_vm._v("Confirm new password")]),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.confirmNewPassword),expression:"confirmNewPassword"},{name:"validate",rawName:"v-validate",value:('required'),expression:"'required'"}],staticClass:"form-control",attrs:{"autocomplete":"off","type":"password","data-vv-as":"confirm new password","name":"confirm-new-password"},domProps:{"value":(_vm.confirmNewPassword)},on:{"input":function($event){if($event.target.composing){ return; }_vm.confirmNewPassword=$event.target.value}}}),_c('span',{staticClass:"text-danger"},[_vm._v(_vm._s(_vm.errors.first("confirm-new-password")))])])])])]),_c('div',{staticClass:"d-flex justify-content-center mt-4"},[_c('button',{staticClass:"btn btn-primary",attrs:{"disabled":_vm.isLoading},on:{"click":function($event){return _vm.update()}}},[_vm._v(" Change ")])])],1)])}
+var securityvue_type_template_id_7975c8d0_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/users/security.vue?vue&type=template&id=23ded734&
+// CONCATENATED MODULE: ./src/components/users/security.vue?vue&type=template&id=7975c8d0&
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/users/security.vue?vue&type=script&lang=js&
 
 
 
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -74795,6 +73548,8 @@ var securityvue_type_template_id_23ded734_staticRenderFns = []
           text: "Your password has been changed!",
           type: "success"
         });
+
+        _this.clearChangedFields();
       }).catch(function (error) {
         _this.$notify({
           group: null,
@@ -74824,8 +73579,8 @@ var securityvue_type_style_index_0_lang_scss_ = __webpack_require__("0290");
 
 var security_component = normalizeComponent(
   users_securityvue_type_script_lang_js_,
-  securityvue_type_template_id_23ded734_render,
-  securityvue_type_template_id_23ded734_staticRenderFns,
+  securityvue_type_template_id_7975c8d0_render,
+  securityvue_type_template_id_7975c8d0_staticRenderFns,
   false,
   null,
   null,
@@ -75295,11 +74050,11 @@ var es_function_name = __webpack_require__("b0c0");
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.string.starts-with.js
 var es_string_starts_with = __webpack_require__("2ca0");
 
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es.regexp.exec.js
-var es_regexp_exec = __webpack_require__("ac1f");
-
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.string.split.js
 var es_string_split = __webpack_require__("1276");
+
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.regexp.exec.js
+var es_regexp_exec = __webpack_require__("ac1f");
 
 // EXTERNAL MODULE: ./node_modules/lodash/capitalize.js
 var lodash_capitalize = __webpack_require__("e9a7");
@@ -75900,12 +74655,12 @@ var listvue_type_template_id_23f18a7c_staticRenderFns = []
 
 // CONCATENATED MODULE: ./src/components/apps/form-creator/list.vue?vue&type=template&id=23f18a7c&
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"524cd089-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!../gw-browse/src/browse.vue?vue&type=template&id=9f6b2d86&
-var browsevue_type_template_id_9f6b2d86_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"browse-list"},[_c('modal',{attrs:{"draggable":true,"adaptive":true,"scrollable":true,"height":"auto","name":"custom-filters-form"}},[_c('custom-filters-form',{attrs:{"fields":_vm.customFilterFields,"resource-name":_vm.resource.slug,"mode":"form"},on:{"saved":function($event){return _vm.closeAddCustomFilter()}}})],1),(_vm.showTitle)?_c('h4',{staticClass:"section-title"},[_vm._v(" "+_vm._s(_vm.resource.name)+" ")]):_vm._e(),_vm._t("resource-actions",[(_vm.showResourceActions)?_c('resource-actions',{attrs:{"bulk-actions":_vm.bulkActionsList,"create-resource-url":_vm.createResourceUrl,"current-resource":_vm.resource,"custom-filter-fields":_vm.customFilterFields,"filterable-fields":_vm.filterableFields,"search-options":_vm.searchOptions,"show-bulk-actions":_vm.showBulkActions,"show-create-resource":_vm.showCreateResource,"show-search-filters":_vm.showSearchFilters},on:{"getData":_vm.getData,"run-action":_vm.runAction,"show-custom-filters-form":function($event){return _vm.$modal.show('custom-filters-form')}}}):_vm._e()],{"data":{ searchOptions: _vm.searchOptions }},{ searchOptions: _vm.searchOptions, getData: _vm.getData, filterableFields: _vm.filterableFields }),_c('div',{directives:[{name:"show",rawName:"v-show",value:(!_vm.loading),expression:"!loading"}]},[_c('div',{staticClass:"table-container m-b-0"},[(_vm.showPagination && _vm.showPaginationTop)?_c('div',{staticClass:"pagination-controls pc-top row"},[_vm._t("before-pagination"),_c('div',{staticClass:"d-flex"},[(_vm.showResultsPerPage)?[_vm._m(0),_c('div',{staticClass:"col-auto"},[_c('multiselect',{attrs:{"allow-empty":false,"show-labels":false,"options":_vm.resultsPerPageOptions,"searchable":false,"placeholder":""},on:{"input":_vm.changePerPage},model:{value:(_vm.selectedPerPage),callback:function ($$v) {_vm.selectedPerPage=$$v},expression:"selectedPerPage"}})],1),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.totalPages > 1),expression:"totalPages > 1"}],staticClass:"col-auto separator"},[_vm._v(" | ")])]:_vm._e(),_c('vuetable-pagination',{ref:"paginationTop",staticClass:"col-auto",attrs:{"css":_vm.pagination},on:{"vuetable-pagination:change-page":_vm.onChangePage}})],2)],2):_vm._e(),_c('div',{staticClass:"table-responsive"},[_c('vuetable',{ref:"Vuetable",staticClass:"table table-condensed",attrs:{"api-url":("/" + (_vm.resource.endpoint || _vm.resource.slug)),"append-params":_vm.vuetableQueryParams,"css":_vm.vuetableStyles,"data-path":_vm.dataPath,"fields":_vm.tableFields,"http-fetch":_vm.httpFetch,"http-options":_vm.httpOptions,"pagination-path":_vm.paginationPath,"per-page":_vm.perPage,"query-params":_vm.queryParams,"row-class":_vm.rowClass,"show-sort-icons":true,"track-by":"id"},on:{"vuetable:load-error":function (response) { return _vm.$emit('load-error', response); },"vuetable:loaded":function($event){_vm.loading = false},"vuetable:loading":function($event){_vm.loading = true},"vuetable:pagination-data":_vm.onPaginationData},scopedSlots:_vm._u([{key:"actions",fn:function(props){return _vm._t("actions",[_c('div',{staticClass:"d-flex align-items-center justify-content-end"},[_vm._t("actions-before",null,null,Object.assign({}, props)),_vm._t("actions-edit",[(_vm.showActionsEdit)?_c('button',{staticClass:"btn btn-primary btn-sm",attrs:{"type":"button"},on:{"click":function($event){return _vm.editResource(props.rowData.id)}}},[_c('i',{staticClass:"fa fa-edit"})]):_vm._e()],null,Object.assign({}, props)),_vm._t("actions-delete",[(_vm.showActionsDelete)?_c('button',{staticClass:"btn btn-danger btn-sm",attrs:{"type":"button"},on:{"click":function($event){return _vm.confirmDelete(props)}}},[_c('i',{staticClass:"fa fa-trash-alt"})]):_vm._e()],null,Object.assign({}, props)),_vm._t("actions-after",null,null,Object.assign({}, props))],2)],null,Object.assign({}, props))}}],null,true)})],1),(_vm.showPagination && _vm.showPaginationBottom)?_c('div',{staticClass:"pagination-controls pc-bottom row"},[(_vm.showResultsPerPage)?[_vm._m(1),_c('div',{staticClass:"col-auto"},[_c('multiselect',{attrs:{"allow-empty":false,"show-labels":false,"options":_vm.resultsPerPageOptions,"searchable":false,"placeholder":""},on:{"input":_vm.changePerPage},model:{value:(_vm.selectedPerPage),callback:function ($$v) {_vm.selectedPerPage=$$v},expression:"selectedPerPage"}})],1),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.totalPages > 1),expression:"totalPages > 1"}],staticClass:"col-auto separator"},[_vm._v(" | ")])]:_vm._e(),_c('vuetable-pagination',{ref:"paginationBottom",staticClass:"col-auto",attrs:{"css":_vm.pagination},on:{"vuetable-pagination:change-page":_vm.onChangePage}})],2):_vm._e()])]),_vm._t("loading",[_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.loading),expression:"loading"}],staticClass:"loading"},[_c('img',{attrs:{"src":"https://mc-canvas.s3.amazonaws.com/progress-circle.svg","width":"48","height":"48"}})])])],2)}
-var browsevue_type_template_id_9f6b2d86_staticRenderFns = [function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"col-auto"},[_c('label',{staticClass:"mb-0"},[_vm._v("Results per page:")])])},function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"col-auto"},[_c('label',{staticClass:"mb-0"},[_vm._v("Results per page:")])])}]
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"524cd089-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!../gw-browse/src/browse.vue?vue&type=template&id=0925b62c&
+var browsevue_type_template_id_0925b62c_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"browse-list"},[_c('modal',{attrs:{"draggable":true,"adaptive":true,"scrollable":true,"height":"auto","name":"custom-filters-form"}},[_c('custom-filters-form',{attrs:{"fields":_vm.customFilterFields,"resource-name":_vm.resource.slug,"mode":"form"},on:{"saved":function($event){return _vm.closeAddCustomFilter()}}})],1),(_vm.showTitle)?_c('h4',{staticClass:"section-title"},[_vm._v(" "+_vm._s(_vm.resource.name)+" ")]):_vm._e(),_vm._t("resource-actions",[(_vm.showResourceActions)?_c('resource-actions',{attrs:{"bulk-actions":_vm.bulkActionsList,"create-resource-url":_vm.createResourceUrl,"current-resource":_vm.resource,"custom-filter-fields":_vm.customFilterFields,"filterable-fields":_vm.filterableFields,"search-options":_vm.searchOptions,"show-bulk-actions":_vm.showBulkActions,"show-create-resource":_vm.showCreateResource,"show-search-filters":_vm.showSearchFilters},on:{"getData":_vm.getData,"run-action":_vm.runAction,"show-custom-filters-form":function($event){return _vm.$modal.show('custom-filters-form')}}}):_vm._e()],{"data":{ searchOptions: _vm.searchOptions }},{ searchOptions: _vm.searchOptions, getData: _vm.getData, filterableFields: _vm.filterableFields }),_c('div',{directives:[{name:"show",rawName:"v-show",value:(!_vm.loading),expression:"!loading"}]},[_c('div',{staticClass:"table-container m-b-0"},[(_vm.showPagination && _vm.showPaginationTop)?_c('div',{staticClass:"pagination-controls pc-top row"},[_vm._t("before-pagination"),_c('div',{staticClass:"d-flex"},[(_vm.showResultsPerPage)?[_vm._m(0),_c('div',{staticClass:"col-auto"},[_c('multiselect',{attrs:{"allow-empty":false,"show-labels":false,"options":_vm.resultsPerPageOptions,"searchable":false,"placeholder":""},on:{"input":_vm.changePerPage},model:{value:(_vm.selectedPerPage),callback:function ($$v) {_vm.selectedPerPage=$$v},expression:"selectedPerPage"}})],1),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.totalPages > 1),expression:"totalPages > 1"}],staticClass:"col-auto separator"},[_vm._v(" | ")])]:_vm._e(),_c('vuetable-pagination',{ref:"paginationTop",staticClass:"col-auto",attrs:{"css":_vm.pagination},on:{"vuetable-pagination:change-page":_vm.onChangePage}})],2)],2):_vm._e(),_c('div',{staticClass:"table-responsive"},[_c('vuetable',{ref:"Vuetable",staticClass:"table table-condensed",attrs:{"api-url":("/" + (_vm.resource.endpoint || _vm.resource.slug)),"append-params":_vm.vuetableQueryParams,"css":_vm.vuetableStyles,"data-path":_vm.dataPath,"fields":_vm.tableFields,"http-fetch":_vm.httpFetch,"http-options":_vm.httpOptions,"pagination-path":_vm.paginationPath,"per-page":_vm.perPage,"query-params":_vm.queryParams,"row-class":_vm.rowClass,"show-sort-icons":true,"track-by":"id"},on:{"vuetable:load-error":function (response) { return _vm.$emit('load-error', response); },"vuetable:loaded":function($event){_vm.loading = false},"vuetable:loading":function($event){_vm.loading = true},"vuetable:pagination-data":_vm.onPaginationData},scopedSlots:_vm._u([{key:"actions",fn:function(props){return _vm._t("actions",[_c('div',{staticClass:"d-flex align-items-center justify-content-end"},[_vm._t("actions-before",null,null,Object.assign({}, props)),_vm._t("actions-edit",[(_vm.showActionsEdit)?_c('button',{staticClass:"btn btn-primary btn-sm",attrs:{"type":"button"},on:{"click":function($event){return _vm.editResource(props.rowData.id)}}},[_c('i',{staticClass:"fa fa-edit"})]):_vm._e()],null,Object.assign({}, props)),_vm._t("actions-delete",[(_vm.showActionsDelete)?_c('button',{staticClass:"btn btn-danger btn-sm",attrs:{"type":"button"},on:{"click":function($event){return _vm.confirmDelete(props)}}},[_c('i',{staticClass:"fa fa-trash-alt"})]):_vm._e()],null,Object.assign({}, props)),_vm._t("actions-after",null,null,Object.assign({}, props))],2)],null,Object.assign({}, props))}}],null,true)})],1),(_vm.showPagination && _vm.showPaginationBottom)?_c('div',{staticClass:"pagination-controls pc-bottom row"},[(_vm.showResultsPerPage)?[_vm._m(1),_c('div',{staticClass:"col-auto"},[_c('multiselect',{attrs:{"allow-empty":false,"show-labels":false,"options":_vm.resultsPerPageOptions,"searchable":false,"placeholder":""},on:{"input":_vm.changePerPage},model:{value:(_vm.selectedPerPage),callback:function ($$v) {_vm.selectedPerPage=$$v},expression:"selectedPerPage"}})],1),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.totalPages > 1),expression:"totalPages > 1"}],staticClass:"col-auto separator"},[_vm._v(" | ")])]:_vm._e(),_c('vuetable-pagination',{ref:"paginationBottom",staticClass:"col-auto",attrs:{"css":_vm.pagination},on:{"vuetable-pagination:change-page":_vm.onChangePage}})],2):_vm._e()])]),_vm._t("loading",[_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.loading),expression:"loading"}],staticClass:"loading"},[_c('img',{attrs:{"src":"https://mc-canvas.s3.amazonaws.com/progress-circle.svg","width":"48","height":"48"}})])])],2)}
+var browsevue_type_template_id_0925b62c_staticRenderFns = [function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"col-auto"},[_c('label',{staticClass:"mb-0"},[_vm._v("Results per page:")])])},function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"col-auto"},[_c('label',{staticClass:"mb-0"},[_vm._v("Results per page:")])])}]
 
 
-// CONCATENATED MODULE: ../gw-browse/src/browse.vue?vue&type=template&id=9f6b2d86&
+// CONCATENATED MODULE: ../gw-browse/src/browse.vue?vue&type=template&id=0925b62c&
 
 // CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/arrayWithHoles.js
 function _arrayWithHoles(arr) {
@@ -75929,17 +74684,14 @@ var es_string_iterator = __webpack_require__("3ca3");
 
 
 function _iterableToArrayLimit(arr, i) {
-  var _i = arr && (typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]);
-
-  if (_i == null) return;
+  if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return;
   var _arr = [];
   var _n = true;
   var _d = false;
-
-  var _s, _e;
+  var _e = undefined;
 
   try {
-    for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) {
+    for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {
       _arr.push(_s.value);
 
       if (i && _arr.length === i) break;
@@ -76012,14 +74764,14 @@ var modules_es_array_map = __webpack_require__("67470");
 // EXTERNAL MODULE: ../gw-browse/node_modules/core-js/modules/es.array.filter.js
 var modules_es_array_filter = __webpack_require__("e50b");
 
-// EXTERNAL MODULE: ../gw-browse/node_modules/core-js/modules/es.object.to-string.js
-var modules_es_object_to_string = __webpack_require__("85b6");
+// EXTERNAL MODULE: ../gw-browse/node_modules/core-js/modules/es.promise.finally.js
+var modules_es_promise_finally = __webpack_require__("8800");
 
 // EXTERNAL MODULE: ../gw-browse/node_modules/core-js/modules/es.promise.js
 var modules_es_promise = __webpack_require__("ae94");
 
-// EXTERNAL MODULE: ../gw-browse/node_modules/core-js/modules/es.promise.finally.js
-var modules_es_promise_finally = __webpack_require__("8800");
+// EXTERNAL MODULE: ../gw-browse/node_modules/core-js/modules/es.object.to-string.js
+var modules_es_object_to_string = __webpack_require__("85b6");
 
 // EXTERNAL MODULE: ../gw-browse/node_modules/core-js/modules/es.array.concat.js
 var modules_es_array_concat = __webpack_require__("5593");
@@ -76062,11 +74814,11 @@ var custom_filters_formvue_type_template_id_e5e19804_scoped_true_staticRenderFns
 
 // CONCATENATED MODULE: ../gw-browse/src/components/custom-filters-form.vue?vue&type=template&id=e5e19804&scoped=true&
 
-// EXTERNAL MODULE: ../gw-browse/node_modules/core-js/modules/es.regexp.exec.js
-var modules_es_regexp_exec = __webpack_require__("850f");
-
 // EXTERNAL MODULE: ../gw-browse/node_modules/core-js/modules/es.string.replace.js
 var es_string_replace = __webpack_require__("b2ad");
+
+// EXTERNAL MODULE: ../gw-browse/node_modules/core-js/modules/es.regexp.exec.js
+var modules_es_regexp_exec = __webpack_require__("850f");
 
 // EXTERNAL MODULE: ../gw-browse/node_modules/core-js/modules/es.regexp.to-string.js
 var es_regexp_to_string = __webpack_require__("c1e0");
@@ -76349,19 +75101,15 @@ var custom_filters_form_component = normalizeComponent(
 )
 
 /* harmony default export */ var custom_filters_form = (custom_filters_form_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"524cd089-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!../gw-browse/src/components/resource-actions.vue?vue&type=template&id=65834a6a&
-var resource_actionsvue_type_template_id_65834a6a_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"browse-actions row"},[_c('div',{staticClass:"input-group search-bar col-12 col-md-7 col-lg-7"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.search.text),expression:"search.text"}],staticClass:"form-control",attrs:{"type":"text","placeholder":"search ..."},domProps:{"value":(_vm.search.text)},on:{"keydown":function($event){if(!$event.type.indexOf('key')&&_vm._k($event.keyCode,"enter",13,$event.key,"Enter")){ return null; }return _vm.getData()},"input":function($event){if($event.target.composing){ return; }_vm.$set(_vm.search, "text", $event.target.value)}}}),(_vm.showSearchFilters)?_c('div',{staticClass:"browse-list-filters d-flex align-items-center"},[_c('multiselect',{attrs:{"multiple":true,"limit":1,"show-labels":false,"options":_vm.filterableFields,"placeholder":"All fields"},on:{"input":function($event){return _vm.getData()}},model:{value:(_vm.search.filters),callback:function ($$v) {_vm.$set(_vm.search, "filters", $$v)},expression:"search.filters"}},[(_vm.customFilterFields.length)?_c('template',{slot:"afterList"},[_c('div',{staticClass:"custom-filters-form-btn option__desc"},[_c('a',{staticClass:"option__title",on:{"click":function($event){return _vm.$emit('show-custom-filters-form')}}},[_c('i',{staticClass:"fa fa-plus"}),_vm._v(" Add custom Filter ")])])]):_vm._e()],2)],1):_vm._e(),(_vm.showClearSearch)?_c('div',{staticClass:"input-group-append"},[_c('button',{staticClass:"btn btn-danger btn-sm",on:{"click":function($event){return _vm.clearSearch()}}},[_c('i',{staticClass:"fa fa-times"})])]):_vm._e(),_c('div',{staticClass:"input-group-append"},[_c('button',{staticClass:"btn btn-primary",on:{"click":function($event){return _vm.getData()}}},[_c('i',{staticClass:"fa fa-search"}),_vm._v(" Search ")])])]),(_vm.showBulkActions)?_c('dropdown',{staticClass:"bulk-actions col-auto ml-auto",attrs:{"is-icon":false}},[_c('button',{staticClass:"btn btn-info dropdown-toggle",attrs:{"slot":"btn","id":"bulk-actions","type":"button"},slot:"btn"},[_vm._v(" Bulk actions ")]),_c('div',{attrs:{"slot":"body"},slot:"body"},_vm._l((_vm.bulkActions),function(action){return _c('a',{key:action.name,staticClass:"dropdown-item",attrs:{"href":"#"},on:{"click":function($event){$event.preventDefault();return _vm.$emit('run-action', action.action)}}},[_vm._v(" "+_vm._s(action.name)+" ")])}),0)]):_vm._e(),_c('div',{staticClass:"col-auto"},[(_vm.showCreateResource)?_c('router-link',{staticClass:"add-record-btn btn btn-primary",attrs:{"to":_vm.createUrl}},[_c('i',{staticClass:"d-none d-sm-inline fa fa-plus-circle"}),_vm._v(" Add "+_vm._s(_vm.singularize(_vm.currentResource.title))+" ")]):_vm._e()],1)],1)}
-var resource_actionsvue_type_template_id_65834a6a_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"524cd089-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!../gw-browse/src/components/resource-actions.vue?vue&type=template&id=38ac4d67&
+var resource_actionsvue_type_template_id_38ac4d67_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"browse-actions row"},[_c('div',{staticClass:"input-group search-bar col-12 col-md-7 col-lg-7"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.search.text),expression:"search.text"}],staticClass:"form-control",attrs:{"type":"text","placeholder":"search ..."},domProps:{"value":(_vm.search.text)},on:{"keydown":function($event){if(!$event.type.indexOf('key')&&_vm._k($event.keyCode,"enter",13,$event.key,"Enter")){ return null; }return _vm.getData()},"input":function($event){if($event.target.composing){ return; }_vm.$set(_vm.search, "text", $event.target.value)}}}),(_vm.showSearchFilters)?_c('div',{staticClass:"browse-list-filters d-flex align-items-center"},[_c('multiselect',{attrs:{"multiple":true,"limit":1,"show-labels":false,"options":_vm.filterableFields,"placeholder":"All fields"},on:{"input":function($event){return _vm.getData()}},model:{value:(_vm.search.filters),callback:function ($$v) {_vm.$set(_vm.search, "filters", $$v)},expression:"search.filters"}},[(_vm.customFilterFields.length)?_c('template',{slot:"afterList"},[_c('div',{staticClass:"custom-filters-form-btn option__desc"},[_c('a',{staticClass:"option__title",on:{"click":function($event){return _vm.$emit('show-custom-filters-form')}}},[_c('i',{staticClass:"fa fa-plus"}),_vm._v(" Add custom Filter ")])])]):_vm._e()],2)],1):_vm._e(),(_vm.showClearSearch)?_c('div',{staticClass:"input-group-append"},[_c('button',{staticClass:"btn btn-danger btn-sm",on:{"click":function($event){return _vm.clearSearch()}}},[_c('i',{staticClass:"fa fa-times"})])]):_vm._e(),_c('div',{staticClass:"input-group-append"},[_c('button',{staticClass:"btn btn-primary",on:{"click":function($event){return _vm.getData()}}},[_c('i',{staticClass:"fa fa-search"}),_vm._v(" Search ")])])]),(_vm.showBulkActions)?_c('dropdown',{staticClass:"bulk-actions col-auto ml-auto",attrs:{"is-icon":false}},[_c('button',{staticClass:"btn btn-info dropdown-toggle",attrs:{"slot":"btn","id":"bulk-actions","type":"button"},slot:"btn"},[_vm._v(" Bulk actions ")]),_c('div',{attrs:{"slot":"body"},slot:"body"},_vm._l((_vm.bulkActions),function(action){return _c('a',{key:action.name,staticClass:"dropdown-item",attrs:{"href":"#"},on:{"click":function($event){$event.preventDefault();return _vm.$emit('run-action', action.action)}}},[_vm._v(" "+_vm._s(action.name)+" ")])}),0)]):_vm._e(),_c('div',{staticClass:"col-auto"},[(_vm.showCreateResource)?_c('router-link',{staticClass:"add-record-btn btn btn-primary",attrs:{"to":_vm.createUrl}},[_c('i',{staticClass:"d-none d-sm-inline fa fa-plus-circle"}),_vm._v(" Add "+_vm._s(_vm.currentResource.title)+" ")]):_vm._e()],1)],1)}
+var resource_actionsvue_type_template_id_38ac4d67_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ../gw-browse/src/components/resource-actions.vue?vue&type=template&id=65834a6a&
+// CONCATENATED MODULE: ../gw-browse/src/components/resource-actions.vue?vue&type=template&id=38ac4d67&
 
 // EXTERNAL MODULE: ../gw-browse/node_modules/core-js/modules/es.string.search.js
 var es_string_search = __webpack_require__("7578");
-
-// EXTERNAL MODULE: ../gw-browse/node_modules/pluralize/pluralize.js
-var pluralize = __webpack_require__("947a");
-var pluralize_default = /*#__PURE__*/__webpack_require__.n(pluralize);
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!../gw-browse/src/components/resource-actions.vue?vue&type=script&lang=js&
 
@@ -76447,7 +75195,6 @@ var pluralize_default = /*#__PURE__*/__webpack_require__.n(pluralize);
 //
 //
 
-
 /* harmony default export */ var resource_actionsvue_type_script_lang_js_ = ({
   props: {
     bulkActions: {
@@ -76525,9 +75272,6 @@ var pluralize_default = /*#__PURE__*/__webpack_require__.n(pluralize);
     getData: function getData() {
       this.search.text.trim().length && (this.showClearSearch = true) || (this.showClearSearch = false);
       this.$emit("getData", this.search);
-    },
-    singularize: function singularize(text) {
-      return pluralize_default.a.singular(text);
     }
   }
 });
@@ -76547,8 +75291,8 @@ var resource_actionsvue_type_style_index_0_lang_scss_ = __webpack_require__("287
 
 var resource_actions_component = normalizeComponent(
   components_resource_actionsvue_type_script_lang_js_,
-  resource_actionsvue_type_template_id_65834a6a_render,
-  resource_actionsvue_type_template_id_65834a6a_staticRenderFns,
+  resource_actionsvue_type_template_id_38ac4d67_render,
+  resource_actionsvue_type_template_id_38ac4d67_staticRenderFns,
   false,
   null,
   null,
@@ -77728,8 +76472,8 @@ var browsevue_type_style_index_0_lang_scss_ = __webpack_require__("35c8");
 
 var browse_component = normalizeComponent(
   src_browsevue_type_script_lang_js_,
-  browsevue_type_template_id_9f6b2d86_render,
-  browsevue_type_template_id_9f6b2d86_staticRenderFns,
+  browsevue_type_template_id_0925b62c_render,
+  browsevue_type_template_id_0925b62c_staticRenderFns,
   false,
   null,
   null,
@@ -77849,7 +76593,7 @@ function _arrayWithoutHoles(arr) {
 
 
 function _iterableToArray(iter) {
-  if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter);
+  if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter);
 }
 // CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/nonIterableSpread.js
 function _nonIterableSpread() {
@@ -81082,7 +79826,7 @@ var detailsvue_type_template_id_0a6d39ac_staticRenderFns = []
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.number.to-fixed.js
 var es_number_to_fixed = __webpack_require__("b680");
 
-// EXTERNAL MODULE: /home/sparohawk/gewaer/cms/node_modules/moment/moment.js
+// EXTERNAL MODULE: C:/Users/Jesus/Workspace/kanvas/gewaer-crm/node_modules/moment/moment.js
 var moment = __webpack_require__("203d");
 var moment_default = /*#__PURE__*/__webpack_require__.n(moment);
 
@@ -83197,10 +81941,10 @@ module.exports = {
 /***/ "fdbf":
 /***/ (function(module, exports, __webpack_require__) {
 
-/* eslint-disable es/no-symbol -- required for testing */
 var NATIVE_SYMBOL = __webpack_require__("4930");
 
 module.exports = NATIVE_SYMBOL
+  /* global Symbol -- safe */
   && !Symbol.sham
   && typeof Symbol.iterator == 'symbol';
 
