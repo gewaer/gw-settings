@@ -5,7 +5,7 @@
             <tabs-menu slot="tab-menu" />
             <div class="card h-100 mb-0">
                 <div class="row user-general-information">
-                    <div class="col-12 col-md-6">
+                    <div class="col-12">
                         <div class="form-group required">
                             <label>Current password</label>
                             <input
@@ -47,16 +47,9 @@
                             <span class="text-danger">{{ errors.first("confirm-new-password") }}</span>
                         </div>
                     </div>
-                    <div class="col-12 col-md-6">
-                        <div class="password-rules">
-                            <img src="/img/settings/exclamation.svg" alt="Exclamation icon">
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vitae sem mattis, mattis metus sit amet, tincidunt justo.</p>
-                            <p>Ut hendrerit, est in sodales rhoncus, quam sapien malesuada arcu, vitae tincidunt odio orci porttitor ligula.</p>
-                        </div>
-                    </div>
                 </div>
             </div>
-            <div class="d-flex justify-content-end mt-4">
+            <div class="d-flex justify-content-center mt-4">
                 <button :disabled="isLoading" class="btn btn-primary" @click="update()">
                     Change
                 </button>
