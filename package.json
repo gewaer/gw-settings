@@ -31,7 +31,7 @@
         "vue-form-wizard": "^0.8.4"
     },
     "dependencies": {
-        "@gewaer/gw-browse": "git+ssh://git@github.com/gewaer/gw-browse.git#v0.2.8",
+        "@gewaer/gw-browse": "git+ssh://git@github.com/gewaer/gw-browse.git#v0.2.9",
         "@uppy/core": "^1.17.0",
         "@uppy/dashboard": "^1.18.0",
         "@uppy/file-input": "^1.4.25",
