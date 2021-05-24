@@ -93,7 +93,7 @@ export default {
     watch: {
         hasUnsavedChanges(hasChanges) {
             if (hasChanges) {
-                window.addEventListener('beforeunload', this.handleBeforeUnloadListener);
+                window.addEventListener("beforeunload", this.handleBeforeUnloadListener);
             } else {
                 this.unattachBeforeUnload();
             }
@@ -346,14 +346,14 @@ export default {
             this.update();
         },
         unattachBeforeUnload() {
-            window.removeEventListener('beforeunload', this.handleBeforeUnloadListener);
+            window.removeEventListener("beforeunload", this.handleBeforeUnloadListener);
         },
         handleBeforeUnloadListener(event) {
             // Compatible with new versions of browsers
             event.preventDefault();
             // Compatible chrome, safari, firefox 4+, opera 12+, ie 9+
             return event.returnValue = "";
-        },
+        }
     }
 };
 </script>
