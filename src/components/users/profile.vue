@@ -85,10 +85,25 @@ export default {
             languages: state => state.Application.languages,
             locales: state => state.Application.locales,
             userDataState: state => state.User.data
-        })
+        }),
+        hasUnsavedChanges() {
+            return this.$validator._base.fields.items.some((item) => item.flags.changed);
+        }
+    },
+    watch: {
+        hasUnsavedChanges(hasChanges) {
+            if (hasChanges) {
+                window.addEventListener("beforeunload", this.handleBeforeUnloadListener);
+            } else {
+                this.unattachBeforeUnload();
+            }
+        }
     },
     created() {
         this.initialize();
+    },
+    beforeDestroy() {
+        this.unattachBeforeUnload();
     },
     beforeRouteLeave(to, from, next) {
         const formFields = this.$refs.profileForm.getChangedFields();
@@ -292,6 +307,7 @@ export default {
                     text: "Your information has been updated successfully!",
                     type: "success"
                 });
+                this.unattachBeforeUnload();
             }).catch((error) => {
                 this.$notify({
                     title: "Error",
@@ -328,6 +344,15 @@ export default {
 
             this.clearChangedFields();
             this.update();
+        },
+        unattachBeforeUnload() {
+            window.removeEventListener("beforeunload", this.handleBeforeUnloadListener);
+        },
+        handleBeforeUnloadListener(event) {
+            // Compatible with new versions of browsers
+            event.preventDefault();
+            // Compatible chrome, safari, firefox 4+, opera 12+, ie 9+
+            return event.returnValue = "";
         }
     }
 };
