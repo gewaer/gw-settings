@@ -17,6 +17,7 @@
                                 data-vv-as="password"
                                 data-vv-ignore-unsaved="true"
                                 name="password"
+                                data-lpignore="true"
                             >
                             <span class="text-danger">{{ errors.first("password") }}</span>
                         </div>
@@ -30,6 +31,7 @@
                                 type="password"
                                 data-vv-as="new password"
                                 name="new-password"
+                                data-lpignore="true"
                             >
                             <span class="text-danger">{{ errors.first("new-password") }}</span>
                         </div>
@@ -43,6 +45,7 @@
                                 type="password"
                                 data-vv-as="confirm new password"
                                 name="confirm-new-password"
+                                data-lpignore="true"
                             >
                             <span class="text-danger">{{ errors.first("confirm-new-password") }}</span>
                         </div>

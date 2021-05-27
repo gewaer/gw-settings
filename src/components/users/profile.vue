@@ -270,7 +270,8 @@ export default {
                         attributes: {
                             class: {
                                 "form-control": true
-                            }
+                            },
+                            "data-lpignore": true
                         },
                         wrapperAttributes: {
                             class: {
