@@ -75,7 +75,7 @@ export default {
         },
 
         isGlobal(role) {
-            return Number(role.apps_id) == 0;
+            return Number(role.apps_id) == 1;
         },
 
         deleteRole(id) {
