@@ -25,6 +25,7 @@
                                 name="name"
                                 type="text"
                                 class="form-control"
+                                :disabled="isSystemRole"
                             >
                             <span class="text-danger">{{ errors.first("name") }}</span>
                         </div>
@@ -38,6 +39,7 @@
                                 type="text"
                                 name="description"
                                 class="form-control"
+                                :disabled="isSystemRole"
                             >
                             <span class="text-danger">{{ errors.first("description") }}</span>
                         </div>
@@ -60,6 +62,7 @@
                                         v-model="group.isGroupSelected"
                                         type="checkbox"
                                         class="form-check-input"
+                                        :disabled="isSystemRole"
                                         @click="checkGroup(group, groupName)"
                                     >
                                     <label class="form-check-label" :for="`group-${groupName}`" />
@@ -77,6 +80,7 @@
                                             :name="`checkbox-${groupName}-${accessName}`"
                                             type="checkbox"
                                             class="form-check-input"
+                                            :disabled="isSystemRole"
                                             @change="checkSelectedGroup(groupName, true)"
                                         >
                                         <label
@@ -97,7 +101,12 @@
                     <button class="btn btn-danger mr-2" @click="rolesList()">
                         Cancel
                     </button>
-                    <button :disabled="!hasChanged" class="btn btn-primary" @click="verifyFields()">
+                    <button
+                        v-if="!isSystemRole"
+                        :disabled="!hasChanged"
+                        class="btn btn-primary"
+                        @click="verifyFields()"
+                    >
                         Save
                     </button>
                 </div>
@@ -137,6 +146,9 @@ export default {
         },
         hasChanged() {
             return some(this.vvFields, field => field.changed) || this.groupHasChanged.length;
+        },
+        isSystemRole() {
+            return Number(this.roleData.apps_id) == 1;
         }
     },
     watch: {

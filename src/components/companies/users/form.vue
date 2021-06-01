@@ -111,7 +111,7 @@
                                 <span class="text-danger">{{ errors.first("role") }}</span>
                             </div>
 
-                            <div class="form-group">
+                            <div v-if="isEditing" class="form-group">
                                 <label>Status</label>
                                 <div>
                                     <label>
