@@ -196,6 +196,9 @@ export default {
                                 "form-group": true,
                                 required: true
                             }
+                        },
+                        validations: {
+                            required: true
                         }
                     }
                 ],
