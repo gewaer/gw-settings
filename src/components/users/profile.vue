@@ -283,8 +283,8 @@ export default {
                             }
                         },
                         validations: {
-                            email: true,
-                            required: true
+                            required: true,
+                            email: true
                         }
                     }
                 ]
