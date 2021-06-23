@@ -196,6 +196,9 @@ export default {
                                 "form-group": true,
                                 required: true
                             }
+                        },
+                        validations: {
+                            required: true
                         }
                     }
                 ],
@@ -280,8 +283,8 @@ export default {
                             }
                         },
                         validations: {
-                            email: true,
-                            required: true
+                            required: true,
+                            email: true
                         }
                     }
                 ]
