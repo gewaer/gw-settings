@@ -1,6 +1,6 @@
 {
     "name": "@gewaer/gw-settings",
-    "version": "0.2.23",
+    "version": "0.2.24",
     "description": "Base settings component for the Gewaer platform.",
     "main": "./dist/gw-settings.umd.min.js",
     "files": [
@@ -29,10 +29,10 @@
     "peerDependencies": {
         "moment": "^2.29.1",
         "vue-form-wizard": "^0.8.4",
-        "@gewaer/vue-form-generator": "git+ssh://git@github.com/gewaer/vue-form-generator.git#v0.2.0"
+        "@gewaer/vue-form-generator": "git+ssh://git@github.com/gewaer/vue-form-generator.git#v0.1.2"
     },
     "dependencies": {
-        "@gewaer/gw-browse": "git+ssh://git@github.com/gewaer/gw-browse.git#v0.2.9",
+        "@gewaer/gw-browse": "git+ssh://git@github.com/gewaer/gw-browse.git#v0.2.11",
         "@uppy/core": "^1.17.0",
         "@uppy/dashboard": "^1.18.0",
         "@uppy/file-input": "^1.4.25",
