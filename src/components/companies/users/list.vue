@@ -42,6 +42,7 @@
                     :show-search-filters="false"
                     :show-title="false"
                     pagination-path=""
+                    :app-search="useAppSearch"
                     @load-error="loadError"
                 >
                     <template slot="actions" slot-scope="props">
@@ -97,8 +98,10 @@ export default {
                 inactive: {
                     format: "true",
                     relationships: "companies,roles",
-                    q: "(user_active:0,is_deleted:0)"
+                    filters: "(user_active:0,is_deleted:0)"
                 },
+                // here we use q instead of filters
+                // because the invite request don't support appsearch
                 invite: {
                     format: "true",
                     relationships: "companies,roles",
@@ -107,7 +110,7 @@ export default {
                 active: {
                     format: "true",
                     relationships: "roles",
-                    q: "(user_active:1,is_deleted:0)"
+                    filters: "(user_active:1,is_deleted:0)"
                 }
             },
             currentParams: {},
@@ -120,6 +123,9 @@ export default {
         }),
         endpoint() {
             return this.show == "invite" ? "users-invite" : "users";
+        },
+        useAppSearch() {
+            return this.endpoint === "users";
         },
         resource() {
             return {
