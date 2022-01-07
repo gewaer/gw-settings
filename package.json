@@ -32,7 +32,7 @@
         "@gewaer/vue-form-generator": "git+ssh://git@github.com/gewaer/vue-form-generator.git#v0.1.2"
     },
     "dependencies": {
-        "@gewaer/gw-browse": "git+ssh://git@github.com/gewaer/gw-browse.git#v0.2.11",
+        "@gewaer/gw-browse": "git+ssh://git@github.com/gewaer/gw-browse.git#v0.3.1",
         "@uppy/core": "^1.17.0",
         "@uppy/dashboard": "^1.18.0",
         "@uppy/file-input": "^1.4.25",
