@@ -68,7 +68,7 @@
                                     <label class="form-check-label" :for="`group-${groupName}`" />
                                 </div>
                                 <span @click="checkGroup(group, groupName)">
-                                    {{ groupName }}
+                                    {{ group.title }}
                                 </span>
                             </h4>
                             <div class="row">
@@ -276,12 +276,26 @@ export default {
                 return access
             })
         },
+        titleCase(text) {
+            const splitText = text
+                .split(/([A-Z]|-[a-zA-Z])/)
+                .filter((part) => part)
+                .map((part) => {
+                    part = part.replace("-", "");
+                    return part.length === 1 ? ` ${part.toUpperCase()}` : part;
+                });
+
+            return splitText.join("").trim();
+        },
         groupPermissions() {
             const accessGroup = {};
             this.accessListData.forEach(access => {
                 if (access.access_name != "*") {
                     if (!accessGroup[access.resources_name]) {
-                        accessGroup[access.resources_name] = { permissions: { [access.access_name]: access } };
+                        accessGroup[access.resources_name] = {
+                            title: this.titleCase(access.resources_name),
+                            permissions: { [access.access_name]: access }
+                        };
                     } else {
                         accessGroup[access.resources_name]["permissions"][access.access_name] = access;
                     }
